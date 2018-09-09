@@ -1,5 +1,5 @@
 package ass2;
 
-public class Hunter {
+public class Hunter extends Entity{
 
 }

@@ -1,5 +1,5 @@
 package ass2;
 
-public class Hound {
+public class Hound extends Entity{
 
 }

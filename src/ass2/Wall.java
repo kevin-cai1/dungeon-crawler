@@ -1,5 +1,5 @@
 package ass2;
 
-public class Wall {
-
+public class Wall extends Entity{
+	
 }

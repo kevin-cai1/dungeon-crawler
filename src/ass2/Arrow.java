@@ -1,5 +1,5 @@
 package ass2;
 
-public class Arrow {
+public class Arrow extends Entity{
 
 }

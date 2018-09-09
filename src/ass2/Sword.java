@@ -1,5 +1,5 @@
 package ass2;
 
-public class Sword {
+public class Sword extends Entity{
 
 }

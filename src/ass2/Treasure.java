@@ -1,5 +1,5 @@
 package ass2;
 
-public class Treasure {
+public class Treasure extends Entity{
 
 }

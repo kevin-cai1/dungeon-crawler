@@ -1,5 +1,5 @@
 package ass2;
 
-public class Exit {
+public class Exit extends Entity{
 
 }

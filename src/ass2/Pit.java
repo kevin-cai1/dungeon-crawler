@@ -1,5 +1,5 @@
 package ass2;
 
-public class Pit {
+public class Pit extends Entity{
 
 }

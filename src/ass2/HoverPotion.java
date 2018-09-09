@@ -1,5 +1,5 @@
 package ass2;
 
-public class Hover {
+public class HoverPotion extends Entity{
 
 }

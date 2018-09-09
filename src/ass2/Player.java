@@ -1,5 +1,5 @@
 package ass2;
 
-public class Player {
+public class Player extends Entity{
 
 }

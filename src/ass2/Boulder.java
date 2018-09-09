@@ -1,5 +1,5 @@
 package ass2;
 
-public class Boulder {
+public class Boulder extends Entity{
 
 }

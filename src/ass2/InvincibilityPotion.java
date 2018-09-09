@@ -1,5 +1,5 @@
 package ass2;
 
-public class Invincibility {
+public class InvincibilityPotion extends Entity {
 
 }
