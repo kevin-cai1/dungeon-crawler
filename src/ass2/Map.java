@@ -13,4 +13,7 @@ public class Map {
 	public Tile[][] getMap() {
 		return map;
 	}
+	public Tile getPlayer() {
+		//TODO returns the player's location
+	}
 }
