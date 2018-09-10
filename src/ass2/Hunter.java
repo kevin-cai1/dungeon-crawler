@@ -24,12 +24,55 @@ public class Hunter extends Entity{
 		visited = new HashSet<Tile>();
 		instructSet = new ArrayList<Direction>();
 	}
-	public Direction move(Tile[][] map) {
+	public Direction move(Map map) {
 		Tile curPos = getPosition;
 		Tile playerPos = getPlayerPosition;
+		Tile adjacent;
+		Tile queuePop;
 		queue.add(curPos);
-		
+		int curPosX = curPos.getX();
+		int curPosY = curPos.getY();
+		while(!queue.isEmpty()) {
+			queuePop = queue.remove();
+			if(queuePop.equals(playerPos)) {
+				break;
+			}
+			//East Direction
+			if(curPosX+1 < 20) {//20 being map size
+				adjacent = map.getTile(curPosX+1, curPosY);
+				visitCheck(adjacent, queuePop);
+			}
+			//West Direction
+			if(curPosX-1 >= 0) {
+				adjacent = map.getTile(curPosX-1, curPosY);
+				visitCheck(adjacent, queuePop);
+			}
+			//North Direction
+			if(curPosY+1 < 20) {
+				adjacent = map.getTile(curPosX, curPosY+1);
+				visitCheck(adjacent, queuePop);
+			}
+			//South Direction
+			if(curPosY-1 >= 0) {
+				adjacent = map.getTile(curPosX, curPosY-1);
+				visitCheck(adjacent, queuePop);
+			}
+		}
+		if(parent.containsKey(playerPos)) {
+			
+		}
 		return null;
+	}
+	private void visitCheck(Tile adjacent, Tile queuePop) {
+		if(!visited.contains(adjacent)) {
+			visited.add(adjacent);
+			for(Entity entity: adjacent.getEntities()) {
+				if(!(entity instanceof Obstacle)) {
+					queue.add(adjacent);
+					parent.put(queuePop, adjacent);
+				}
+			}
+		}
 	}
 	@Override
 	public String toString() {
