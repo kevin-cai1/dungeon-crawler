@@ -1,6 +1,9 @@
 package ass2;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 /**
@@ -11,17 +14,20 @@ import java.util.Set;
  * 
  */
 public class Hunter extends Entity{
-	private PriorityQueue<Direction> instructSet;
+	private PriorityQueue<Tile> queue;
+	private List<Direction> instructSet;
 	private Set<Tile> visited;
-	private static int maxPathLength;
-	private java.util.Map<Integer, Integer> parent;
+	private HashMap<Tile, Tile> parent; //Parent on the left, child on the right
 	public Hunter() {
-		instructSet = new PriorityQueue<>();
-		maxPathLength = 100;
-		parent = new Map //Instead of just doing prev[i] = other value, we need to remove that index first and then put it back in at that index
-		// TODO Auto-generated constructor stub
+		queue = new PriorityQueue<Tile>();
+		parent = new HashMap<Tile, Tile>(); //Instead of just doing prev[i] = other value, we need to remove that index first and then put it back in at that index
+		visited = new HashSet<Tile>();
+		instructSet = new ArrayList<Direction>();
 	}
 	public Direction move(Tile[][] map) {
+		Tile curPos = getPosition;
+		Tile playerPos = getPlayerPosition;
+		queue.add(curPos);
 		
 		return null;
 	}
