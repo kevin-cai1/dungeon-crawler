@@ -8,4 +8,9 @@ public class Key extends Entity{
 	public int getUnique() {
 		return unique;
 	}
+
+	@Override
+	public String toString() {
+		return null;
+	}
 }
