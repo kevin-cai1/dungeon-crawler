@@ -17,4 +17,13 @@ public class Tile {
 	public void removeEntity(int entity) {//change from int to Entity
 		entities.remove(entity);
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		StringBuilder stringBuilder = new StringBuilder();
+		for (int i = 0; i < entities.size(); i++) {
+			stringBuilder.append(entities.get(i).toString());
+		}
+		return stringBuilder.toString();
+	}
 }

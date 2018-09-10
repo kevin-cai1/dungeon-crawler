@@ -1,7 +1,7 @@
 package ass2;
 
-public class Door extends Entity{
+public class Door extends Obstacle{
 	public Door() {
 		// TODO Auto-generated constructor stub
-	}
+	} 
 }

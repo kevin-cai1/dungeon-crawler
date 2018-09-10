@@ -14,6 +14,14 @@ public class Map {
 		return map;
 	}
 	public Tile getPlayer() {
+		return null;
 		//TODO returns the player's location
+	}
+	public void printMap() {
+		for (int i = 0; i < 50; i++) {
+			for (int j = 0; j < 50; j++) {
+				System.out.println(map[i][j].toString());
+			}
+		}
 	}
 }
