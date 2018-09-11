@@ -9,4 +9,8 @@ public class Exit extends Entity{
 	public String toString() {
 		return null;
 	}
+	
+	//public WinStatus CheckWin() {
+		// if player is on the exit tile, return win condition
+	//}
 }
