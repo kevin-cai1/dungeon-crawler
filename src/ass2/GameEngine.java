@@ -122,9 +122,8 @@ public class GameEngine {
 		}
 	}
 	
-	// This function doesn't work for players trying to move boulders. It will see the player
-	// Trying to move onto a boulder (obstacle instance) and return false immediately
-	// So either needs to be adjusted or separate validation for moving boulders required
+	// This should now work for double boulder and boulder wall. 
+	// Should validate entity movements
 	public boolean validateMove(Entity entity, Direction move) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
@@ -140,6 +139,19 @@ public class GameEngine {
 								else {
 									for (Entity e2 : tile[i][j-1].getEntities()) {
 										if (e2 instanceof Obstacle) {
+											if (e2 instanceof Door) {
+												return true;
+											}
+											if (e2 instanceof Boulder) {
+												if (j < 2) { 		// account for double boulder or boulder wall
+													return false;
+												}
+												for (Entity e3 : tile[i][j-2].getEntities()) {
+													if (e3 instanceof Obstacle) {
+														return false;
+													}
+												}
+											}
 											return false;
 										}
 									}
@@ -152,6 +164,19 @@ public class GameEngine {
 								else {
 									for (Entity e2 : tile[i+1][j].getEntities()) {
 										if (e2 instanceof Obstacle) {
+											if (e2 instanceof Door) {
+												return true;
+											}
+											if (e2 instanceof Boulder) {
+												if (i > 17) {
+													return false;
+												}
+												for (Entity e3 : tile[i+2][j].getEntities()) {
+													if (e3 instanceof Obstacle) {
+														return false;
+													}
+												}
+											}
 											return false;
 										}
 									}
@@ -164,6 +189,19 @@ public class GameEngine {
 								else {
 									for (Entity e2 : tile[i][j+1].getEntities()) {
 										if (e2 instanceof Obstacle) {
+											if (e2 instanceof Door) {
+												return true;
+											}
+											if (e2 instanceof Boulder) {
+												if (j > 17) {
+													return false;
+												}
+												for (Entity e3 : tile[i][j+2]) {
+													if (e3 instanceof Obstacle) {
+														return false;
+													}
+												}
+											}
 											return false;
 										}
 									}
@@ -176,17 +214,31 @@ public class GameEngine {
 								else {
 									for (Entity e2 : tile[i-1][j].getEntities()) {
 										if (e2 instanceof Obstacle) {
+											if (e2 instanceof Door) {
+												return true;
+											}
+											if (e2 instanceof Boulder) {
+												if (i < 2) {
+													return false;
+												}
+												for (Entity e3 : tile[i-2][j].getEntities()) {
+													if (e3 instanceof Obstacle) {
+														return false;
+													}
+												}
+											}
 											return false;
 										}
 									}
 								}
 								break;
 						}
+						return true;
 					}
 				}
 			}
 		}
-		return false;
+		return true; // It shouldnt reach this one ever, this is just to make compiler happy
 	}
 	
 
