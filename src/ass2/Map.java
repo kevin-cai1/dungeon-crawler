@@ -60,22 +60,21 @@ public class Map {
 						Entity EntityCopy = e;
 						tile.removeEntity(e); // Remove entity from current tile
 						// Calculate the tile it needs to move to
-						Tile newtile = map[i][j];
 						switch (move) {
 							case NORTH: 
-								newtile = map[i][j+1];
+								tile = map[i][j+1];
 								break;
 							case EAST:
-								newtile = map[i+1][j];
+								tile = map[i+1][j];
 								break;
 							case SOUTH:
-								newtile = map[i][j-1];
+								tile = map[i][j-1];
 								break;
 							case WEST:
-								newtile = map[i-1][j];
+								tile = map[i-1][j];
 								break;
 						}
-						newtile.addEntity(EntityCopy); // Add entity to new tile 
+						tile.addEntity(EntityCopy); // Add entity to new tile 
 					}
 				}
 			}
