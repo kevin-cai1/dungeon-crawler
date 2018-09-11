@@ -49,12 +49,12 @@ public class Hunter extends Entity{
 				adjacent = map.getTile(popPosX-1, popPosY);
 				visitCheck(adjacent, queuePop);
 			}
-			//North Direction
+			//South Direction
 			if(popPosY+1 < 20) {
 				adjacent = map.getTile(popPosX, popPosY+1);
 				visitCheck(adjacent, queuePop);
 			}
-			//South Direction
+			//North Direction
 			if(popPosY-1 >= 0) {
 				adjacent = map.getTile(popPosX, popPosY-1);
 				visitCheck(adjacent, queuePop);
