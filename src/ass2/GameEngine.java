@@ -101,7 +101,6 @@ public class GameEngine {
 				Tile tile = gameMap[i][j];
 				for (Entity e : tile.getEntities()) {
 					if (e.equals(entity)) {
-						Entity EntityCopy = e;
 						// Calculate the tile it needs to move to
 						switch (move) {
 							case NORTH: 
@@ -157,6 +156,7 @@ public class GameEngine {
 				}
 			}
 		}
+		return false;
 	}
 	
 
