@@ -1,5 +1,15 @@
 package ass2;
 
-public class Player extends Entity{
+public class Player extends Entity {
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    @Override
+    public String toString() {
+        return null;
+    }
 }

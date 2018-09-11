@@ -14,4 +14,9 @@ public class Sword extends Entity{
 	public boolean durabilityZero() {
 		return(durability == 0);
 	}
+
+	@Override
+	public String toString() {
+		return null;
+	}
 }

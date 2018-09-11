@@ -4,4 +4,9 @@ public class Pit extends Entity{
 	public Pit() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return null;
+	}
 }
