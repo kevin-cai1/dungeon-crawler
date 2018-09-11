@@ -63,7 +63,7 @@ public class Player extends Entity{
 	 */
 	public boolean checkKey(Door door) {
 		for(Key key: keys) {
-			if(door.getUnique() == key.getUnique() && door.getStatus() == false) {
+			if(door.getUnique() == key.getUnique()) {
 				door.openDoor();
 				return true;
 			}
