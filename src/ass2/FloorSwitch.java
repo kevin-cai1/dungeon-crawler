@@ -4,4 +4,9 @@ public class FloorSwitch extends Entity{
 	public FloorSwitch() {
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return null;
+	}
 }

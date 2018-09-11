@@ -6,4 +6,8 @@ public class InvincibilityPotion extends Potion {
 		usage = 1;
 	}
 
+	@Override
+	public String toString() {
+		return null;
+	}
 }

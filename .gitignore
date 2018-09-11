@@ -21,3 +21,5 @@ bin/ass2/Sword.class
 bin/ass2/Treasure.class
 bin/ass2/Wall.class
 *.class
+*.xml
+*.iml

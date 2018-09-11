@@ -8,4 +8,8 @@ public class Player extends Entity {
 		return null;
 	}
 
+    @Override
+    public String toString() {
+        return null;
+    }
 }
