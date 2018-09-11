@@ -2,7 +2,6 @@ package ass2;
 
 import java.util.*;
 
-import javafx.scene.Node;
 /**
  * 
  * @author posocer
