@@ -1,6 +1,4 @@
 package ass2;
-
-import java.awt.print.Printable;
 import java.util.Scanner;
 
 public class PlayerControls{
@@ -20,32 +18,32 @@ public class PlayerControls{
 	}
 	
 	private boolean controlExists(char input) {
-		if(input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'k' || input == 'l') {
+		if(input == 'w' || input == 'a' || input == 's' || input == 'd' /*|| input == 'k' || input == 'l'*/) {
 			return true;
 		}
 		return false;
 	}
 	
-	public void getMovement(char input) {
+	public Direction getMovement(char input) {
 		switch (input) {
 		case 'w':
-			y++;
-			System.out.print(Direction.NORTH);
-			System.out.print(y + ",");
-			System.out.println(x);
-			break;
+			return Direction.NORTH;
 		case 'a':
-			System.out.println(Direction.WEST);
-			break;
+			return Direction.WEST;
 		case 's':
-			System.out.println(Direction.SOUTH);
-			break;
+			return Direction.SOUTH;
 		case 'd':
-			System.out.println(Direction.EAST);
-			break;
+			return Direction.EAST;
 		}
+		return null;
 	}
-	public void getAction(char input) {
+	
+	public Direction returnMovement() {
+		char input = getValidInput();
+		return getMovement(input);
+	}
+	
+	/*private void getAction(char input) {
 		switch (input) {
 		case 'k':
 			System.out.println("Shooting bow ");
@@ -62,18 +60,5 @@ public class PlayerControls{
 			return true;
 		}
 		return false;
-	}
-	static int x, y = 0;
-	public void getAction() {
-		char input = getValidInput();
-		if (isMovement(input)) {
-			getMovement(input);
-		}else {
-			getAction(input);
-			while(isMovement(input) == false) {
-				input = getValidInput();
-			}
-			getMovement(input);
-		}
-	}
+	}*/
 }
