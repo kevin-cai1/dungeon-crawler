@@ -1,6 +1,6 @@
 package ass2;
 
-public class Hound extends Entity{
+public class Hound extends Enemy{
 
     @Override
     public String toString() {
