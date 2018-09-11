@@ -19,7 +19,10 @@ public class Sword extends Entity{
 
 	@Override
 	public String toString() {
-		return null;
+		StringBuilder sb = new StringBuilder();
+		sb.append("Sword durability: ");
+		sb.append(getDurability());
+		return sb.toString();
 	}
 	
 	public void swing(Map map, Direction direction) {
