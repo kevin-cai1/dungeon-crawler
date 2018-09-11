@@ -2,12 +2,6 @@ package ass2;
 
 import java.util.concurrent.locks.Condition;
 
-import com.sun.java.swing.plaf.windows.resources.windows_zh_CN;
-import com.sun.media.jfxmedia.events.NewFrameEvent;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
-import sun.security.krb5.internal.util.KerberosFlags;
-
 public class GameEngine {
 	
 	public GameEngine() {
