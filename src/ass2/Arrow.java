@@ -63,6 +63,9 @@ public class Arrow extends Entity{
 			}
 			break;
 		} 
-
+	}
+	@Override
+	public String toString() {
+		return null;
 	}
 }
