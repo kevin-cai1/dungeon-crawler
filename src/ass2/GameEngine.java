@@ -9,26 +9,29 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 import sun.security.krb5.internal.util.KerberosFlags;
 
 public class GameEngine {
+	Map gameMap = new Map();
+	GameState gameState;
 	
 	public GameEngine() {
-		
+		this.gameMap = gameMap.generateMap();
+		this.gameState = GameState.Menu;
 	}
 	
 	public GameState runGame() {
+		gameState = GameState.Play;
 		// runs the game
 		// gets player moves
 		// calculates entity moves
 		// handles win conditions
 		
 		// initialise the map
-		Map gameMap = new Map();
-		gameMap = gameMap.generateMap(); //fills the map with shit
+		
 		Tile[][] map = gameMap.getMap();
 		
 		PlayerControl control = new PlayerControl(); //**instantiate control class
 		Player player = gameMap.getPlayer();
 		Tile playerLocation = gameMap.getPlayerLocation();
-		
+		boolean movePlayer = true;
 		while (/* game not won, user not ded or not quit*/) {
 		// take user input (player control @jun)
 			Direction playerAction = control.getAction();
@@ -53,26 +56,40 @@ public class GameEngine {
 				}
 				for (Entity e: affectedTile.getEntities()) {
 					if (e.getClass().equals(new Bomb().getClass())) { //entity is a bomb
-						
+						player.putInventory(e);
 					} else if (e.getClass().equals(new Boulder().getClass())) {
 						
-						
 					} else if (e.getClass().equals(new InvincibilityPotion().getClass())) {
-						
-						
+						player.addInvincibility();
 					} else if (e.getClass().equals(new HoverPotion().getClass())) {
-						
-						
+						player.addHover();
 					} else if (e.getClass().equals(new Key().getClass())) {
-						
-						
+						player.addKey((Key)e);
 					} else if (e.getClass().equals(new Treasure().getClass())) {
-						
-						
+						player.addTreasure();
+					} else if (e.getClass().equals(new Arrow().getClass())) {
+						player.putInventory(e);
+					} else if (e.getClass().equals(new Sword().getClass())) {
+						player.putInventory(e);;
+					} else if (e instanceof Enemy) {	// lose if you walk into enemy
+						gameState = GameState.Lose;
+						return gameState;
+					} else if (e.getClass().equals(new Pit().getClass())) {	// lose if you walk into pit
+						gameState = GameState.Lose;
+						return gameState;
+					} else if (e.getClass().equals(new Door().getClass())) {
+						Door door = (Door)e;
+						if (door.getStatus() == false) { // closed
+							if (player.checkKey(door) == false) {
+								movePlayer = false;
+								
+							}
+						} 
 					}
 				}
-				
-					
+				if (movePlayer == true) {
+					gameMap.makeMove(player, playerAction);	
+				}
 				
 				
 				// calculate entity movements
