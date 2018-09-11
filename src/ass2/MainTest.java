@@ -15,7 +15,7 @@ public class MainTest {
 			pc.getAction();
 		}
 		//ArrayList<Integer> arrayList = new ArrayList<>();
-
+		*/
 		
 		
 		
@@ -23,6 +23,6 @@ public class MainTest {
 		Hunter hunter = new Hunter();
 		Map map = new Map();
 		System.out.println(hunter.move(map));
-		System.out.println("hello");*/
+		System.out.println("hello");
 	}
 }

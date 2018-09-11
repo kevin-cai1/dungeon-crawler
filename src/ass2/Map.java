@@ -35,7 +35,19 @@ public class Map {
 		}
 		return null;
 	}
-	
+	public Tile getEntityLocation(Entity entity) {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				Tile tile = map[i][j];
+				for (Entity e: tile.getEntities()) {
+					if (e.equals(entity)) { //does this really work
+						return tile;
+					}
+				}
+			}
+		}
+		return null;
+	}
 	public Player getPlayer() {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
