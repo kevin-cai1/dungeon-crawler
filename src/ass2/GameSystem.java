@@ -10,6 +10,21 @@ public class GameSystem {
 		// Game Mode 1
 		// Instantiate game engine
 		GameEngine gameEngine = new GameEngine();
-		gameEngine.runGame(); // initialises the map, player controls
+		// initialises the map, player controls, checks gamestate
+		GameState state = gameEngine.runGame();
+		switch (state) {
+		case Win:
+			// victory!
+			break;
+		case Lose:
+			// rip
+			break;
+		case Paused:
+			// stahp
+			break;
+		default:
+			break;
+		}
+		
 	}
 }

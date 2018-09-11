@@ -19,10 +19,10 @@ public class GameEngine {
 		gameMap = gameMap.generateMap(); //fills the map with shit
 		Tile[][] map = gameMap.getMap();
 		
-		PlayerControl control = new PlayerControl(); //**instantiate control class
+		PlayerControls control = new PlayerControls(); //**instantiate control class
 		Player player = gameMap.getPlayer();
 		Tile playerLocation = gameMap.getPlayerLocation();
-		
+			
 		while (/* game not won, user not ded or not quit*/) {
 		// take user input (player control @jun)
 			Direction playerAction = control.getAction();
@@ -65,10 +65,7 @@ public class GameEngine {
 						
 					}
 				}
-				
-					
-				
-				
+						
 				// calculate entity movements
 				for (int i = 0; i < 20; i++) {
 					for (int j = 0; j < 20; j++) {
@@ -82,19 +79,31 @@ public class GameEngine {
 					}
 				}
 			
-			
-		
-				// make moves
-		
-		
-		// check win condition
-			//if (game == won) {
-				return GameState.Win;
-			//}
 			}
+
+		// check win conditions
+			// Player standing on exit = win
+			playerLocation = gameMap.getPlayerLocation();
+			for (Entity e : playerLocation.getEntities()) {
+				if (e instanceof Enemy) {
+					return GameState.Lose;
+				}
+				if (e instanceof Pit) {
+					return GameState.Lose;
+				}
+				if (e instanceof Exit) {
+					return GameState.Win;
+				}
+			}
+			
+			
+			
 		}
 	}
 	
+	// This function doesn't work for players trying to move boulders. It will see the player
+	// Trying to move onto a boulder (obstacle instance) and return false immediately
+	// So either needs to be adjusted or separate validation for moving boulders required
 	public boolean validateMove(Direction move, Entity entity) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
