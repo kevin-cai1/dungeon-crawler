@@ -15,7 +15,6 @@ public class Map {
 				map[i][j] = new Tile(entities, i, j);
 			}
 		}
-		// TODO Auto-generated constructor stub
 	}
 	public Tile getTile(int x, int y) {
 		return map[x][y];
@@ -51,9 +50,35 @@ public class Map {
 		return null;
 	}
 	
-	
+	// Moves an entity one space in a given direction
 	public void makeMove(Entity entity, Direction move) {
-		
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				Tile tile = map[i][j];
+				for (Entity e : tile.getEntities()) {
+					if (e.equals(entity)) {
+						Entity EntityCopy = e;
+						tile.removeEntity(e); // Remove entity from current tile
+						// Calculate the tile it needs to move to
+						switch (move) {
+							case NORTH: 
+								tile = map[i][j-1];
+								break;
+							case EAST:
+								tile = map[i+1][j];
+								break;
+							case SOUTH:
+								tile = map[i][j+1];
+								break;
+							case WEST:
+								tile = map[i-1][j];
+								break;
+						}
+						tile.addEntity(EntityCopy); // Add entity to new tile
+					}
+				}
+			}
+		}
 	}
 	
 	public void printMap() {
