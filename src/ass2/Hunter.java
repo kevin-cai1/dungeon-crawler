@@ -22,7 +22,7 @@ public class Hunter extends Enemy{
 		visited = new HashSet<Tile>();
 	}
 	public Direction move(Map map) {
-		Tile playerPos = pathCheck(map);
+		Tile playerPos = playerCheck(map);
 		if(parent.containsKey(playerPos)) {
 			Tile temp = playerPos;
 			List<Tile> shortest = new ArrayList<>();
@@ -90,7 +90,7 @@ public class Hunter extends Enemy{
 	 * @return
 	 */
 	private boolean access(Map map) {
-		Tile playerPos = pathCheck(map);
+		pathCheck(map, curPos, playerPos);Check(map);
 		if(parent.containsKey(playerPos)) {
 			clear();
 			return true;
@@ -98,9 +98,13 @@ public class Hunter extends Enemy{
 		clear();
 		return false;
 	}
-	private Tile pathCheck(Map map) {
+	private Tile playerCheck(Map map) {
 		Tile curPos = map.getEntityLocation(this);
 		Tile playerPos = map.getPlayerLocation();
+		pathCheck(map, curPos, playerPos);
+		return playerPos;
+	}
+	private void pathCheck(Map map, Tile curPos, Tile playerPos) {
 		Tile adjacent;
 		Tile queuePop;
 		queue.add(curPos);
@@ -135,7 +139,6 @@ public class Hunter extends Enemy{
 				visitCheck(adjacent, queuePop);
 			}
 		}
-		return playerPos;
 	}
 	private double distCalc(int x1, int y1, int x2, int y2) {
 	    double dist;
