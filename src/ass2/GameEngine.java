@@ -95,10 +95,10 @@ public class GameEngine {
 		}
 	}
 	
-	public boolean validateMove(Tile[][] gameMap, Direction move, Entity entity) {
+	public boolean validateMove(Direction move, Entity entity) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
-				Tile tile = gameMap[i][j];
+				Tile tile = gameMap.getMap()[i][j];
 				for (Entity e : tile.getEntities()) {
 					if (e.equals(entity)) {
 						// Calculate the tile it needs to move to
