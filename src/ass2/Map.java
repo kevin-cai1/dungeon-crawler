@@ -62,19 +62,19 @@ public class Map {
 						// Calculate the tile it needs to move to
 						switch (move) {
 							case NORTH: 
-								tile = map[i][j+1];
+								tile = map[i][j-1];
 								break;
 							case EAST:
 								tile = map[i+1][j];
 								break;
 							case SOUTH:
-								tile = map[i][j-1];
+								tile = map[i][j+1];
 								break;
 							case WEST:
 								tile = map[i-1][j];
 								break;
 						}
-						tile.addEntity(EntityCopy); // Add entity to new tile 
+						tile.addEntity(EntityCopy); // Add entity to new tile
 					}
 				}
 			}
