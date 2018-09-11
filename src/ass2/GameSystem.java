@@ -11,6 +11,5 @@ public class GameSystem {
 		// Instantiate game engine
 		GameEngine gameEngine = new GameEngine();
 		gameEngine.runGame(); // initialises the map, player controls
-		
 	}
 }
