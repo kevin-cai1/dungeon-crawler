@@ -8,10 +8,46 @@ import java.util.Set;
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
+	private int invincible;
+	private boolean floaty;
+	private int treasure;
 	public Player() {
+		treasure = 0;
+		floaty = false;
+		invincible = 0;
 		inventory = new HashMap<>();
 		keys = new ArrayList<>();
 		// TODO Auto-generated constructor stub
+	}
+	public void invincibleTick() {
+		if(invincible > 0) {
+			invincible--;
+		}
+	}
+	public void addTreasure() {
+		treasure++;
+	}
+	public int getTreasure() {
+		return treasure;
+	}
+	/**
+	 * invincible will last for 10 turns
+	 */
+	public void addInviciblility() {
+		invincible = 10;
+	}
+	/**
+	 * returns true if player is invincible
+	 * @return
+	 */
+	public boolean getInvincibility() {
+		return (invincible != 0);
+	}
+	public void addHover() {
+		floaty = true;
+	}
+	public boolean getHover() {
+		return floaty;
 	}
 	public HashMap<Entity, Integer> getInventory() {
 		return inventory;
@@ -27,7 +63,7 @@ public class Player extends Entity{
 	 */
 	public boolean checkKey(Door door) {
 		for(Key key: keys) {
-			if(door.getUnique() == key.getUnique() && door.getStatus() == false) {
+			if(door.getUnique() == key.getUnique()) {
 				door.openDoor();
 				return true;
 			}
@@ -49,6 +85,7 @@ public class Player extends Entity{
 			}
 		}
 	}
+	
 	/**
 	 * decrease Durability should only accept valid entities such as sword, arrow 
 	 * @param entity
@@ -86,7 +123,11 @@ public class Player extends Entity{
         Set<Entity> set = inventory.keySet();
         for(Entity entity: set) {
         	stringBuilder.append(entity.toString());
+        	stringBuilder.append(" ");
         }
+        stringBuilder.append(floaty);
+        stringBuilder.append(" ");
+        stringBuilder.append(invincible);
         return stringBuilder.toString();
     }
 }
