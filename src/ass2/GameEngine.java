@@ -83,6 +83,7 @@ public class GameEngine {
 
 		// check win conditions
 			// Player standing on exit = win
+			// pit = lose, enemy = lose
 			playerLocation = gameMap.getPlayerLocation();
 			for (Entity e : playerLocation.getEntities()) {
 				if (e instanceof Enemy) {
@@ -95,6 +96,9 @@ public class GameEngine {
 					return GameState.Win;
 				}
 			}
+			
+			// Check floor switches
+			// iterate through 
 			
 			
 			
