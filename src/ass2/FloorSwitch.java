@@ -15,6 +15,10 @@ public class FloorSwitch extends Entity{
 	public void triggerSwitch() {
 		this.triggered = true;
 	}
+	
+	public boolean getStatus() {
+		return triggered;
+	}
 
 	@Override
 	public String toString() {
