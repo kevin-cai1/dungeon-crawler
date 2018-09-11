@@ -10,7 +10,7 @@ import javafx.scene.Node;
  * it will move to the closest tile
  * 
  */
-public class Hunter extends Entity{
+public class Hunter extends Enemy{
 	private LinkedList<Tile> queue;
 	private List<Direction> instructSet;
 
