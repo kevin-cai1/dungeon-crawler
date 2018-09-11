@@ -23,10 +23,39 @@ public class Map {
 	public Tile[][] getMap() {
 		return map;
 	}
-	public Tile getPlayer() {
+	public Tile getPlayerLocation() {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				Tile tile = map[i][j];
+				for (Entity e: tile.getEntities()) {
+					if (e instanceof Player) {
+						return tile;
+					}
+				}
+			}
+		}
 		return null;
-		//TODO returns the player's location
 	}
+	
+	public Player getPlayer() {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				Tile tile = map[i][j];
+				for (Entity e: tile.getEntities()) {
+					if (e instanceof Player) {
+						return (Player)e;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	public void makeMove(Entity entity, Direction move) {
+		
+	}
+	
 	public void printMap() {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
