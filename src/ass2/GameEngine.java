@@ -2,6 +2,8 @@ package ass2;
 
 import java.util.concurrent.locks.Condition;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 public class GameEngine {
 	Map gameMap = new Map();
 	GameState gameState;
@@ -25,9 +27,12 @@ public class GameEngine {
 		PlayerControls control = new PlayerControls(); //**instantiate control class
 		Player player = gameMap.getPlayer();
 		Tile playerLocation = gameMap.getPlayerLocation();
-		boolean movePlayer = true;
-			
+		
+		
 		while (/* game not won, user not ded or not quit*/) {
+			boolean movePlayer = true;
+			boolean boulderMove = true;
+			Entity pitObject = null;
 		// take user input (player control @jun)
 			Direction playerAction = control.getAction();
 			if (this.validateMove(player, playerAction) == true) {
@@ -35,25 +40,48 @@ public class GameEngine {
 				int playerX = playerLocation.getX();
 				int playerY = playerLocation.getY();
 				Tile affectedTile;
+				Tile followingTile;
 				switch (playerAction) {
 					case NORTH:
 						affectedTile = map[playerX][playerY-1];
+						followingTile = map[playerX][playerY-2];
 						break;
 					case SOUTH:
 						affectedTile = map[playerX][playerY+1];
+						followingTile = map[playerX][playerY+2];
 						break;
 					case EAST:
 						affectedTile = map[playerX+1][playerY];
+						followingTile = map[playerX+2][playerY];
 						break;
 					case WEST:
 						affectedTile = map[playerX-1][playerY];
+						followingTile = map[playerX-2][playerY];
 						break;
 				}
 				for (Entity e: affectedTile.getEntities()) {
 					if (e.getClass().equals(new Bomb().getClass())) { //entity is a bomb
 						player.putInventory(e);
-					} else if (e.getClass().equals(new Boulder().getClass())) {
-						
+					} else if (e.getClass().equals(new Boulder().getClass())) { // valid boulder move checked in validateMove
+						// move boulder to next tile
+						for (Entity following: followingTile.getEntities()) { // for all entities in the following tile
+							if ((following instanceof Obstacle)) {
+								boulderMove = false; // do not move boulder
+								movePlayer = false; // cannot move player if boulder doesn't move
+							}
+							if (following.getClass().equals(new Pit().getClass())) {
+								pitObject = following;
+							}
+						}
+						if (boulderMove == true) {
+							if (pitObject != null) { // boulder going into pit
+								// don't need to move boulder, just delete both boulder and pit - makes normal floor
+								affectedTile.removeEntity(e); // remove boulder
+								followingTile.removeEntity(pitObject); // remove pit
+							} else {
+								gameMap.makeMove(e, playerAction); //move the boulder the same direction as player
+							}
+						}
 					} else if (e.getClass().equals(new InvincibilityPotion().getClass())) {
 						player.addInvincibility();
 					} else if (e.getClass().equals(new HoverPotion().getClass())) {
@@ -72,7 +100,10 @@ public class GameEngine {
 					} else if (e.getClass().equals(new Pit().getClass())) {	// lose if you walk into pit
 						gameState = GameState.Lose;
 						return gameState;
-					} else if (e.getClass().equals(new Door().getClass())) {
+					} else if (e.getClass().equals(new Exit().getClass())) {	// win on exit
+						gameState = GameState.Win;
+						return gameState;					
+					} else if (e.getClass().equals(new Door().getClass())) { // condition when player walks into door
 						Door door = (Door)e;
 						if (door.getStatus() == false) { // closed
 							if (player.checkKey(door) == false) {
@@ -82,6 +113,7 @@ public class GameEngine {
 						} 
 					}
 				}
+				
 				if (movePlayer == true) {
 					gameMap.makeMove(player, playerAction);	
 				}
@@ -102,16 +134,10 @@ public class GameEngine {
 			
 			}
 
-		// check win conditions
+			// check win conditions
 			// Player standing on exit = win
 			playerLocation = gameMap.getPlayerLocation();
 			for (Entity e : playerLocation.getEntities()) {
-				if (e instanceof Enemy) {
-					return GameState.Lose;
-				}
-				if (e instanceof Pit) {
-					return GameState.Lose;
-				}
 				if (e instanceof Exit) {
 					return GameState.Win;
 				}
