@@ -13,16 +13,24 @@ public class DesignEngine {
 	public DesignEngine(int x, int y) {
 		this.entityList = new ArrayList<>();
 		this.map = new Map();
-		this.enemyWinCondition = false;
+		this.enemyWinCondition = false; //kill me now
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
 	}
 	
-	public void runDesignMode() {
-		gameState = GameState.Design;
-		setWinConditions(); // After designing the dungeon, determines what the win conditions are.
-		
-		
+	public Map runDesignMode() {
+		while (gameState = GameState.Design) {
+			
+			if (/* user tries to place tile*/) {
+				placeEntity(entity, x, y);
+			}
+			
+			if (/*user decides to play */) {
+				// launch play game mode with current dungeon design
+				gameState = GameState.Play;
+				break;
+			}
+		}
 	}
 	
 	public void placeEntity(Entity entity, int x, int y) {
