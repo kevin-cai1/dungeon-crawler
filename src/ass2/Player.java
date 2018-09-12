@@ -33,7 +33,7 @@ public class Player extends Entity{
 	/**
 	 * invincible will last for 10 turns
 	 */
-	public void addInviciblility() {
+	public void addInvincibility() {
 		invincible = 10;
 	}
 	/**

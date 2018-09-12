@@ -4,27 +4,34 @@ package ass2;
 public class GameSystem {
 	public static void main(String[] args) {
 		// Initialise main menu
-		// If mode 1 is selected, launch mode 1
-		// If mode 2 is selected, launch mode 2
-		
-		// Game Mode 1
-		// Instantiate game engine
-		GameEngine gameEngine = new GameEngine();
-		// initialises the map, player controls, checks gamestate
-		GameState state = gameEngine.runGame();
-		switch (state) {
-		case Win:
-			// victory!
-			break;
-		case Lose:
-			// rip
-			break;
-		case Paused:
-			// stahp
-			break;
-		default:
-			break;
+		while (/* game is running */) {
+			// If mode 1 is selected, launch mode 1
+			// If mode 2 is selected, launch mode 2
+			
+			// Game Mode 1
+			// Instantiate game engine
+			GameEngine gameEngine = new GameEngine();
+			// initialises the map, player controls, checks gamestate
+			GameState state = gameEngine.runGame();
+			
+			// Game Mode 2
+			// Instantiate Design engine
+			DesignEngine designEngine = new DesignEngine(20, 20);
+			designEngine.runDesignMode();
+			
+			switch (state) {
+			case Win:
+				// victory!
+				break;
+			case Lose:
+				// rip
+				break;
+			case Paused:
+				// stahp
+				break;
+			default:
+				break;
+			}
 		}
-		
 	}
 }
