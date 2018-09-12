@@ -1,5 +1,6 @@
 package ass2;
 
+import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
 
@@ -10,8 +11,8 @@ public class GameEngine {
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
 	
-	public GameEngine() {
-		this.gameMap = gameMap.generateMap();
+	public GameEngine(Map map) {
+		this.gameMap = map;
 		this.gameState = GameState.Menu;
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
@@ -349,7 +350,7 @@ public class GameEngine {
 		return true; // It shouldnt reach this one ever, this is just to make compiler happy
 	}
 	
-	private boolean exitWinCondition() {
+	/*private boolean exitWinCondition() {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				for (Entity e : this.gameMap.getMap()[i][j].getEntities()) { // look through every single entity
@@ -360,15 +361,18 @@ public class GameEngine {
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	private void setWinConditions() {
-		if (exitWinCondition()) {
-			this.enemyWinCondition = false;
-			this.boulderWinCondition = false;
-			this.treasureWinCondition = false;
-		} else {
-			// win conditions can be determined, one or more of the following
+		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
+		if (conditions.contains(WinCondition.Boulder)) {
+			this.boulderWinCondition = true;
+		}
+		if (conditions.contains(WinCondition.Enemy)) {
+			this.enemyWinCondition = true;
+		}
+		if (conditions.contains(WinCondition.Treasure)) {
+			this.treasureWinCondition = true;
 		}
 	}
 	
