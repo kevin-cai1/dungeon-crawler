@@ -17,19 +17,21 @@ public class DesignEngine {
 	}
 	
 	public void placeEntity(Entity entity, int x, int y) {
-		if (validatePlacement(entity, x, y)) {
-			Tile[][] tile = map.getMap();
+		if (validatePlacement(entity, x, y) == true) {
+			Tile tile = map.getTile(x, y);
 			entityList.add(entity);
-			tile[x][y].addEntity(entity);
+			tile.addEntity(entity);
 		}
 	}
 
 	public boolean validatePlacement(Entity entity, int x, int y) {
+		
 		if (x > 19 || x < 0 || y > 19 || y < 0) {
 			return false;			// cannot place out of bounds
 		}
 		
-		for (Entity e : Tile[x][y]) {
+		Tile tile = map.getTile(x, y);
+		for (Entity e : tile.getEntities()) {
 			if (e instanceof Obstacle) {
 				return false; 		// cannot place entities on top of boulders or walls
 			}
