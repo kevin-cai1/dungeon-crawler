@@ -1,5 +1,6 @@
 package ass2;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DesignEngine {
@@ -19,18 +20,22 @@ public class DesignEngine {
 	}
 	
 	public Map runDesignMode() {
-		while (gameState = GameState.Design) {
+		while (gameState == GameState.Design) {
 			
-			if (/* user tries to place tile*/) {
+			if (true) {/* user tries to place tile*/
+				int x = 0;
+				int y = 0;
+				Entity entity = new FloorSwitch(); //remove this later doesnt do anything
 				placeEntity(entity, x, y);
 			}
 			
-			if (/*user decides to play */) {
+			if (true) {/*user decides to play */
 				// launch play game mode with current dungeon design
 				gameState = GameState.Play;
 				break;
 			}
 		}
+		return new Map(); //shouldnt return new map
 	}
 	
 	public void placeEntity(Entity entity, int x, int y) {

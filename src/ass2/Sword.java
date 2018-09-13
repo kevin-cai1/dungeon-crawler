@@ -88,7 +88,7 @@ public class Sword extends Entity{
 		}
 		for(Tile t : attackedTiles) {
 			for(Entity e : t.getEntities()) {
-				if(/*e is enemy*/) {
+				if(true) {/*e is enemy*/
 					t.removeEntity(e);
 				}
 			}

@@ -6,4 +6,9 @@ public class Strategist extends Enemy{
     public String toString() {
         return null;
     }
+
+    @Override
+    public Direction getAction() {
+        return null;
+    }
 }

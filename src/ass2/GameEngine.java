@@ -51,13 +51,13 @@ public class GameEngine {
 			boolean boulderMove = true;
 			Entity pitObject = null;
 		// take user input (player control @jun)
-			Direction playerAction = control.getAction();
+			Direction playerAction = Direction.NORTH ; //control.getAction() this line isnt currently valid
 			if (this.validateMove(player, playerAction) == true) {
 				// change things being affected by the player (e.g. boulders, bombs)
 				int playerX = playerLocation.getX();
 				int playerY = playerLocation.getY();
-				Tile affectedTile;
-				Tile followingTile;
+				Tile affectedTile = null; //shouldnt be null
+				Tile followingTile = null; //shouldnt be null
 				switch (playerAction) {
 					case NORTH:
 						affectedTile = map[playerX][playerY-1];
@@ -146,7 +146,7 @@ public class GameEngine {
 								int enemyX = tile.getX();
 								int enemyY = tile.getY();
 								Direction enemyAction = ((Enemy) e).getAction();
-								Tile enemyNextTile;
+								Tile enemyNextTile = null; //shouldnt be null
 								switch (enemyAction) {
 								case NORTH:
 									enemyNextTile = map[enemyX][enemyY-1];
@@ -305,7 +305,7 @@ public class GameEngine {
 												if (j > 17) {
 													return false;
 												}
-												for (Entity e3 : tile[i][j+2]) {
+												for (Entity e3 : tile[i][j+2].getEntities()) {
 													if (e3 instanceof Obstacle) {
 														return false;
 													}

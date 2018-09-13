@@ -113,7 +113,7 @@ public class Map {
 			for (int j = 0; j < 20; j++) {
 				Tile tile = map[i][j];
 				for (Entity e: tile.getEntities()) {
-					if (e.equals(entity)) { //does this really work
+					if (e == entity) { //does this really work
 						return tile;
 					}
 				}

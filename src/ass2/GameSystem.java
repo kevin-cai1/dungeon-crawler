@@ -4,13 +4,13 @@ package ass2;
 public class GameSystem {
 	public static void main(String[] args) {
 		// Initialise main menu
-		while (/* game is running */) {
+		while (true) {/* game is running */
 			// If mode 1 is selected, launch mode 1
 			// If mode 2 is selected, launch mode 2
 			
 			// Game Mode 1
 			// Instantiate game engine
-			GameEngine gameEngine = new GameEngine();
+			GameEngine gameEngine = new GameEngine(new Map()); //need to change this
 			// initialises the map, player controls, checks gamestate
 			GameState state = gameEngine.runGame();
 			

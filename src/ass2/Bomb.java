@@ -47,7 +47,7 @@ public class Bomb extends Entity{
 		}
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(/*e is enemy or boulder*/) {
+				if(true) {/*e is enemy or boulder*/
 					t.removeEntity(e);
 				}
 			}
