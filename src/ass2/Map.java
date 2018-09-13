@@ -10,8 +10,8 @@ public class Map {
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
 		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow(new Map(arrayLength));
-		entities.add(arrow);
+		Key key = new Key(12);
+		entities.add(key);
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
 				map[i][j] = new Tile(entities, i, j);

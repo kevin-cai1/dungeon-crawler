@@ -22,7 +22,8 @@ public class Hunter extends Enemy{
 		visited = new HashSet<Tile>();
 	}
 	public Direction move(Map map) {
-		Tile playerPos = playerCheck(map);
+		Tile playerPos = map.getPlayerLocation();
+		toTile(map, playerPos);
 		//If there is a way, then there will be a path in parent
 		if(parent.containsKey(playerPos)) {
 			Tile temp = playerPos;
@@ -32,12 +33,19 @@ public class Hunter extends Enemy{
 				temp = parent.get(temp);
 			}
 			Collections.reverse(shortest);
+			return Direction.SOUTH;
 		}
 		//after we do a pathsearch of some sort we have to clear 
 		clear();
 		//if there is no path to the player then we search for the closest reachable tile.
 		Tile closest = ClosestTile(map, playerPos);
-		
+		toTile(map, closest);
+		List<Tile> shortest = new ArrayList<>();
+		while(closest != null) {
+			shortest.add(closest);
+			closest = parent.get(closest);
+		}
+		Collections.reverse(shortest);
 		return Direction.NORTH;
 	}
 	private void clear() {
@@ -78,7 +86,7 @@ public class Hunter extends Enemy{
 						obstacle = true;
 					}
 				}
-				if(!obstacle && access(map) && temp <= dist) {
+				if(!obstacle && access(map, tempTile) && temp <= dist) {
 					dist = temp;
 					tile = tempTile;
 				}
@@ -93,9 +101,10 @@ public class Hunter extends Enemy{
 	 * @param map
 	 * @return
 	 */
-	private boolean access(Map map) {
-		pathCheck(map, curPos, playerPos);
-		if(parent.containsKey(playerPos)) {
+	private boolean access(Map map, Tile position) {
+		Tile curPos = map.getEntityLocation(this);
+		pathCheck(map, curPos, position);
+		if(parent.containsKey(position)) {
 			clear();
 			return true;
 		}
@@ -103,15 +112,13 @@ public class Hunter extends Enemy{
 		return false;
 	}
 	/**
-	 * calls pathCheck to see if there is a way to get to the player
+	 * calls pathCheck to see if there is a way to get to the tile
 	 * @param map
 	 * @return the player's position
 	 */
-	private Tile playerCheck(Map map) {
+	private void toTile(Map map, Tile tile) {
 		Tile curPos = map.getEntityLocation(this);
-		Tile playerPos = map.getPlayerLocation();
-		pathCheck(map, curPos, playerPos);
-		return playerPos;
+		pathCheck(map, curPos, tile);
 	}
 	private void pathCheck(Map map, Tile curPos, Tile playerPos) {
 		Tile adjacent;
