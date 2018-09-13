@@ -10,7 +10,7 @@ public class Map {
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
 		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow();
+		Arrow arrow = new Arrow(); //cant do this anymore sad face
 		entities.add(arrow);
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
@@ -41,7 +41,6 @@ public class Map {
 		}
 		return null;
 	}
-<<<<<<< HEAD
 	public Tile getEntityLocation(Entity entity) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
@@ -55,13 +54,12 @@ public class Map {
 		}
 		return null;
 	}
-=======
 	
 	public ArrayList<WinCondition> getWinConditions() {
 		return winConditions;
 	}
 	
->>>>>>> master
+
 	public Player getPlayer() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
