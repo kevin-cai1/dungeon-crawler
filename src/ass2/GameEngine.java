@@ -3,9 +3,6 @@ package ass2;
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
-import com.sun.org.glassfish.gmbal.ManagedAttribute;
-
-
 public class GameEngine {
 	private Map gameMap;
 	private GameState gameState;
@@ -49,7 +46,7 @@ public class GameEngine {
 		while (true) { // game not won, user not ded or not quit
 			
 		// take user input (player control @jun)
-			Direction playerAction = control.getAction();
+/*			Direction playerAction = control.returnMovement();
 			switch (playerAction) {
 				case NORTH:
 					movePlayerNorth(map, playerLocation, player);
@@ -63,7 +60,67 @@ public class GameEngine {
 				case WEST:
 					movePlayerWest(map, playerLocation, player);
 					break;
+			}*/
+			
+			char action = control.getValidInput();
+			if (control.isMovement(action) == true) {				// if the input is movement
+				Direction playerAction = control.getMovement(action);
+				switch (playerAction) {
+					case NORTH:
+						movePlayerNorth(map, playerLocation, player);
+						break;
+					case SOUTH:
+						movePlayerSouth(map, playerLocation, player);
+						break;
+					case EAST:
+						movePlayerEast(map, playerLocation, player);
+						break;
+					case WEST:
+						movePlayerWest(map, playerLocation, player);
+						break;
+				}
 			}
+			else if (control.isMovement(action) == false ) {		// if the input is a weapon
+				Direction aim = control.returnMovement();			// take second input to aim the weapon
+				switch (action) {									// figure out which weapon is being used
+				case 'q':
+					// drop bomb at feet
+					break;
+				case 'e':
+					switch (aim) {
+					case NORTH:
+						// swing sword up
+						break;
+					case EAST:
+						// swing sword right
+						break;
+					case SOUTH:
+						// swing sword down
+						break;
+					case WEST:
+						// swing sword left
+						break;
+					}
+					break;
+				case 'r':
+					switch (aim) {
+					case NORTH:
+						// shoot arrow up
+						break;
+					case EAST:
+						// shoot arrow right
+						break;
+					case SOUTH:
+						// shoot arrow down
+						break;
+					case WEST:
+						// shoot arrowleft
+						break;
+					}
+					break;
+				}
+			}
+			
 						
 			if (gameState.equals(GameState.Win) || gameState.equals(GameState.Lose)) {
 				return gameState;
