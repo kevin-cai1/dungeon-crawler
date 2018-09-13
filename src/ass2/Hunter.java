@@ -23,6 +23,7 @@ public class Hunter extends Enemy{
 	}
 	public Direction move(Map map) {
 		Tile playerPos = playerCheck(map);
+		//If there is a way, then there will be a path in parent
 		if(parent.containsKey(playerPos)) {
 			Tile temp = playerPos;
 			List<Tile> shortest = new ArrayList<>();
@@ -32,7 +33,9 @@ public class Hunter extends Enemy{
 			}
 			Collections.reverse(shortest);
 		}
+		//after we do a pathsearch of some sort we have to clear 
 		clear();
+		//if there is no path to the player then we search for the closest reachable tile.
 		Tile closest = ClosestTile(map, playerPos);
 		
 		return Direction.NORTH;
@@ -79,6 +82,7 @@ public class Hunter extends Enemy{
 					dist = temp;
 					tile = tempTile;
 				}
+				obstacle = false;
 			}
 		}
 		return tile;
@@ -90,7 +94,7 @@ public class Hunter extends Enemy{
 	 * @return
 	 */
 	private boolean access(Map map) {
-		pathCheck(map, curPos, playerPos);Check(map);
+		pathCheck(map, curPos, playerPos);
 		if(parent.containsKey(playerPos)) {
 			clear();
 			return true;
@@ -98,6 +102,11 @@ public class Hunter extends Enemy{
 		clear();
 		return false;
 	}
+	/**
+	 * calls pathCheck to see if there is a way to get to the player
+	 * @param map
+	 * @return the player's position
+	 */
 	private Tile playerCheck(Map map) {
 		Tile curPos = map.getEntityLocation(this);
 		Tile playerPos = map.getPlayerLocation();
