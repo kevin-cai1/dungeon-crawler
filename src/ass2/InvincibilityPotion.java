@@ -2,7 +2,8 @@ package ass2;
 
 public class InvincibilityPotion extends Potion {
 	private int usage;
-	public InvincibilityPotion() {
+	public InvincibilityPotion(int id) {
+		super(id);
 		usage = 1;
 	}
 

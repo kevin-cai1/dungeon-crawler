@@ -1,8 +1,8 @@
 package ass2;
 
 public class Treasure extends Entity{
-	public Treasure() {
-		
+	public Treasure(int id) {
+		super(id);
 	}
 
 	@Override

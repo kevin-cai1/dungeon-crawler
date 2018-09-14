@@ -15,14 +15,28 @@ public class MainTest {
 			pc.getAction();
 		}
 		//ArrayList<Integer> arrayList = new ArrayList<>();
-
+		*/
 		
 		
-		
+		DesignEngine designEngine = new DesignEngine();
 		ArrayList<Integer> arrayList = new ArrayList<>();
-		Hunter hunter = new Hunter();
+
 		Map map = new Map();
+		Hunter hunter = null;
+		for(Entity e: map.getEntityLocation(55).getEntities()){
+			if(e.getId() == 55){
+				hunter = (Hunter)e;
+			}
+		}
+/*
+		designEngine.save(map, "testmap");
+		String fileName = "testmap.txt";
+		Map loadedMap = new Map();
+		loadedMap = designEngine.load(fileName);
+		loadedMap.printMap();
+		map.printMap();
+*/
 		System.out.println(hunter.move(map));
-		System.out.println("hello");*/
+		System.out.println("hello");
 	}
 }

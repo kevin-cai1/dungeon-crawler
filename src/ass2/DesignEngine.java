@@ -1,6 +1,16 @@
 package ass2;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class DesignEngine {
 	private ArrayList<Entity> entityList;
@@ -10,7 +20,7 @@ public class DesignEngine {
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
 	
-	public DesignEngine(int x, int y) {
+	public DesignEngine() {
 		this.entityList = new ArrayList<>();
 		this.map = new Map();
 		this.enemyWinCondition = false; //kill me now
@@ -19,18 +29,22 @@ public class DesignEngine {
 	}
 	
 	public Map runDesignMode() {
-		while (gameState = GameState.Design) {
+		while (gameState == GameState.Design) {
 			
-			if (/* user tries to place tile*/) {
+			if (true) {/* user tries to place tile*/
+				int x = 0;
+				int y = 0;
+				Entity entity = new FloorSwitch(0); //remove this later doesnt do anything
 				placeEntity(entity, x, y);
 			}
 			
-			if (/*user decides to play */) {
+			if (true) {/*user decides to play */
 				// launch play game mode with current dungeon design
 				gameState = GameState.Play;
 				break;
 			}
 		}
+		return new Map(); //shouldnt return new map
 	}
 	
 	public void placeEntity(Entity entity, int x, int y) {
@@ -93,4 +107,47 @@ public class DesignEngine {
 		}
 	}
 	
+/**
+ * saves the map into a text file with the input.txt
+ * @param map
+ * @param fileName
+ */
+	public void save(Map map, String fileName) {
+		Map savedMap = map;
+		
+		try {
+			FileOutputStream f = new FileOutputStream(new File(fileName + ".txt"));
+			ObjectOutputStream o = new ObjectOutputStream(f);
+			o.writeObject(savedMap);
+			o.close();
+			f.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found");
+		} catch (IOException e) {
+			System.out.println("Error initializing stream");
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @param fileName
+	 * @return map read from file
+	 */
+	public Map load(String fileName) {
+		Map loadedMap = new Map();
+		try {
+			FileInputStream fi = new FileInputStream(new File(fileName));
+			ObjectInputStream oi = new ObjectInputStream(fi);
+			loadedMap = (Map) oi.readObject();
+			oi.close();
+			fi.close();
+			return loadedMap;
+		} catch (ClassNotFoundException e) {
+			System.out.println("Class not found");
+		} catch (IOException e) {
+			System.out.println("Error initializing stream");
+		}	
+		return loadedMap;
+	}
 }

@@ -1,6 +1,9 @@
 package ass2;
 
+import java.nio.file.ClosedDirectoryStreamException;
 import java.util.*;
+
+import org.omg.CORBA.PRIVATE_MEMBER;
 
 /**
  * 
@@ -11,21 +14,123 @@ import java.util.*;
  */
 public class Hunter extends Enemy{
 	private LinkedList<Tile> queue;
-	private List<Direction> instructSet;
-
 	private Set<Tile> visited;
 	private HashMap<Tile, Tile> parent; //child on the left, parent on the right
-	public Hunter() {
+	public Hunter(int id) {
+		super(id);
 		queue = new LinkedList<Tile>();
 		parent = new HashMap<Tile, Tile>(); //Instead of just doing prev[i] = other value, we need to remove that index first and then put it back in at that index
 		visited = new HashSet<Tile>();
-		instructSet = new ArrayList<Direction>();
 	}
-	public Direction move(Map map) {
-		Tile[][] mapMap = map.getMap();
+	/**
+	 * finds a valid move to make and then moves the Hunter to that tile
+	 * @param map
+	 */
+	@Override
+	public void getAction(Map map) {
+		Tile playerPos = map.getPlayerLocation();
+		toTile(map, playerPos);
+		List<Tile> shortest = new ArrayList<>();
+		//If there is a way, then there will be a path in parent
+		if(parent.containsKey(playerPos)) {
+			Tile temp = playerPos;
+			while(temp != null) {
+				shortest.add(temp);
+				temp = parent.get(temp);
+			}
+			Collections.reverse(shortest);
+			//after we do a pathsearch of some sort we have to clear 
+			clear();
+		}
+		else {//if there is no path to the player then we search for the closest reachable tile.
+			Tile closest = ClosestTile(map, playerPos);
+			toTile(map, closest);
+			while(closest != null) {
+				shortest.add(closest);
+				closest = parent.get(closest);
+			}
+			Collections.reverse(shortest);
+		}
+		Tile currPos = map.getEntityLocation(this.getId());
+		currPos.removeEntity(this);
+		Hunter hunter = this;
+		Tile neww = shortest.get(1);
+		neww.addEntity(hunter);
 		
-		Tile curPos = mapMap[0][1];
-		Tile playerPos = mapMap[5][5];
+	}
+	private void clear() {
+		parent.clear();
+		queue.clear();
+		visited.clear();
+	}
+	private void visitCheck(Tile adjacent, Tile queuePop) {
+		if(!visited.contains(adjacent)) {
+			visited.add(adjacent);
+			for(Entity entity: adjacent.getEntities()) {
+				if(!(entity instanceof Obstacle)) {
+					queue.offer(adjacent);
+					parent.put(adjacent, queuePop);
+				}
+			}
+		}
+	}
+	/**
+	 * in theory what this should do is find the closest tile to the player that the hunter can move to 
+	 * @param map
+	 * @param dest
+	 * @return
+	 */
+	private Tile ClosestTile(Map map, Tile dest) {
+		Tile[][] tileMap = map.getMap();
+		double temp;
+		double dist = 29; //the maximum distance estimated from a 20x20 map
+		Tile tile = map.getEntityLocation(this.getId());//the closest reachable tile initially set to the hunter
+		Tile tempTile;
+		boolean obstacle = false;
+		for(int i = 0; i < 20; i++) { //20 being map size
+			for(int j = 0; j < 20; j++) {
+				tempTile = tileMap[i][j];
+				temp = distCalc(tempTile.getX(),tempTile.getY(),dest.getX(), dest.getY());
+				for(Entity e: tempTile.getEntities()) {
+					if(e instanceof Obstacle) {
+						obstacle = true;
+					}
+				}
+				if(!obstacle && access(map, tempTile) && temp <= dist) {
+					dist = temp;
+					tile = tempTile;
+				}
+				obstacle = false;
+			}
+		}
+		return tile;
+	}
+		// TODO Auto-generated method stub
+	/**
+	 * returns true if the map is accessible
+	 * @param map
+	 * @return
+	 */
+	private boolean access(Map map, Tile position) {
+		Tile curPos = map.getEntityLocation(this.getId());
+		pathCheck(map, curPos, position);
+		if(parent.containsKey(position)) {
+			clear();
+			return true;
+		}
+		clear();
+		return false;
+	}
+	/**
+	 * calls pathCheck to see if there is a way to get to the tile
+	 * @param map
+	 * @return the player's position
+	 */
+	private void toTile(Map map, Tile tile) {
+		Tile curPos = map.getEntityLocation(this.getId());
+		pathCheck(map, curPos, tile);
+	}
+	private void pathCheck(Map map, Tile curPos, Tile playerPos) {
 		Tile adjacent;
 		Tile queuePop;
 		queue.add(curPos);
@@ -60,27 +165,15 @@ public class Hunter extends Enemy{
 				visitCheck(adjacent, queuePop);
 			}
 		}
-		if(parent.containsKey(playerPos)) {
-			Tile temp = playerPos;
-			List<Tile> shortest = new ArrayList<>();
-			while(temp != null) {
-				shortest.add(temp);
-				temp = parent.get(temp);
-			}
-			Collections.reverse(shortest);
-		}
-		return Direction.NORTH;
 	}
-	private void visitCheck(Tile adjacent, Tile queuePop) {
-		if(!visited.contains(adjacent)) {
-			visited.add(adjacent);
-			for(Entity entity: adjacent.getEntities()) {
-				if(!(entity instanceof Obstacle)) {
-					queue.offer(adjacent);
-					parent.put(adjacent, queuePop);
-				}
-			}
-		}
+	private double distCalc(int x1, int y1, int x2, int y2) {
+	    double dist;
+	    int x = Math.abs(x2-x1);
+	    int y = Math.abs(y2-y1);
+	    x = x*x;
+	    y = y*y;
+	    dist = Math.sqrt(x+y);
+	    return dist;
 	}
 	@Override
 	public String toString() {

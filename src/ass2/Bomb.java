@@ -9,22 +9,31 @@ public class Bomb extends Entity{
 	Tile bombPosition;
 	
 	//bomb has map lol
-	public Bomb(Map map) {
-		map = this.map;
-		bombPosition = map.getPlayerLocation();
-		timer = 3;
+	public Bomb(Map map, int id) {
+		super(id);
+		this.map = map;
 	}
 	
 	private int getTimer() {
 		return timer;
 	}
+	
+	public void placeBomb() {
+		this.bombPosition = map.getPlayerLocation();
+		this.timer = 3;
+
+	}
+	
 	//call this maybe
-	public void tick() {
+	public boolean tick() {
 		if(getTimer() > 0) {
 			timer--;
+			return true;
 		} else{
 			explode();
 			bombPosition.removeEntity(this);
+			return false;
+			
 		}
 	}
 	
@@ -47,7 +56,7 @@ public class Bomb extends Entity{
 		}
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(/*e is enemy or boulder*/) {
+				if(true) {/*e is enemy or boulder*/
 					t.removeEntity(e);
 				}
 			}

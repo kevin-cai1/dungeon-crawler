@@ -1,7 +1,8 @@
 package ass2;
 
 public class Exit extends Entity{
-	public Exit() {
+	public Exit(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 	}
 
