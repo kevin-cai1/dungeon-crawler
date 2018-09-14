@@ -163,22 +163,64 @@ class PlayerMovementTest {
 		System.out.println("player exit");
 
 				
-		Wall wall = new Wall();
-		Tile wallTile = gameMap.getTile(4, 3); // wall above the player
-		wallTile.addEntity(wall);
+		Exit exit = new Exit();
+		Tile exitTile = gameMap.getTile(4, 3); // exit above the player
+		exitTile.addEntity(exit);
 		gameMap.printMap();
 		System.out.println("starting map ^");
 		
 		Tile playerLocation = gameMap.getPlayerLocation();
-		Tile expectedLocation = expectedGameMap.getPlayerLocation();
-		assertFalse(game.movePlayerNorth(map, playerLocation, player));
-		
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		assertTrue(game.getGameState() == GameState.Win);
+	}
+	
+	@Test
+	void testPit() { // try to make move into wall, player shouldn't move
+		System.out.println("player pit");
+
+				
+		Pit pit = new Pit();
+		Tile pitTile = gameMap.getTile(4, 3); // exit above the player
+		pitTile.addEntity(pit);
 		gameMap.printMap();
-		System.out.println("result map^");
-		playerLocation = gameMap.getPlayerLocation();
-		assertTrue(playerLocation.getX() == expectedLocation.getX());
-		assertTrue(playerLocation.getY() == expectedLocation.getY());
+		System.out.println("starting map ^");
 		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		assertTrue(game.getGameState() == GameState.Lose);
+	}
+	
+	@Test
+	void testSwordInventory() { // try to make move into wall, player shouldn't move
+		System.out.println("player pit");
+
+				
+		Sword sword = new Sword();
+		Tile swordTile = gameMap.getTile(4, 3); // exit above the player
+		swordTile.addEntity(sword);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		//player.getInventory() get sword item - to be done
+		//assertTrue();
+	}
+	
+	@Test
+	void testPotionPickup() { // try to make move into wall, player shouldn't move
+		System.out.println("player potion");
+
+				
+		InvincibilityPotion potion = new InvincibilityPotion();
+		Tile potionTile = gameMap.getTile(4, 3); // exit above the player
+		potionTile.addEntity(potion);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		assertTrue(player.getInvincibility());
 	}
 	
 
