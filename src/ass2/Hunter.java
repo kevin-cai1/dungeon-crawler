@@ -1,9 +1,6 @@
 package ass2;
 
-import java.nio.file.ClosedDirectoryStreamException;
 import java.util.*;
-
-import org.omg.CORBA.PRIVATE_MEMBER;
 
 /**
  * 

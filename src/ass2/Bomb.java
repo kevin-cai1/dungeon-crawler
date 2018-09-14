@@ -1,7 +1,6 @@
 package ass2;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Bomb extends Entity{
 	private int timer;

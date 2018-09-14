@@ -1,7 +1,6 @@
 package ass2;
 
 import java.util.ArrayList;
-import java.util.concurrent.locks.Condition;
 
 public class GameEngine {
 	private Map gameMap;
@@ -48,7 +47,6 @@ public class GameEngine {
 		while (true) { // game not won, user not ded or not quit
 			
 		// take user input (player control @jun)
-<<<<<<< HEAD
 /*			Direction playerAction = control.returnMovement();
 			switch (playerAction) {
 				case NORTH:
@@ -272,7 +270,7 @@ public class GameEngine {
 					if (e instanceof Enemy) { // every enemy that needs to move
 						int enemyX = tile.getX();
 						int enemyY = tile.getY();
-						Direction enemyAction = ((Enemy) e).getAction();
+						Direction enemyAction = Direction.NORTH;
 						Tile enemyNextTile = null;
 						switch (enemyAction) {
 						case NORTH:

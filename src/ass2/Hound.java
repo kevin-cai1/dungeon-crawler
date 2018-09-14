@@ -8,9 +8,8 @@ public class Hound extends Enemy{
     public String toString() {
         return null;
     }
-
     @Override
-    public Direction getAction() {
-        return null;
+    public void getAction(Map map){
+
     }
 }
