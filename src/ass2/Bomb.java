@@ -9,7 +9,8 @@ public class Bomb extends Entity{
 	Tile bombPosition;
 	
 	//bomb has map lol
-	public Bomb(Map map) {
+	public Bomb(Map map, int id) {
+		super(id);
 		map = this.map;
 		bombPosition = map.getPlayerLocation();
 		timer = 3;

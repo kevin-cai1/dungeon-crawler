@@ -16,7 +16,8 @@ public class Hunter extends Enemy{
 	private LinkedList<Tile> queue;
 	private Set<Tile> visited;
 	private HashMap<Tile, Tile> parent; //child on the left, parent on the right
-	public Hunter() {
+	public Hunter(int id) {
+		super(id);
 		queue = new LinkedList<Tile>();
 		parent = new HashMap<Tile, Tile>(); //Instead of just doing prev[i] = other value, we need to remove that index first and then put it back in at that index
 		visited = new HashSet<Tile>();
