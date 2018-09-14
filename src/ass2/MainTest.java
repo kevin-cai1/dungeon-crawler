@@ -20,8 +20,14 @@ public class MainTest {
 		
 		DesignEngine designEngine = new DesignEngine();
 		ArrayList<Integer> arrayList = new ArrayList<>();
-		Hunter hunter = new Hunter(1);
+
 		Map map = new Map();
+		Hunter hunter = null;
+		for(Entity e: map.getEntityLocation(55).getEntities()){
+			if(e.getId() == 55){
+				hunter = (Hunter)e;
+			}
+		}
 /*
 		designEngine.save(map, "testmap");
 		String fileName = "testmap.txt";

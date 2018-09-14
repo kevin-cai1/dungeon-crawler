@@ -16,7 +16,7 @@ public class GameSystem {
 			
 			// Game Mode 2
 			// Instantiate Design engine
-			DesignEngine designEngine = new DesignEngine(20, 20);
+			DesignEngine designEngine = new DesignEngine();
 			designEngine.runDesignMode();
 			
 			switch (state) {
