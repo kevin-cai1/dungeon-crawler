@@ -9,7 +9,8 @@ public class Bomb extends Entity{
 	Tile bombPosition;
 	
 	//bomb has map lol
-	public Bomb(Map map) {
+	public Bomb(Map map, int id) {
+		super(id);
 		map = this.map;
 		bombPosition = map.getPlayerLocation();
 		timer = 3;
@@ -47,7 +48,7 @@ public class Bomb extends Entity{
 		}
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(/*e is enemy or boulder*/) {
+				if(true) {/*e is enemy or boulder*/
 					t.removeEntity(e);
 				}
 			}

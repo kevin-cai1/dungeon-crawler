@@ -1,8 +1,8 @@
 package ass2;
 
 public class Wall extends Obstacle{
-	public Wall() {
-		
+	public Wall(int id) {
+		super(id);
 	}
 
 	@Override

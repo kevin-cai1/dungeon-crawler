@@ -25,7 +25,74 @@ public class Map {
 		//t.removeEntity(floor);
 		//t.addEntity(player);
 	}
-	
+	//Temporary map constructor for testing CURRENTLY SHOULD MAKE A 
+	public Map() {
+		map = new Tile[arrayLength][arrayLength];
+		//Temporary test stuff
+		ArrayList<Entity> entities = new ArrayList<>();
+		Arrow arrow = new Arrow(1,new Map(arrayLength));
+		
+		ArrayList<Entity> wall = new ArrayList<>();
+		Wall wall2 = new Wall(0);
+		
+		ArrayList<Entity> hunter = new ArrayList<>();
+		Hunter hunter2 = new Hunter(55);
+		
+		ArrayList<Entity> player = new ArrayList<>();
+		Player player2 = new Player(4);
+		
+		player.add(player2);
+		hunter.add(hunter2);
+		wall.add(wall2);
+		entities.add(arrow);
+		for(int i = 0; i < arrayLength; i++) {
+			for(int j = 0; j < arrayLength; j++) {
+				if(j == 0 || i == 0) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 1 && j == 6) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 2 && j == 6) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 3 && j == 6) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 4 && j == 6) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 6) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 1) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 2) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 3) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 4) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 5 && j == 5) {
+					map[i][j] = new Tile(wall, i, j);
+				}
+				else if (i == 9 && j == 7) {
+					map[i][j] = new Tile(player, i, j);
+				}
+				else if (i == 2 && j == 3) {
+					map[i][j] = new Tile(hunter, i, j);
+				}
+				else {
+					map[i][j] = new Tile(entities, i, j);
+				}
+				
+			}
+		}
+	}
 	public int getArrayLength() {
 		return arrayLength;
 	}
@@ -48,6 +115,19 @@ public class Map {
 		}
 		return null;
 	}
+	public Tile getEntityLocation(int id) {
+		for (int i = 0; i < 20; i++) {
+			for (int j = 0; j < 20; j++) {
+				Tile tile = map[i][j];
+				for (Entity e: tile.getEntities()) {
+					if (id == e.getId()) { //does this really work
+						return tile;
+					}
+				}
+			}
+		}
+		return null;
+	}
 	
 	public ArrayList<WinCondition> getWinConditions() {
 		return winConditions;
@@ -57,6 +137,7 @@ public class Map {
 		winConditions.add(w);
 	}
 	
+
 	public Player getPlayer() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {

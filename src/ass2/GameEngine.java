@@ -48,6 +48,7 @@ public class GameEngine {
 		while (true) { // game not won, user not ded or not quit
 			
 		// take user input (player control @jun)
+<<<<<<< HEAD
 /*			Direction playerAction = control.returnMovement();
 			switch (playerAction) {
 				case NORTH:

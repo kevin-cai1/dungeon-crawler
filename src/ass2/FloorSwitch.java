@@ -3,7 +3,8 @@ package ass2;
 public class FloorSwitch extends Entity{
 	private boolean triggered;
 	
-	public FloorSwitch() {
+	public FloorSwitch(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 		this.triggered = false;
 	}

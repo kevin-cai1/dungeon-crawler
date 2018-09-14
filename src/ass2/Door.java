@@ -3,7 +3,8 @@ package ass2;
 public class Door extends Obstacle{
 	private int unique;
 	private boolean open;
-	public Door(int unique) {
+	public Door(int unique, int id) {
+		super(id);
 		this.unique = unique;
 		open = false;
 		// TODO Auto-generated constructor stub

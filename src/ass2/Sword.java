@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Sword extends Entity{
 	private int durability;
-	public Sword() {
+	public Sword(int id) {
+		super(id);
 		durability = 5;
 	}
 	public int getDurability() {
@@ -88,7 +89,7 @@ public class Sword extends Entity{
 		}
 		for(Tile t : attackedTiles) {
 			for(Entity e : t.getEntities()) {
-				if(/*e is enemy*/) {
+				if(true) {/*e is enemy*/
 					t.removeEntity(e);
 				}
 			}

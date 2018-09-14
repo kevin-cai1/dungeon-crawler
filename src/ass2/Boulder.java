@@ -1,7 +1,8 @@
 package ass2;
 
 public class Boulder extends Obstacle{
-	public Boulder() {
+	public Boulder(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 	}
 
