@@ -3,6 +3,7 @@ package ass2;
 public class Arrow extends Entity{
 	private Map map;
 	private Tile arrowPosition;
+	
 	public Arrow(Map map) {
 		this.map = map;
 		this.arrowPosition = map.getPlayerLocation();

@@ -119,7 +119,7 @@ public class Player extends Entity{
 	
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+       /* StringBuilder stringBuilder = new StringBuilder();
         Set<Entity> set = inventory.keySet();
         for(Entity entity: set) {
         	stringBuilder.append(entity.toString());
@@ -128,6 +128,7 @@ public class Player extends Entity{
         stringBuilder.append(floaty);
         stringBuilder.append(" ");
         stringBuilder.append(invincible);
-        return stringBuilder.toString();
+        return stringBuilder.toString();*/
+    	return "+";
     }
 }
