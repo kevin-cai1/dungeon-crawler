@@ -108,12 +108,12 @@ public class Map {
 		}
 		return null;
 	}
-	public Tile getEntityLocation(Entity entity) {
+	public Tile getEntityLocation(int id) {
 		for (int i = 0; i < 20; i++) {
 			for (int j = 0; j < 20; j++) {
 				Tile tile = map[i][j];
 				for (Entity e: tile.getEntities()) {
-					if (e == entity) { //does this really work
+					if (id == e.getId()) { //does this really work
 						return tile;
 					}
 				}

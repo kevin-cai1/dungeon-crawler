@@ -75,7 +75,7 @@ public class Hunter extends Enemy{
 		Tile[][] tileMap = map.getMap();
 		double temp;
 		double dist = 29; //the maximum distance estimated from a 20x20 map
-		Tile tile = map.getEntityLocation(this);//the closest reachable tile initially set to the hunter
+		Tile tile = map.getEntityLocation(this.getId());//the closest reachable tile initially set to the hunter
 		Tile tempTile;
 		boolean obstacle = false;
 		for(int i = 0; i < 20; i++) { //20 being map size
@@ -103,7 +103,7 @@ public class Hunter extends Enemy{
 	 * @return
 	 */
 	private boolean access(Map map, Tile position) {
-		Tile curPos = map.getEntityLocation(this);
+		Tile curPos = map.getEntityLocation(this.getId());
 		pathCheck(map, curPos, position);
 		if(parent.containsKey(position)) {
 			clear();
@@ -118,7 +118,7 @@ public class Hunter extends Enemy{
 	 * @return the player's position
 	 */
 	private void toTile(Map map, Tile tile) {
-		Tile curPos = map.getEntityLocation(this);
+		Tile curPos = map.getEntityLocation(this.getId());
 		pathCheck(map, curPos, tile);
 	}
 	private void pathCheck(Map map, Tile curPos, Tile playerPos) {
