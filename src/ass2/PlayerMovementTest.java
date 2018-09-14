@@ -158,5 +158,28 @@ class PlayerMovementTest {
 		
 	}
 	
+	@Test
+	void testExit() { // try to make move into wall, player shouldn't move
+		System.out.println("player exit");
+
+				
+		Wall wall = new Wall();
+		Tile wallTile = gameMap.getTile(4, 3); // wall above the player
+		wallTile.addEntity(wall);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		Tile expectedLocation = expectedGameMap.getPlayerLocation();
+		assertFalse(game.movePlayerNorth(map, playerLocation, player));
+		
+		gameMap.printMap();
+		System.out.println("result map^");
+		playerLocation = gameMap.getPlayerLocation();
+		assertTrue(playerLocation.getX() == expectedLocation.getX());
+		assertTrue(playerLocation.getY() == expectedLocation.getY());
+		
+	}
+	
 
 }

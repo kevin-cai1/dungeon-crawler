@@ -21,6 +21,10 @@ public class GameEngine {
 
 	}
 	
+	public GameState getGameState() {
+		return gameState;
+	}
+	
 	public GameState runGame() {
 		gameState = GameState.Play;
 		setWinConditions();
@@ -88,11 +92,13 @@ public class GameEngine {
 				switch (action) {									// figure out which weapon is being used
 				case 'q':
 					// drop bomb at feet
+					
 					break;
 				case 'e':
 					switch (aim) {
 					case NORTH:
 						// swing sword up
+						
 						break;
 					case EAST:
 						// swing sword right
@@ -264,41 +270,12 @@ public class GameEngine {
 	}
 
 	private void moveEnemies(int arrayLength, Tile[][] map) {
-		boolean moveEnemy = true;
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
-						int enemyX = tile.getX();
-						int enemyY = tile.getY();
-						Direction enemyAction = ((Enemy) e).getAction();
-						Tile enemyNextTile = null;
-						switch (enemyAction) {
-						case NORTH:
-							enemyNextTile = map[enemyX][enemyY-1];
-							break;
-						case SOUTH:
-							enemyNextTile = map[enemyX][enemyY+1];
-							break;
-						case EAST:
-							enemyNextTile = map[enemyX+1][enemyY];
-							break;
-						case WEST:
-							enemyNextTile = map[enemyX-1][enemyY];
-							break;
-						}
-						
-						for (Entity nextTileEntity : enemyNextTile.getEntities()) {
-							if (nextTileEntity instanceof Pit) {
-								tile.removeEntity(e); // remove enemy from its tile (same as walking into pit and dying)
-								moveEnemy = false;
-							}
-						}
-						if (moveEnemy) {
-							gameMap.makeMove(e, enemyAction);
-						}
-						moveEnemy = true;
+						((Enemy) e).getAction(map);	// enemy validation handled on individual enemy side
 					}
 				}
 			}
