@@ -46,6 +46,10 @@ public class Map {
 		return winConditions;
 	}
 	
+	public boolean addWinCondition(WinCondition w) {
+		return winConditions.add(w);
+	}
+	
 	public Player getPlayer() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
