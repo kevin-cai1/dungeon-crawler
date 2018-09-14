@@ -10,7 +10,6 @@ public class Coward extends Enemy{
     }
 
     @Override
-    public Direction getAction() {
-        return null;
+    public void getAction(Map map) {
     }
 }

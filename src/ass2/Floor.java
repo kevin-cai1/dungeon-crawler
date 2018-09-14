@@ -1,8 +1,8 @@
 package ass2;
 
 public class Floor extends Entity {
-	public Floor() {
-		
+	public Floor(int id) {
+		super(id);
 	}
 
 	@Override

@@ -2,11 +2,11 @@ package ass2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-//need a get sword
+//need a check if player has sword and bomb getBomb will reduce inventory count of bomb reduce durability of sword as well. need to make sure if sword is dead it is removed
+//
+
 //need a get arrow
-//need a get bomb
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
@@ -22,10 +22,12 @@ public class Player extends Entity{
 		keys = new ArrayList<>();
 		// TODO Auto-generated constructor stub
 	}
-	public void invincibleTick() {
+	public boolean invincibleTick() {
 		if(invincible > 0) {
 			invincible--;
+			return true;
 		}
+		return false;
 	}
 	public void addTreasure() {
 		treasure++;
@@ -75,7 +77,8 @@ public class Player extends Entity{
 	}
 	/**
 	 * Does not check whether entity is a valid entity. i.e. if sword already exists, it will not handle this case, or if too many arrows or bombs or something
-	 * 
+	 * SHOULD CHECK IF SWORD ALREADY IN INVENTORY. IF ALREADY IN DONT ADD ANOTHER ONE
+	 * RETURNS FALSE IF NOT BEING PICKED UP
 	 * @param entity
 	 */
 	public void putInventory(Entity entity) {

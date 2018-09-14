@@ -1,7 +1,6 @@
 package ass2;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class Bomb extends Entity{
 	private int timer;
@@ -11,21 +10,29 @@ public class Bomb extends Entity{
 	//bomb has map lol
 	public Bomb(Map map, int id) {
 		super(id);
-		map = this.map;
-		bombPosition = map.getPlayerLocation();
-		timer = 3;
+		this.map = map;
 	}
 	
 	private int getTimer() {
 		return timer;
 	}
+	
+	public void placeBomb() {
+		this.bombPosition = map.getPlayerLocation();
+		this.timer = 3;
+
+	}
+	
 	//call this maybe
-	public void tick() {
+	public boolean tick() {
 		if(getTimer() > 0) {
 			timer--;
+			return true;
 		} else{
 			explode();
 			bombPosition.removeEntity(this);
+			return false;
+			
 		}
 	}
 	
