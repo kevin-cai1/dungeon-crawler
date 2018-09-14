@@ -2,12 +2,15 @@ package ass2;
 import java.util.Scanner;
 
 public class PlayerControls{
+	
+	public PlayerControls() {	}
+	
 	private String getInput() {
 		Scanner sc = new Scanner(System.in);
 		return sc.nextLine();
 	}
 	
-	private char getValidInput(){
+	public char getValidInput(){
 		String input = getInput();
 		while(input.length() != 1 || controlExists(input.charAt(0)) == false) {
 			System.out.println("input must be valid");
@@ -18,7 +21,7 @@ public class PlayerControls{
 	}
 	
 	private boolean controlExists(char input) {
-		if(input == 'w' || input == 'a' || input == 's' || input == 'd' /*|| input == 'k' || input == 'l'*/) {
+		if(input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'q' || input == 'e' || input == 'r') {
 			return true;
 		}
 		return false;
@@ -43,22 +46,24 @@ public class PlayerControls{
 		return getMovement(input);
 	}
 	
-	/*private void getAction(char input) {
+	private void getWeapon(char input) {
 		switch (input) {
-		case 'k':
+		case 'r':
 			System.out.println("Shooting bow ");
 			break;
-		case 'l':
+		case 'e':
 			System.out.println("Swinging sword ");
 			break;
+		case 'q':
+			
 		}
 		
 	}
 	
-	private boolean isMovement(char input) {
+	public boolean isMovement(char input) {
 		if(input == 'w' || input == 'a' || input == 's' || input == 'd') {
 			return true;
 		}
 		return false;
-	}*/
+	}
 }
