@@ -19,7 +19,7 @@ public class DesignEngine {
 	}
 	
 	public Map runDesignMode() {
-		while (gameState = GameState.Design) {
+		while (gameState == GameState.Design) {
 			
 			if (/* user tries to place tile*/) {
 				placeEntity(entity, x, y);
