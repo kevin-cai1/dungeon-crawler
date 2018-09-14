@@ -23,16 +23,16 @@ public class Map {
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
 		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow(new Map(arrayLength));
+		Arrow arrow = new Arrow(1,new Map(arrayLength));
 		
 		ArrayList<Entity> wall = new ArrayList<>();
-		Wall wall2 = new Wall();
+		Wall wall2 = new Wall(0);
 		
 		ArrayList<Entity> hunter = new ArrayList<>();
-		Hunter hunter2 = new Hunter();
+		Hunter hunter2 = new Hunter(55);
 		
 		ArrayList<Entity> player = new ArrayList<>();
-		Player player2 = new Player();
+		Player player2 = new Player(4);
 		
 		player.add(player2);
 		hunter.add(hunter2);

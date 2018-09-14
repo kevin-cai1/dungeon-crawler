@@ -1,8 +1,10 @@
 package ass2;
 
 public class Key extends Entity{
-	private int unique; //unique identifier for this key
+	//unique identifier for this key
+	private int unique;
 	public Key(int unique) {
+		super(unique);
 		this.unique = unique;
 	}
 	public int getUnique() {

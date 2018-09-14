@@ -1,7 +1,8 @@
 package ass2;
 
 public class HoverPotion extends Potion{
-	public HoverPotion() {
+	public HoverPotion(int id) {
+		super(id);
 		// TODO Auto-generated constructor stub
 	}
 

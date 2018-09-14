@@ -20,7 +20,7 @@ public class MainTest {
 		
 		
 		ArrayList<Integer> arrayList = new ArrayList<>();
-		Hunter hunter = new Hunter();
+		Hunter hunter = new Hunter(1);
 		Map map = new Map();
 		map.printMap();
 		System.out.println(hunter.move(map));

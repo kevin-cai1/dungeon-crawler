@@ -2,7 +2,8 @@ package ass2;
 
 public abstract class Potion extends Entity {
 	private int usage;
-	public Potion() {
+	public Potion(int id) {
+		super(id);
 		usage = 1;
 		// TODO Auto-generated constructor stub
 	}

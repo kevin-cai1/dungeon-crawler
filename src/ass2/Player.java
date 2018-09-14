@@ -11,7 +11,8 @@ public class Player extends Entity{
 	private int invincible;
 	private boolean floaty;
 	private int treasure;
-	public Player() {
+	public Player(int id) {
+		super(id);
 		treasure = 0;
 		floaty = false;
 		invincible = 0;
@@ -91,7 +92,7 @@ public class Player extends Entity{
 	 * @param entity
 	 */
 	public void decreaseUse(Entity entity) {
-		if(entity.getClass().equals(new Sword().getClass())) {
+		if(entity.getClass().equals(new Sword(0).getClass())) {
 			Sword sword = (Sword)entity;
 			sword.reduceDurability();
 			
