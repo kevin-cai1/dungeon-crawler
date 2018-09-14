@@ -1,5 +1,7 @@
 package ass2;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 
@@ -10,6 +12,8 @@ public class GameEngine {
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
 	private int arrayLength;
+	private ArrayList<Bomb> tickingBombs;
+	private boolean invincibility;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
@@ -17,6 +21,7 @@ public class GameEngine {
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
+		this.invincibility = false;
 		arrayLength = gameMap.getArrayLength();
 
 	}
@@ -48,7 +53,6 @@ public class GameEngine {
 		while (true) { // game not won, user not ded or not quit
 			
 		// take user input (player control @jun)
-<<<<<<< HEAD
 /*			Direction playerAction = control.returnMovement();
 			switch (playerAction) {
 				case NORTH:
@@ -90,35 +94,15 @@ public class GameEngine {
 					// drop bomb at feet
 					break;
 				case 'e':
-					switch (aim) {
-					case NORTH:
-						// swing sword up
-						break;
-					case EAST:
-						// swing sword right
-						break;
-					case SOUTH:
-						// swing sword down
-						break;
-					case WEST:
-						// swing sword left
-						break;
+					if ("andy pls - check player for sword") {
+						swing(aim);
 					}
 					break;
 				case 'r':
-					switch (aim) {
-					case NORTH:
-						// shoot arrow up
-						break;
-					case EAST:
-						// shoot arrow right
-						break;
-					case SOUTH:
-						// shoot arrow down
-						break;
-					case WEST:
-						// shoot arrowleft
-						break;
+					if ("andy pls - check for bomb") {
+						Bomb placedBomb = ^^^^^^^^^^^^
+						placedBomb.placeBomb();
+						tickingBombs.add(placedBomb);
 					}
 					break;
 				}
@@ -133,6 +117,19 @@ public class GameEngine {
 			if (playerMoved) {
 				moveEnemies(arrayLength, map);
 			}
+			
+			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
+				if (bomb.tick() == false) {
+					tickingBombs.remove(bomb);
+				}
+			}
+			
+			if (invincibility == true) {
+				if (player.invincibleTick() == false) { //invincibility
+					invincibility = false;
+				}
+			}
+			
 			if (checkWin(player, numTreasures, arrayLength, map) == true) {
 				gameState = GameState.Win;
 				return gameState;
@@ -312,6 +309,7 @@ public class GameEngine {
 		for (Entity e: affectedTile.getEntities()) {
 			if (e instanceof Bomb) { //entity is a bomb
 				player.putInventory(e);
+				affectedTile.removeEntity(e);
 			} else if (e instanceof Boulder) { // valid boulder move checked in validateMove
 				// move boulder to next tile
 				for (Entity following: followingTile.getEntities()) { // for all entities in the following tile
@@ -336,16 +334,22 @@ public class GameEngine {
 				}
 			} else if (e instanceof InvincibilityPotion) {
 				player.addInvincibility();
+				affectedTile.removeEntity(e);
 			} else if (e instanceof HoverPotion) {
 				player.addHover();
+				affectedTile.removeEntity(e);
 			} else if (e instanceof Key) {
 				player.addKey((Key)e);
+				affectedTile.removeEntity(e);
 			} else if (e instanceof Treasure) { // add treasure, win if all collected
 				player.addTreasure();
 			} else if (e instanceof Arrow) {
 				player.putInventory(e);
+				affectedTile.removeEntity(e);
 			} else if (e instanceof Sword) {
-				player.putInventory(e);;
+				if (player.putInventory(e) == true) {
+					affectedTile.removeEntity(e);
+				}
 			} else if (e instanceof Enemy) {	// lose if you walk into enemy
 				gameState = GameState.Lose;
 			} else if (e instanceof Pit) {	// lose if you walk into pit
@@ -362,6 +366,83 @@ public class GameEngine {
 			}
 		}
 		return movePlayer;
+	}
+	
+	public void swing(Direction direction) {
+		Tile player = gameMap.getPlayerLocation();
+		ArrayList<Tile> attackedTiles = new ArrayList<Tile>();
+		switch (direction) {
+			case NORTH:
+				if(valueInMap(player.getY() - 2)) {
+					int attackedX = player.getX();
+					int attackedY = player.getY() - 2;
+					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				}
+				for(int i = -1; i <= 1; i++) {
+					if(valueInMap(player.getX() + i)) {
+						int attackedX = player.getX() + i;
+						int attackedY = player.getY() - 1;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+				}
+				break;
+			case SOUTH:
+				if(valueInMap(player.getY() + 2)) {
+					int attackedX = player.getX();
+					int attackedY = player.getY() + 2;
+					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				}
+				for(int i = -1; i <= 1; i++) {
+					if(valueInMap(player.getX() + i)) {
+						int attackedX = player.getX() + i;
+						int attackedY = player.getY() + 1;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+				}
+				break;
+			case EAST:
+				if(valueInMap(player.getX() + 2)) {
+					int attackedX = player.getX() + 2;
+					int attackedY = player.getY();
+					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				}
+				for(int i = -1; i <= 1; i++) {
+					if(valueInMap(player.getY() + i)) {
+						int attackedX = player.getX() + 1;
+						int attackedY = player.getY() + i;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+				}
+				break;
+			case WEST:
+				if(valueInMap(player.getX() - 2)) {
+					int attackedX = player.getX() - 2;
+					int attackedY = player.getY();
+					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				}
+				for(int i = -1; i <= 1; i++) {
+					if(valueInMap(player.getY() + i)) {
+						int attackedX = player.getX() - 1;
+						int attackedY = player.getY() + i;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+				}
+				break;
+		}
+		for(Tile t : attackedTiles) {
+			for(Entity e : t.getEntities()) {
+				if(e instanceof Enemy) {
+					t.removeEntity(e);
+				}
+			}
+		}
+	}
+	
+	private boolean valueInMap(int value) {
+		if(value < 0 || value >= arrayLength) {
+			return false;
+		}
+		return true;
 	}
 	
 	// This should now work for double boulder and boulder wall. 
