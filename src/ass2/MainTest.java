@@ -22,6 +22,7 @@ public class MainTest {
 		ArrayList<Integer> arrayList = new ArrayList<>();
 		Hunter hunter = new Hunter();
 		Map map = new Map();
+		map.printMap();
 		System.out.println(hunter.move(map));
 		System.out.println("hello");
 	}
