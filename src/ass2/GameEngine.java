@@ -9,6 +9,7 @@ public class GameEngine {
 	private boolean enemyWinCondition;
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
+	private int arrayLength;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
@@ -16,12 +17,13 @@ public class GameEngine {
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
+		arrayLength = gameMap.getArrayLength();
+
 	}
 	
 	public GameState runGame() {
 		gameState = GameState.Play;
 		setWinConditions();
-		int arrayLength = gameMap.getArrayLength();
 		// runs the game
 		// gets player moves
 		// calculates entity moves
@@ -61,22 +63,22 @@ public class GameEngine {
 					movePlayerWest(map, playerLocation, player);
 					break;
 			}*/
-			
+			boolean playerMoved = false;
 			char action = control.getValidInput();
 			if (control.isMovement(action) == true) {				// if the input is movement
 				Direction playerAction = control.getMovement(action);
 				switch (playerAction) {
 					case NORTH:
-						movePlayerNorth(map, playerLocation, player);
+						playerMoved = movePlayerNorth(map, playerLocation, player);
 						break;
 					case SOUTH:
-						movePlayerSouth(map, playerLocation, player);
+						playerMoved = movePlayerSouth(map, playerLocation, player);
 						break;
 					case EAST:
-						movePlayerEast(map, playerLocation, player);
+						playerMoved = movePlayerEast(map, playerLocation, player);
 						break;
 					case WEST:
-						movePlayerWest(map, playerLocation, player);
+						playerMoved = movePlayerWest(map, playerLocation, player);
 						break;
 				}
 			}
@@ -127,8 +129,9 @@ public class GameEngine {
 			}
 			
 			// calculate enemy movements
-			moveEnemies(arrayLength, map);
-			
+			if (playerMoved) {
+				moveEnemies(arrayLength, map);
+			}
 			if (checkWin(player, numTreasures, arrayLength, map) == true) {
 				gameState = GameState.Win;
 				return gameState;
@@ -136,87 +139,84 @@ public class GameEngine {
 		}
 	}
 	
-	private void movePlayerNorth(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerNorth(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.NORTH;
 		if (this.validateMove(player, playerAction) == true) {
-			boolean movePlayer = true;
-			boolean boulderMove = true;
-			Entity pitObject = null;
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY-1];
 			Tile followingTile = map[playerX][playerY-2];
 			
-			movePlayer = moveConsequences(player, movePlayer, boulderMove, pitObject, playerAction, affectedTile,
+			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
-		
+			
+			System.out.println(movePlayer);
 			if (movePlayer == true) {
-				gameMap.makeMove(player, playerAction);	
+				gameMap.movePlayer(playerAction);	
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	private void movePlayerSouth(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerSouth(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.SOUTH;
 		if (this.validateMove(player, playerAction) == true) {
-			boolean movePlayer = true;
-			boolean boulderMove = true;
-			Entity pitObject = null;
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY+1];
 			Tile followingTile = map[playerX][playerY+2];
 			
-			movePlayer = moveConsequences(player, movePlayer, boulderMove, pitObject, playerAction, affectedTile,
+			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
 			if (movePlayer == true) {
-				gameMap.makeMove(player, playerAction);	
+				gameMap.movePlayer(playerAction);	
+				return true;
 			}
 		}
+		return false;
 		
 	}
 
 
-	private void movePlayerEast(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerEast(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.EAST;
 		if (this.validateMove(player, playerAction) == true) {
-			boolean movePlayer = true;
-			boolean boulderMove = true;
-			Entity pitObject = null;
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX+1][playerY];
 			Tile followingTile = map[playerX+2][playerY];
 			
-			movePlayer = moveConsequences(player, movePlayer, boulderMove, pitObject, playerAction, affectedTile,
+			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
 			if (movePlayer == true) {
-				gameMap.makeMove(player, playerAction);	
+				gameMap.movePlayer(playerAction);	
+				return true;
 			}
 		}
+		return false;
 	
 	}
 	
-	private void movePlayerWest(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerWest(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.WEST;
 		if (this.validateMove(player, playerAction) == true) {
-			boolean movePlayer = true;
-			boolean boulderMove = true;
-			Entity pitObject = null;
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX-1][playerY];
 			Tile followingTile = map[playerX-2][playerY];
 			
-			movePlayer = moveConsequences(player, movePlayer, boulderMove, pitObject, playerAction, affectedTile,
+			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
 			if (movePlayer == true) {
-				gameMap.makeMove(player, playerAction);	
+				gameMap.movePlayer(playerAction);	
+				return true;
 			}
 		}
+		return false;
 		
 	}
 
@@ -304,8 +304,10 @@ public class GameEngine {
 		}
 	}
 
-	private boolean moveConsequences(Player player, boolean movePlayer, boolean boulderMove, Entity pitObject,
-			Direction playerAction, Tile affectedTile, Tile followingTile) {
+	private boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
+		boolean boulderMove = true;
+		Entity pitObject = null;
+		boolean movePlayer = true;
 		for (Entity e: affectedTile.getEntities()) {
 			if (e instanceof Bomb) { //entity is a bomb
 				player.putInventory(e);
@@ -435,7 +437,7 @@ public class GameEngine {
 												if (j > 17) {
 													return false;
 												}
-												for (Entity e3 : tile[i][j+2]) {
+												for (Entity e3 : tile[i][j+2].getEntities()) {
 													if (e3 instanceof Obstacle) {
 														return false;
 													}
@@ -495,14 +497,16 @@ public class GameEngine {
 	
 	private void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
-		if (conditions.contains(WinCondition.Boulder)) {
-			this.boulderWinCondition = true;
-		}
-		if (conditions.contains(WinCondition.Enemy)) {
-			this.enemyWinCondition = true;
-		}
-		if (conditions.contains(WinCondition.Treasure)) {
-			this.treasureWinCondition = true;
+		if (conditions != null) {
+			if (conditions.contains(WinCondition.Boulder)) {
+				this.boulderWinCondition = true;
+			}
+			if (conditions.contains(WinCondition.Enemy)) {
+				this.enemyWinCondition = true;
+			}
+			if (conditions.contains(WinCondition.Treasure)) {
+				this.treasureWinCondition = true;
+			}
 		}
 	}
 	

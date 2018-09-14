@@ -5,18 +5,25 @@ import java.util.ArrayList;
 public class Map {
 	private Tile[][] map;
 	private ArrayList<WinCondition> winConditions;
-	private int arrayLength = 20;
+	private int arrayLength;
+	
 	public Map(int arrayLength) {
+		this.arrayLength = arrayLength;
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
-		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow();
-		entities.add(arrow);
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
+				Floor floor = new Floor();
+				ArrayList<Entity> entities = new ArrayList<>();
+				entities.add(floor);
 				map[i][j] = new Tile(entities, i, j);
 			}
 		}
+		
+		
+		//System.out.println(t.getEntities());
+		//t.removeEntity(floor);
+		//t.addEntity(player);
 	}
 	
 	public int getArrayLength() {
@@ -46,8 +53,8 @@ public class Map {
 		return winConditions;
 	}
 	
-	public boolean addWinCondition(WinCondition w) {
-		return winConditions.add(w);
+	public void addWinCondition(WinCondition w) {
+		winConditions.add(w);
 	}
 	
 	public Player getPlayer() {
@@ -63,6 +70,43 @@ public class Map {
 		}
 		return null;
 	}
+	// move player
+	
+	public void movePlayer(Direction move) {
+		Tile playerLocation = getPlayerLocation();
+		Player player = null;
+		for (Entity e : playerLocation.getEntities()) {
+			if (e instanceof Player) {
+				player = (Player)e;
+			}
+		}
+			
+		Player playerCopy = player;
+		int playerX = playerLocation.getX();
+		int playerY = playerLocation.getY();
+		Tile nextTile = null;
+		switch (move) {
+			case NORTH: 
+				nextTile = map[playerX][playerY-1];
+				break;
+			case EAST:
+				nextTile = map[playerX+1][playerY];
+				break;
+			case SOUTH:
+				nextTile = map[playerX][playerY+1];
+				break;
+			case WEST:
+				nextTile = map[playerX-1][playerY];
+				break;
+		}
+		playerLocation.removeEntity(player);
+		if (nextTile != null) {
+			nextTile.addEntity(playerCopy);
+		}
+	}
+		
+
+	
 	
 	// Moves an entity one space in a given direction
 	public void makeMove(Entity entity, Direction move) {
@@ -98,8 +142,9 @@ public class Map {
 	public void printMap() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
-				System.out.println(map[i][j].toString());
+				System.out.print("["+map[j][i].toString()+"]");
 			}
+			System.out.println("");
 		}
 	}
 }

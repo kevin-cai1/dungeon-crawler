@@ -7,6 +7,6 @@ public class Wall extends Obstacle{
 
 	@Override
 	public String toString() {
-		return null;
+		return "#";
 	}
 }
