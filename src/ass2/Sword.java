@@ -2,6 +2,8 @@ package ass2;
 
 import java.util.ArrayList;
 
+import sun.security.jca.GetInstance.Instance;
+
 public class Sword extends Entity{
 	private int durability;
 	public Sword(int id) {
@@ -89,7 +91,7 @@ public class Sword extends Entity{
 		}
 		for(Tile t : attackedTiles) {
 			for(Entity e : t.getEntities()) {
-				if(true) {/*e is enemy*/
+				if(e instanceof Enemy) {
 					t.removeEntity(e);
 				}
 			}
