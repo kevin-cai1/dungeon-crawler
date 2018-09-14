@@ -1,13 +1,15 @@
 package ass2;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public abstract class Enemy extends Entity{
-	private LinkedList<Tile> queue;
-	private Set<Tile> visited;
+	protected LinkedList<Tile> queue;
+	protected Set<Tile> visited;
 	protected HashMap<Tile, Tile> parent; //child on the left, parent on the right
 	public Enemy(int id) {
 		super(id);
@@ -141,4 +143,26 @@ public abstract class Enemy extends Entity{
 	    dist = Math.sqrt(x+y);
 	    return dist;
 	}
+	public void makePath(Tile tile, List<Tile> shortest) {
+		Tile temp = tile;
+		while(temp != null) {
+			shortest.add(temp);
+			temp = parent.get(temp);
+		}
+		Collections.reverse(shortest);
+		//after we do a path search of some sort we have to clear 
+		clear();
+	}
+	public void makeValidPath(Map map, Tile tile, List<Tile> shortest) {
+		//If there is a way, then there will be a path in parent
+		if(parent.containsKey(tile)) {
+			makePath(tile, shortest);
+		}
+		else {//if there is no path to the player then we search for the closest reachable tile.
+			Tile closest = ClosestTile(map, tile);
+			toTile(map, closest);
+			makePath(closest, shortest);
+		}
+	}
 }
+
