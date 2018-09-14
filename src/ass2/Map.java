@@ -13,7 +13,7 @@ public class Map {
 		//Temporary test stuff
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
-				Floor floor = new Floor();
+				Floor floor = new Floor(4);//great id
 				ArrayList<Entity> entities = new ArrayList<>();
 				entities.add(floor);
 				map[i][j] = new Tile(entities, i, j);
@@ -27,6 +27,7 @@ public class Map {
 	}
 	//Temporary map constructor for testing CURRENTLY SHOULD MAKE A 
 	public Map() {
+		arrayLength = 20;
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
 		ArrayList<Entity> entities = new ArrayList<>();

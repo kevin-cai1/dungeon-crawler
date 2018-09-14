@@ -36,7 +36,7 @@ public class MainTest {
 		loadedMap.printMap();
 		map.printMap();
 */
-		System.out.println(hunter.move(map));
+		hunter.getAction(map);
 		System.out.println("hello");
 	}
 }
