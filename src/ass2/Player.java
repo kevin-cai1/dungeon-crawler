@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
+//need a get sword
+//need a get arrow
+//need a get bomb
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;

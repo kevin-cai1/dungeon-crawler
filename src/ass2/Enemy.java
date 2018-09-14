@@ -7,6 +7,6 @@ public abstract class Enemy extends Entity{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public abstract Direction getAction();
+	public abstract void getAction(Map map);
 
 }

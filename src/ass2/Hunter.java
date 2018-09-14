@@ -22,32 +22,41 @@ public class Hunter extends Enemy{
 		parent = new HashMap<Tile, Tile>(); //Instead of just doing prev[i] = other value, we need to remove that index first and then put it back in at that index
 		visited = new HashSet<Tile>();
 	}
-	public Direction move(Map map) {
+	/**
+	 * finds a valid move to make and then moves the Hunter to that tile
+	 * @param map
+	 */
+	@Override
+	public void getAction(Map map) {
 		Tile playerPos = map.getPlayerLocation();
 		toTile(map, playerPos);
+		List<Tile> shortest = new ArrayList<>();
 		//If there is a way, then there will be a path in parent
 		if(parent.containsKey(playerPos)) {
 			Tile temp = playerPos;
-			List<Tile> shortest = new ArrayList<>();
 			while(temp != null) {
 				shortest.add(temp);
 				temp = parent.get(temp);
 			}
 			Collections.reverse(shortest);
-			return Direction.SOUTH;
+			//after we do a pathsearch of some sort we have to clear 
+			clear();
 		}
-		//after we do a pathsearch of some sort we have to clear 
-		clear();
-		//if there is no path to the player then we search for the closest reachable tile.
-		Tile closest = ClosestTile(map, playerPos);
-		toTile(map, closest);
-		List<Tile> shortest = new ArrayList<>();
-		while(closest != null) {
-			shortest.add(closest);
-			closest = parent.get(closest);
+		else {//if there is no path to the player then we search for the closest reachable tile.
+			Tile closest = ClosestTile(map, playerPos);
+			toTile(map, closest);
+			while(closest != null) {
+				shortest.add(closest);
+				closest = parent.get(closest);
+			}
+			Collections.reverse(shortest);
 		}
-		Collections.reverse(shortest);
-		return Direction.NORTH;
+		Tile currPos = map.getEntityLocation(this.getId());
+		currPos.removeEntity(this);
+		Hunter hunter = this;
+		Tile neww = shortest.get(1);
+		neww.addEntity(hunter);
+		
 	}
 	private void clear() {
 		parent.clear();
@@ -168,11 +177,6 @@ public class Hunter extends Enemy{
 	}
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Direction getAction() {
 		// TODO Auto-generated method stub
 		return null;
 	}
