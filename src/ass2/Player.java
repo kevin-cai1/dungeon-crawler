@@ -22,10 +22,12 @@ public class Player extends Entity{
 		keys = new ArrayList<>();
 		// TODO Auto-generated constructor stub
 	}
-	public void invincibleTick() {
+	public boolean invincibleTick() {
 		if(invincible > 0) {
 			invincible--;
+			return true;
 		}
+		return false;
 	}
 	public void addTreasure() {
 		treasure++;
