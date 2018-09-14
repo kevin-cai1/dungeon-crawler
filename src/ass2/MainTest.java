@@ -18,10 +18,15 @@ public class MainTest {
 		*/
 		
 		
-		
+		DesignEngine designEngine = new DesignEngine();
 		ArrayList<Integer> arrayList = new ArrayList<>();
 		Hunter hunter = new Hunter();
 		Map map = new Map();
+		designEngine.save(map, "testmap");
+		String fileName = "testmap.txt";
+		Map loadedMap = new Map();
+		loadedMap = designEngine.load(fileName);
+		loadedMap.printMap();
 		System.out.println(hunter.move(map));
 		System.out.println("hello");
 	}
