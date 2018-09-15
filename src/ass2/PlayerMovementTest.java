@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.awt.print.Printable;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class PlayerMovementTest {
@@ -44,9 +47,11 @@ class PlayerMovementTest {
 		System.out.println("expected map ^");
 
 		System.out.println("\n");
+		
 		Tile playerLocation = gameMap.getPlayerLocation();
-		Tile expectedLocation = expectedGameMap.getPlayerLocation();
 		game.movePlayerNorth(map, playerLocation, player);
+		playerLocation = gameMap.getPlayerLocation();
+		Tile expectedLocation = expectedGameMap.getPlayerLocation();
 		
 		gameMap.printMap();
 		System.out.println("result map^");
@@ -161,15 +166,14 @@ class PlayerMovementTest {
 	void testExit() { // try to make move into wall, player shouldn't move
 		System.out.println("player exit");
 
-				
-		Wall wall = new Wall();
+		Wall wall = new Wall(1);
 		Tile wallTile = gameMap.getTile(4, 3); // wall above the player
 		wallTile.addEntity(wall);
 		gameMap.printMap();
 		System.out.println("starting map ^");
-		
+
 		Tile playerLocation = gameMap.getPlayerLocation();
-		Tile expectedLocation = expectedGameMap.getPlayerLocation();
+		Tile expectedLocation = map[4][4];
 		assertFalse(game.movePlayerNorth(map, playerLocation, player));
 		
 		gameMap.printMap();

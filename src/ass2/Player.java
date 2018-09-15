@@ -13,6 +13,7 @@ public class Player extends Entity{
 	private int invincible;
 	private boolean floaty;
 	private int treasure;
+	
 	public Player(int id) {
 		super(id);
 		treasure = 0;
