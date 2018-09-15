@@ -34,17 +34,22 @@ public class Coward extends Enemy{
     	}
     	else {// i.e. when its supposed to act like a coward
     		Tile tile;
+    		double[] dist = new double[4];
     		if(curY-1 >= 0) {
     			tile = map.getTile(curX, curY-1);//North
+    			dist[0] = distCalc(playerX, playerY,tile.getX(),tile.getY());
     		}
     		if(curY+1 < 20) {
     			tile = map.getTile(curX, curY+1);//South
+    			dist[1] = distCalc(playerX, playerY,tile.getX(),tile.getY());
     		}
     		if(curX+1 < 20) {
     			tile = map.getTile(curX+1, curY);//East
+    			dist[2] = distCalc(playerX, playerY,tile.getX(),tile.getY());
     		}
     		if(curX-1 >= 0) {
     			tile = map.getTile(curX-1, curY);//West
+    			dist[3] = distCalc(playerX, playerY,tile.getX(),tile.getY());
     		}
 
     	}
