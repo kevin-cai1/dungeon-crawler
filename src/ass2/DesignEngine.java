@@ -26,7 +26,7 @@ public class DesignEngine {
 			if (true) {/* user tries to place tile*/
 				int x = 0;
 				int y = 0;
-				Entity entity = new FloorSwitch(0); //remove this later doesnt do anything
+				Entity entity = new FloorSwitch(map.genID()); //remove this later doesnt do anything
 				placeEntity(entity, x, y);
 			}
 			

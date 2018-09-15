@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Set;
 //need a check if player has sword and bomb getBomb will reduce inventory count of bomb reduce durability of sword as well. need to make sure if sword is dead it is removed
 //
-
 //need a get arrow
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
@@ -82,30 +81,67 @@ public class Player extends Entity{
 	 * RETURNS FALSE IF NOT BEING PICKED UP
 	 * @param entity
 	 */
-	public void putInventory(Entity entity) {
+	public boolean putInventory(Entity entity) {
 		Set<Entity> set = inventory.keySet();
 		for(Entity e: set) {
+			if(e instanceof Sword && entity instanceof Sword) {//if a sword exists in the set, don't do anything
+				return true;
+			}
 			if(e.getClass().equals(entity.getClass())) {
 				int value = inventory.get(e);
 				value++;
 				inventory.put(e, value); //in theory it should replace 
 			}
 		}
+		return false;
 	}
-	
+	/**
+	 * checkSword will return false if there is no sword in Inventory. If there is a sword in the inventory it will return true and decrease use.
+	 * @return
+	 */
+	public boolean checkSword() {
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Sword) {
+				decreaseUse(e);
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean checkArrow() {
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Arrow) {
+				decreaseUse(e);
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean checkBomb() {
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Bomb) {
+				decreaseUse(e);
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * decrease Durability should only accept valid entities such as sword, arrow 
 	 * @param entity
 	 */
 	public void decreaseUse(Entity entity) {
-		if(entity.getClass().equals(new Sword(0).getClass())) {
+		if(entity instanceof Sword) {
 			Sword sword = (Sword)entity;
 			sword.reduceDurability();
 			
 			if(sword.durabilityZero()) {
 				inventory.remove(sword);
 			}
-			entity = sword;
+			entity = sword; //just in case
 		}
 		else {
 			Set<Entity> set = inventory.keySet();

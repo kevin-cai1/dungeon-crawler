@@ -100,13 +100,13 @@ public class GameEngine {
 					
 					break;
 				case 'e':
-					if ("andy pls - check player for sword") {
+					if (player.checkSword()) {
 						swing(aim);
 					}
 					break;
 				case 'r':
-					if ("andy pls - check for bomb") {
-						Bomb placedBomb = ^^^^^^^^^^^^
+					if (player.checkBomb()) {
+						Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
 						placedBomb.placeBomb();
 						tickingBombs.add(placedBomb);
 					}
@@ -272,7 +272,7 @@ public class GameEngine {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
-						((Enemy) e).getAction(map);	// enemy validation handled on individual enemy side
+						((Enemy) e).getAction(gameMap);	// enemy validation handled on individual enemy side
 						int enemyX = tile.getX();
 						int enemyY = tile.getY();
 						Direction enemyAction = Direction.NORTH;

@@ -6,14 +6,15 @@ public class Map {
 	private Tile[][] map;
 	private ArrayList<WinCondition> winConditions;
 	private int arrayLength;
-	
+	private int idCounter;
 	public Map(int arrayLength) {
 		this.arrayLength = arrayLength;
 		map = new Tile[arrayLength][arrayLength];
+		idCounter = 0;
 		//Temporary test stuff
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
-				Floor floor = new Floor(4);//great id
+				Floor floor = new Floor(genID());//great id
 				ArrayList<Entity> entities = new ArrayList<>();
 				entities.add(floor);
 				map[i][j] = new Tile(entities, i, j);
@@ -31,16 +32,16 @@ public class Map {
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
 		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow(1,new Map(arrayLength));
+		Arrow arrow = new Arrow(genID(),new Map(arrayLength));
 		
 		ArrayList<Entity> wall = new ArrayList<>();
-		Wall wall2 = new Wall(0);
+		Wall wall2 = new Wall(genID());
 		
 		ArrayList<Entity> hunter = new ArrayList<>();
-		Hunter hunter2 = new Hunter(55);
+		Hunter hunter2 = new Hunter(genID());
 		
 		ArrayList<Entity> player = new ArrayList<>();
-		Player player2 = new Player(4);
+		Player player2 = new Player(genID());
 		
 		player.add(player2);
 		hunter.add(hunter2);
@@ -228,5 +229,9 @@ public class Map {
 			}
 			System.out.println("");
 		}
+	}
+	public int genID() {
+		idCounter++;
+		return idCounter;
 	}
 }
