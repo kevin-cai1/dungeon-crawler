@@ -28,6 +28,9 @@ public class MainTest {
 		Tile tile = testMap.getTile(5, 5);
 		tile.addEntity(wall);
 		Player player2 = new Player(testMap.genID());
+		if(player2.putInventory(new Sword(1))){
+			System.out.println("hello");
+		}
 		Tile tile4 = testMap.getTile(9, 5);
 		tile4.addEntity(player2);
 		hunter2.getAction(testMap);
@@ -42,6 +45,5 @@ public class MainTest {
 		loadedMap.printMap();
 		map.printMap();
 */
-		System.out.println("hello");
 	}
 }

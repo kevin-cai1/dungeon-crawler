@@ -68,17 +68,18 @@ class EnemyTest {
 		Tile tile4 = testMap.getTile(9, 5);
 		tile4.addEntity(player2);
 		coward.getAction(testMap);
-		System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getX());
+		//System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getX());
 		assert(testMap.getEntityLocation(coward.getId()).getX() == 5);
 		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
 		coward.getAction(testMap);
-		System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getY());
+		//System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getY());
 		assert(testMap.getEntityLocation(coward.getId()).getX() == 6);
 		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
 		tile4.removeEntity(player2);
 		tile4 = testMap.getTile(8, 5);
 		tile4.addEntity(player2);
 		coward.getAction(testMap);
-		System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getY());
+		assert(testMap.getEntityLocation(coward.getId()).getX() == 5);
+		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
 	}
 }
