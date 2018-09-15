@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.naming.TimeLimitExceededException;
 
@@ -364,7 +365,9 @@ public class GameEngine {
 						int attackedY = player.getY() - 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
 					}
+					
 				}
+				
 				break;
 			case SOUTH:
 				if(valueInMap(player.getY() + 2)) {
@@ -409,13 +412,20 @@ public class GameEngine {
 				}
 				break;
 		}
+		//System.out.println(attackedTiles.toString());
 		for(Tile t : attackedTiles) {
+			System.out.println(t.getX() + ", " + t.getY());
 			for(Entity e : t.getEntities()) {
+				//System.out.println(e.getClass().toString());
 				if(e instanceof Enemy) {
-					t.removeEntity(e);
+					System.out.println(e.getId() + e.getClass().toString());
+					//t.removeEntity(e);
+					//System.out.println(t.getEntities().toString());
 				}
+				//System.out.println(e.getClass().toString());
 			}
 		}
+
 	}
 	
 	private boolean valueInMap(int value) {

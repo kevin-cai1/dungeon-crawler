@@ -31,7 +31,7 @@ class KillingEnemyTest {
 	@Test
 	void testSwingSwordUp() {
 		//System.out.println("swing sword up");
-		gameMap.getPlayer().putInventory(new Sword(gameMap.genID()));
+		System.out.println(gameMap.getPlayer().putInventory(new Sword(gameMap.genID())));
 		Map expectedGameMap = new Map(10);
 		Tile t = expectedGameMap.getTile(4, 4);
 		player = new Player(expectedGameMap.genID());
@@ -40,7 +40,13 @@ class KillingEnemyTest {
 		Hunter hunter = new Hunter(gameMap.genID());
 		t = gameMap.getTile(4, 3);
 		t.addEntity(hunter);
-		hunter = new Hunter(gameMap.genID());
+		Hound hound = new Hound(gameMap.genID());
+		t = gameMap.getTile(4, 3);
+		t.addEntity(hound);
+		Coward coward = new Coward(gameMap.genID());
+		t = gameMap.getTile(4, 3);
+		t.addEntity(coward);
+		/*hunter = new Hunter(gameMap.genID());
 		t = gameMap.getTile(4, 2);
 		t.addEntity(hunter);
 		hunter = new Hunter(gameMap.genID());
@@ -48,11 +54,12 @@ class KillingEnemyTest {
 		t.addEntity(hunter);
 		hunter = new Hunter(gameMap.genID());
 		t = gameMap.getTile(5, 3);
-		t.addEntity(hunter);
+		t.addEntity(hunter);*/
 		System.out.println("help");
 		System.out.println(gameMap.getPlayer().checkSword());
 		if (gameMap.getPlayer().checkSword()) {
 			game.swing(Direction.NORTH);	
+			System.out.println("killme");
 		}
 		System.out.println(gameMap.getTile(4, 3).getEntities().size() + "okay" + expectedGameMap.getTile(4, 3).getEntities().size());
 		assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());
