@@ -130,7 +130,6 @@ class PlayerMovementTest {
 		System.out.println("invalid player move");
 		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(gameMap.genID()); //great id
 		Tile t = expectedGameMap.getTile(4, 4);
 		t.addEntity(player);
 		Wall expectedWall = new Wall(gameMap.genID()); //great id
@@ -225,10 +224,10 @@ class PlayerMovementTest {
 	}
 	
 	@Test
-	void testBombPickup() { // try to make move into wall, player shouldn't move
+	void testBombPickup() { // try to make move into bomb, player should pick up
 		System.out.println("player bomb");
 		
-		Bomb bomb = new Bomb(gameMap, 3);
+		Bomb bomb = new Bomb(gameMap, gameMap.genID());
 		Tile bombTile = gameMap.getTile(4, 3); // exit above the player
 		bombTile.addEntity(bomb);
 		gameMap.printMap();
@@ -236,8 +235,28 @@ class PlayerMovementTest {
 		
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
-		//assertTrue(player.getInvincibility()); player has bomb
+		assertTrue(player.checkBomb()); //player has bomb
 	}
 	
+	@Test
+	void testMoveBoulder() { // try to make move into bomb, player should pick up
+		System.out.println("player boulder");
+		
+		Boulder boulder = new Boulder(gameMap.genID());
+		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
+		boulderTile.addEntity(boulder);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		Tile boulderLocation = gameMap.getEntityLocation(boulder.getId());
+		// check player location
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		// check boulder location
+		assertTrue(boulderLocation.getX() == 4);
+		assertTrue(boulderLocation.getY() == 2);
+	}
 
 }

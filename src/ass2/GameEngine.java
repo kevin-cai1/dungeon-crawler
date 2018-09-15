@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.naming.TimeLimitExceededException;
 
+
 public class GameEngine {
 	private Map gameMap;
 	private GameState gameState;
@@ -98,7 +99,11 @@ public class GameEngine {
 				switch (action) {									// figure out which weapon is being used
 				case 'q':
 					// drop bomb at feet
-					
+					if (player.checkBomb()) {
+						Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
+						placedBomb.placeBomb();
+						tickingBombs.add(placedBomb);
+					}
 					break;
 				case 'e':
 					if (player.checkSword()) {
@@ -106,10 +111,9 @@ public class GameEngine {
 					}
 					break;
 				case 'r':
-					if (player.checkBomb()) {
-						Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
-						placedBomb.placeBomb();
-						tickingBombs.add(placedBomb);
+					if (player.checkArrow()) {
+						Arrow arrow = new Arrow(gameMap.genID(), gameMap);
+						arrow.shootArrow(aim);
 					}
 					break;
 				}
@@ -148,7 +152,9 @@ public class GameEngine {
 	
 	public boolean movePlayerNorth(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.NORTH;
+		System.out.println("trying to move player");
 		if (this.validateMove(player, playerAction) == true) {
+			System.out.println("valid move");
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY-1];
@@ -157,7 +163,6 @@ public class GameEngine {
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 			 
-			System.out.println(movePlayer);
 			if (movePlayer == true) {
 				gameMap.movePlayer(playerAction);	
 				return true;
@@ -286,10 +291,12 @@ public class GameEngine {
 		boolean boulderMove = true;
 		Entity pitObject = null;
 		boolean movePlayer = true;
+		ArrayList<Entity> removeEntities = new ArrayList<>();
 		for (Entity e: affectedTile.getEntities()) {
 			if (e instanceof Bomb) { //entity is a bomb
-				player.putInventory(e);
-				affectedTile.removeEntity(e);
+				System.out.println("pick up bomb");
+				System.out.println("put in inventory:" + player.putInventory((Bomb)e));
+				removeEntities.add(e);
 			} else if (e instanceof Boulder) { // valid boulder move checked in validateMove
 				// move boulder to next tile
 				for (Entity following: followingTile.getEntities()) { // for all entities in the following tile
@@ -304,7 +311,7 @@ public class GameEngine {
 				if (boulderMove == true) {
 					if (pitObject != null) { // boulder going into pit
 						// don't need to move boulder, just delete both boulder and pit - makes normal floor
-						affectedTile.removeEntity(e); // remove boulder
+						removeEntities.add(e); // remove boulder
 						followingTile.removeEntity(pitObject); // remove pit
 					} else {
 						gameMap.makeMove(e, playerAction); //move the boulder the same direction as player
@@ -314,21 +321,21 @@ public class GameEngine {
 				}
 			} else if (e instanceof InvincibilityPotion) {
 				player.addInvincibility();
-				affectedTile.removeEntity(e);
+				removeEntities.add(e);
 			} else if (e instanceof HoverPotion) {
 				player.addHover();
-				affectedTile.removeEntity(e);
+				removeEntities.add(e);
 			} else if (e instanceof Key) {
 				player.addKey((Key)e);
-				affectedTile.removeEntity(e);
+				removeEntities.add(e);
 			} else if (e instanceof Treasure) { // add treasure, win if all collected
 				player.addTreasure();
 			} else if (e instanceof Arrow) {
 				player.putInventory(e);
-				affectedTile.removeEntity(e);
+				removeEntities.add(e);
 			} else if (e instanceof Sword) {
 				if (player.putInventory(e) == true) {
-					affectedTile.removeEntity(e);
+					removeEntities.add(e);
 				}
 			} else if (e instanceof Enemy) {	// lose if you walk into enemy
 				gameState = GameState.Lose;
@@ -344,6 +351,10 @@ public class GameEngine {
 					}
 				} 
 			}
+		}
+		// remove entities
+		for (Entity e: removeEntities) {
+			affectedTile.removeEntity(e);
 		}
 		return movePlayer;
 	}
