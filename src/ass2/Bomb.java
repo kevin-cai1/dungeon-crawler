@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Bomb extends Entity{
 	private int timer;
 	private Map map;
-	Tile bombPosition;
+	private Tile bombPosition;
 	
 	//bomb has map lol
 	public Bomb(Map map, int id) {
