@@ -412,17 +412,21 @@ public class GameEngine {
 				}
 				break;
 		}
-		//System.out.println(attackedTiles.toString());
+		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : attackedTiles) {
 			System.out.println(t.getX() + ", " + t.getY());
 			for(Entity e : t.getEntities()) {
-				//System.out.println(e.getClass().toString());
 				if(e instanceof Enemy) {
 					System.out.println(e.getId() + e.getClass().toString());
-					//t.removeEntity(e);
-					//System.out.println(t.getEntities().toString());
+					removedEntities.add(e);
 				}
-				//System.out.println(e.getClass().toString());
+			}
+		}
+		for(Tile t : attackedTiles) {
+			for(Entity e : removedEntities) {
+				if(t.getEntities().contains(e)) {
+					t.removeEntity(e);
+				}
 			}
 		}
 
