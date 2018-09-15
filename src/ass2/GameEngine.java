@@ -1,5 +1,6 @@
 package ass2;
 
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
@@ -124,6 +125,8 @@ public class GameEngine {
 				moveEnemies(arrayLength, map);
 			}
 			
+			checkPlayerStatus(gameMap, player);
+			
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
 				if (bomb.tick() == false) {
 					tickingBombs.remove(bomb);
@@ -131,7 +134,7 @@ public class GameEngine {
 			}
 			
 			if (invincibility == true) {
-				if (player.invincibleTick() == false) { //invincibility
+				if (player.invincibleTick() == false) { //invincibility tick, false when doesn't tick (no more invincibility)
 					invincibility = false;
 				}
 			}
@@ -272,37 +275,7 @@ public class GameEngine {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
-						((Enemy) e).getAction(gameMap);	// enemy validation handled on individual enemy side
-						int enemyX = tile.getX();
-						int enemyY = tile.getY();
-						Direction enemyAction = Direction.NORTH;
-						Tile enemyNextTile = null;
-						switch (enemyAction) {
-						case NORTH:
-							enemyNextTile = map[enemyX][enemyY-1];
-							break;
-						case SOUTH:
-							enemyNextTile = map[enemyX][enemyY+1];
-							break;
-						case EAST:
-							enemyNextTile = map[enemyX+1][enemyY];
-							break;
-						case WEST:
-							enemyNextTile = map[enemyX-1][enemyY];
-							break;
-						}
-						
-						for (Entity nextTileEntity : enemyNextTile.getEntities()) {
-							if (nextTileEntity instanceof Pit) {
-								tile.removeEntity(e); // remove enemy from its tile (same as walking into pit and dying)
-								moveEnemy = false;
-							}
-						}
-						if (moveEnemy) {
-							gameMap.makeMove(e, enemyAction);
-						}
-						moveEnemy = true;
-
+						((Enemy) e).getAction(gameMap); // validation on enemy side
 					}
 				}
 			}
@@ -353,11 +326,11 @@ public class GameEngine {
 			} else if (e instanceof Arrow) {
 				player.putInventory(e);
 				affectedTile.removeEntity(e);
-			}/* else if (e instanceof Sword) {
+			} else if (e instanceof Sword) {
 				if (player.putInventory(e) == true) {
 					affectedTile.removeEntity(e);
 				}
-			} */else if (e instanceof Enemy) {	// lose if you walk into enemy
+			} else if (e instanceof Enemy) {	// lose if you walk into enemy
 				gameState = GameState.Lose;
 			} else if (e instanceof Pit) {	// lose if you walk into pit
 				gameState = GameState.Lose;
@@ -455,7 +428,8 @@ public class GameEngine {
 	// This should now work for double boulder and boulder wall. 
 	// Should validate entity movements
 	public boolean validateMove(Entity entity, Direction move) {
-		Tile tile = gameMap.getEntityLocation(entity.getId());	
+		Tile tile = gameMap.getEntityLocation(entity.getId());
+		System.out.println(entity.getId());
 		int tileX = tile.getX();
 		int tileY = tile.getY();
 		Tile[][] entityLocation = gameMap.getMap();
@@ -594,4 +568,16 @@ public class GameEngine {
 		}
 	}
 	
+	// returns false on bad player status (dead)
+	private boolean checkPlayerStatus(Map map, Player player) {
+		Tile playerLocation = map.getPlayerLocation();
+		if (player.getInvincibility() == false) {
+			for (Entity e : playerLocation.getEntities()) {
+				if (e instanceof Enemy) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

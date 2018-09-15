@@ -23,7 +23,7 @@ class PlayerMovementTest {
 		
 		map = gameMap.getMap();
 
-		Player player = new Player(gameMap.genID()); //this int that i added is great
+		player = new Player(gameMap.genID()); //this int that i added is great
 
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(player);
@@ -37,8 +37,6 @@ class PlayerMovementTest {
 		System.out.println("move player up");
 		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(gameMap.genID()); //this int is great
-
 		Tile t = expectedGameMap.getTile(4, 3);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -63,7 +61,6 @@ class PlayerMovementTest {
 		System.out.println("move player down");
 		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(gameMap.genID()); //
 
 		Tile t = expectedGameMap.getTile(4, 5);
 		t.addEntity(player);
@@ -87,7 +84,6 @@ class PlayerMovementTest {
 		System.out.println("move player left");
 		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(gameMap.genID()); //great int
 
 		Tile t = expectedGameMap.getTile(3, 4);
 		t.addEntity(player);
@@ -111,7 +107,6 @@ class PlayerMovementTest {
 		System.out.println("move player right");
 		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(gameMap.genID()); //int great
 
 		Tile t = expectedGameMap.getTile(5, 4);
 		t.addEntity(player);
