@@ -50,7 +50,10 @@ class KillingEnemyTest {
 		t = gameMap.getTile(5, 3);
 		t.addEntity(hunter);
 		System.out.println("help");
-		game.swing(Direction.NORTH);
+		System.out.println(gameMap.getPlayer().checkSword());
+		if (gameMap.getPlayer().checkSword()) {
+			game.swing(Direction.NORTH);	
+		}
 		System.out.println(gameMap.getTile(4, 3).getEntities().size() + "okay" + expectedGameMap.getTile(4, 3).getEntities().size());
 		assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());
 		//assertTrue(gameMap.getTile(4, 4).getEntities().size() ==  expectedGameMap.getTile(4, 4).getEntities().size());
