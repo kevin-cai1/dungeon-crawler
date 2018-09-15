@@ -26,7 +26,7 @@ class PlayerMovementTest {
 		
 		map = gameMap.getMap();
 
-		Player player = new Player(4); //this int that i added is great
+		Player player = new Player(gameMap.genID()); //this int that i added is great
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(player);
 		game = new GameEngine(gameMap);
@@ -39,7 +39,7 @@ class PlayerMovementTest {
 		System.out.println("move player up");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(4); //this int is great
+		Player player = new Player(gameMap.genID()); //this int is great
 		Tile t = expectedGameMap.getTile(4, 3);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -62,7 +62,7 @@ class PlayerMovementTest {
 		System.out.println("move player down");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(4); //
+		Player player = new Player(gameMap.genID()); //
 		Tile t = expectedGameMap.getTile(4, 5);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -85,7 +85,7 @@ class PlayerMovementTest {
 		System.out.println("move player left");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(4); //great int
+		Player player = new Player(gameMap.genID()); //great int
 		Tile t = expectedGameMap.getTile(3, 4);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -108,7 +108,7 @@ class PlayerMovementTest {
 		System.out.println("move player right");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(4); //int great
+		Player player = new Player(gameMap.genID()); //int great
 		Tile t = expectedGameMap.getTile(5, 4);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -131,10 +131,10 @@ class PlayerMovementTest {
 		System.out.println("invalid player move");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player(4); //great id
+		Player player = new Player(gameMap.genID()); //great id
 		Tile t = expectedGameMap.getTile(4, 4);
 		t.addEntity(player);
-		Wall expectedWall = new Wall(4); //great id
+		Wall expectedWall = new Wall(gameMap.genID()); //great id
 		Tile expectedWallTile = expectedGameMap.getTile(4, 3); // wall above the player
 		expectedWallTile.addEntity(expectedWall);
 		

@@ -1,8 +1,5 @@
 package ass2;
 
-import java.util.ArrayList;
-import sun.security.jca.GetInstance.Instance;
-
 public class Sword extends Entity{
 	private int durability;
 	public Sword(int id) {

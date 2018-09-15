@@ -23,6 +23,7 @@ public class MainTest {
 
 		Map map = new Map();
 		Hunter hunter = null;
+		//idk wtf this shit is
 		for(Entity e: map.getEntityLocation(55).getEntities()){
 			if(e.getId() == 55){
 				hunter = (Hunter)e;
