@@ -3,12 +3,7 @@ package ass2;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.annotation.Testable;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.awt.print.Printable;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class PlayerMovementTest {
@@ -23,7 +18,7 @@ class PlayerMovementTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		gameMap = new Map(10);
+		gameMap = new Map(20);
 		//gameMap.addWinCondition(WinCondition.Treasure);
 		
 		map = gameMap.getMap();
@@ -39,7 +34,7 @@ class PlayerMovementTest {
 	@Test
 	void testValidMoveUp() {
 		System.out.println("move player up");
-		Map expectedGameMap = new Map(10);
+		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
 		Player player = new Player(gameMap.genID()); //this int is great
 		Tile t = expectedGameMap.getTile(4, 3);
@@ -64,7 +59,7 @@ class PlayerMovementTest {
 	@Test
 	void testValidMoveDown() {
 		System.out.println("move player down");
-		Map expectedGameMap = new Map(10);
+		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
 		Player player = new Player(gameMap.genID()); //
 		Tile t = expectedGameMap.getTile(4, 5);
@@ -87,7 +82,7 @@ class PlayerMovementTest {
 	@Test
 	void testValidMoveLeft() {
 		System.out.println("move player left");
-		Map expectedGameMap = new Map(10);
+		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
 		Player player = new Player(gameMap.genID()); //great int
 		Tile t = expectedGameMap.getTile(3, 4);
@@ -110,7 +105,7 @@ class PlayerMovementTest {
 	@Test
 	void testValidMoveRight() {
 		System.out.println("move player right");
-		Map expectedGameMap = new Map(10);
+		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
 		Player player = new Player(gameMap.genID()); //int great
 		Tile t = expectedGameMap.getTile(5, 4);
@@ -133,7 +128,7 @@ class PlayerMovementTest {
 	@Test
 	void testInvalidMove() { // try to make move into wall, player shouldn't move
 		System.out.println("invalid player move");
-		Map expectedGameMap = new Map(10);
+		Map expectedGameMap = new Map(20);
 		Tile[][] expectedMap = expectedGameMap.getMap();
 		Player player = new Player(gameMap.genID()); //great id
 		Tile t = expectedGameMap.getTile(4, 4);
