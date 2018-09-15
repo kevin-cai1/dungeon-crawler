@@ -60,7 +60,27 @@ class EnemyTest {
 		assert(testMap.getEntityLocation(strategist.getId()).getY() == 4);
 	}
 	@Test
-	void CowardMovementTest() {
+	void CowardMovement3BlocksTest() {
+		Coward coward = new Coward(testMap.genID());
+		Tile tile3 = testMap.getTile(4, 5);
+		tile3.addEntity(coward);
+		Player player2 = new Player(testMap.genID());
+		Tile tile4 = testMap.getTile(9, 5);
+		tile4.addEntity(player2);
+		coward.getAction(testMap);
+		//System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getX());
+		assert(testMap.getEntityLocation(coward.getId()).getX() == 5);
+		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
+		coward.getAction(testMap);
+		//System.out.println(testMap.getEntityLocation(coward.getId()).getX()+" "+testMap.getEntityLocation(coward.getId()).getY());
+		assert(testMap.getEntityLocation(coward.getId()).getX() == 6);
+		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
+		coward.getAction(testMap);
+		assert(testMap.getEntityLocation(coward.getId()).getX() == 5);
+		assert(testMap.getEntityLocation(coward.getId()).getY() == 5);
+	}
+	@Test
+	void CowardRunsAwayTest() {
 		Coward coward = new Coward(testMap.genID());
 		Tile tile3 = testMap.getTile(4, 5);
 		tile3.addEntity(coward);
