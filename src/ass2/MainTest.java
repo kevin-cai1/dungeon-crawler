@@ -27,10 +27,18 @@ public class MainTest {
 		Wall wall = new Wall(testMap.genID());
 		Tile tile = testMap.getTile(5, 5);
 		tile.addEntity(wall);
+		Bomb bomb = new Bomb(testMap,testMap.genID());
+		tile.addEntity(bomb);
+
 		Player player2 = new Player(testMap.genID());
-		if(player2.putInventory(new Sword(1))){
-			System.out.println("hello");
+		for(Entity e: tile.getEntities()){
+			if(e instanceof Bomb){
+				if(player2.putInventory(e)){
+					System.out.println();
+				}
+			}
 		}
+
 		Tile tile4 = testMap.getTile(9, 5);
 		tile4.addEntity(player2);
 		hunter2.getAction(testMap);
