@@ -148,10 +148,10 @@ public class GameEngine {
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY-1];
 			Tile followingTile = map[playerX][playerY-2];
-			
+	
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
-			
+			 
 			System.out.println(movePlayer);
 			if (movePlayer == true) {
 				gameMap.movePlayer(playerAction);	
