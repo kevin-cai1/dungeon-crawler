@@ -259,5 +259,21 @@ class PlayerMovementTest {
 		assertTrue(boulderLocation.getY() == 2);
 	}
 	
+	@Test
+	void testTreasurePickup() { // try to make move into treasure, player should pick up
+		System.out.println("player treasure");
+		
+		Treasure treasure = new Treasure(gameMap.genID());
+		Tile treasureTile = gameMap.getTile(4, 3); // exit above the player
+		treasureTile.addEntity(treasure);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		assertTrue(player.getTreasure() == 1); //player has bomb
+		assertTrue(game.checkWin(player, 1, gameMap.getArrayLength(), map));
+	}
+	
 
 }

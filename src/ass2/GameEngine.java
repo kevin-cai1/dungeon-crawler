@@ -235,7 +235,7 @@ public class GameEngine {
 
 
 
-	private boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
+	public boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
 		boolean allSwitches = true;
 		boolean allEnemiesDestroyed = true;
 		for (int i = 0; i < arrayLength; i++) {
