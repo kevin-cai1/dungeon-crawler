@@ -53,9 +53,18 @@ public class Bomb extends Entity{
 		if(valueInMap(bombY - 1)) {
 			explosionRadius.add(map.getTile(bombX, bombY - 1));
 		}
+		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(true) {/*e is enemy or boulder*/
+				if(e instanceof Enemy || e instanceof Boulder) {/*e is enemy or boulder*/
+					removedEntities.add(e);
+					//t.removeEntity(e);
+				}
+			}
+		}
+		for(Tile t : explosionRadius) {
+			for(Entity e : removedEntities) {
+				if(t.getEntities().contains(e)) {
 					t.removeEntity(e);
 				}
 			}

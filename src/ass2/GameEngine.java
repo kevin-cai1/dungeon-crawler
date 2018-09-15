@@ -414,10 +414,8 @@ public class GameEngine {
 		}
 		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : attackedTiles) {
-			System.out.println(t.getX() + ", " + t.getY());
 			for(Entity e : t.getEntities()) {
 				if(e instanceof Enemy) {
-					System.out.println(e.getId() + e.getClass().toString());
 					removedEntities.add(e);
 				}
 			}
