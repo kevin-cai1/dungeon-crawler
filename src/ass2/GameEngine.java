@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 
+import javax.naming.TimeLimitExceededException;
+
 public class GameEngine {
 	private Map gameMap;
 	private GameState gameState;
@@ -351,11 +353,11 @@ public class GameEngine {
 			} else if (e instanceof Arrow) {
 				player.putInventory(e);
 				affectedTile.removeEntity(e);
-			} else if (e instanceof Sword) {
+			}/* else if (e instanceof Sword) {
 				if (player.putInventory(e) == true) {
 					affectedTile.removeEntity(e);
 				}
-			} else if (e instanceof Enemy) {	// lose if you walk into enemy
+			} */else if (e instanceof Enemy) {	// lose if you walk into enemy
 				gameState = GameState.Lose;
 			} else if (e instanceof Pit) {	// lose if you walk into pit
 				gameState = GameState.Lose;
@@ -453,119 +455,114 @@ public class GameEngine {
 	// This should now work for double boulder and boulder wall. 
 	// Should validate entity movements
 	public boolean validateMove(Entity entity, Direction move) {
-		for (int i = 0; i < arrayLength; i++) {
-			for (int j = 0; j < arrayLength; j++) {
-				Tile[][] tile = gameMap.getMap();
-				for (Entity e : tile[i][j].getEntities()) {
-					if (e.equals(entity)) {
-						// Calculate the tile it needs to move to
-						switch (move) {
-							case NORTH: 
-								if (j == 0) {
+		Tile tile = gameMap.getEntityLocation(entity.getId());	
+		int tileX = tile.getX();
+		int tileY = tile.getY();
+		Tile[][] entityLocation = gameMap.getMap();
+		// Calculate the tile it needs to move to
+		switch (move) {
+			case NORTH: 
+				if ( tileY == 0) {
+					return false;
+				}
+				else {
+					for (Entity e2 : entityLocation[tileX][tileY-1].getEntities()) {
+						if (e2 instanceof Obstacle) {
+							if (e2 instanceof Door) {
+								return true;
+							}
+							if (e2 instanceof Boulder) {
+								if (tileY < 2) { 		// account for double boulder or boulder wall
 									return false;
 								}
-								else {
-									for (Entity e2 : tile[i][j-1].getEntities()) {
-										if (e2 instanceof Obstacle) {
-											if (e2 instanceof Door) {
-												return true;
-											}
-											if (e2 instanceof Boulder) {
-												if (j < 2) { 		// account for double boulder or boulder wall
-													return false;
-												}
-												for (Entity e3 : tile[i][j-2].getEntities()) {
-													if (e3 instanceof Obstacle) {
-														return false;
-													}
-												}
-											}
-											return false;
-										}
+								for (Entity e3 : entityLocation[tileX][tileY-2].getEntities()) {
+									if (e3 instanceof Obstacle) {
+										return false;
 									}
 								}
-								break;
-							case EAST:
-								if (i == 19) {
-									return false;
-								}
-								else {
-									for (Entity e2 : tile[i+1][j].getEntities()) {
-										if (e2 instanceof Obstacle) {
-											if (e2 instanceof Door) {
-												return true;
-											}
-											if (e2 instanceof Boulder) {
-												if (i > 17) {
-													return false;
-												}
-												for (Entity e3 : tile[i+2][j].getEntities()) {
-													if (e3 instanceof Obstacle) {
-														return false;
-													}
-												}
-											}
-											return false;
-										}
-									}
-								}
-								break;
-							case SOUTH:
-								if (j == 19) {
-									return false;
-								}
-								else {
-									for (Entity e2 : tile[i][j+1].getEntities()) {
-										if (e2 instanceof Obstacle) {
-											if (e2 instanceof Door) {
-												return true;
-											}
-											if (e2 instanceof Boulder) {
-												if (j > 17) {
-													return false;
-												}
-												for (Entity e3 : tile[i][j+2].getEntities()) {
-													if (e3 instanceof Obstacle) {
-														return false;
-													}
-												}
-											}
-											return false;
-										}
-									}
-								}
-								break;
-							case WEST:
-								if (i == 0) {
-									return false;
-								}
-								else {
-									for (Entity e2 : tile[i-1][j].getEntities()) {
-										if (e2 instanceof Obstacle) {
-											if (e2 instanceof Door) {
-												return true;
-											}
-											if (e2 instanceof Boulder) {
-												if (i < 2) {
-													return false;
-												}
-												for (Entity e3 : tile[i-2][j].getEntities()) {
-													if (e3 instanceof Obstacle) {
-														return false;
-													}
-												}
-											}
-											return false;
-										}
-									}
-								}
-								break;
+							}
+							return false;
 						}
-						return true;
 					}
 				}
-			}
+				break;
+			case EAST:
+				if (tileX == 19) {
+					return false;
+				}
+				else {
+					for (Entity e2 : entityLocation[tileX+1][tileY].getEntities()) {
+						if (e2 instanceof Obstacle) {
+							if (e2 instanceof Door) {
+								return true;
+							}
+							if (e2 instanceof Boulder) {
+								if (tileX > 17) {
+									return false;
+								}
+								for (Entity e3 : entityLocation[tileX+2][tileY].getEntities()) {
+									if (e3 instanceof Obstacle) {
+										return false;
+									}
+								}
+							}
+							return false;
+						}
+					}
+				}
+				break;
+			case SOUTH:
+				if (tileY == 19) {
+					return false;
+				}
+				else {
+					for (Entity e2 : entityLocation[tileX][tileY+1].getEntities()) {
+						if (e2 instanceof Obstacle) {
+							if (e2 instanceof Door) {
+								return true;
+							}
+							if (e2 instanceof Boulder) {
+								if (tileY > 17) {
+									return false;
+								}
+								for (Entity e3 : entityLocation[tileX][tileY+2].getEntities()) {
+									if (e3 instanceof Obstacle) {
+										return false;
+									}
+								}
+							}
+							return false;
+						}
+					}
+				}
+				break;
+			case WEST:
+				if (tileX == 0) {
+					return false;
+				}
+				else {
+					for (Entity e2 : entityLocation[tileX-1][tileY].getEntities()) {
+						if (e2 instanceof Obstacle) {
+							if (e2 instanceof Door) {
+								return true;
+							}
+							if (e2 instanceof Boulder) {
+								if (tileX < 2) {
+									return false;
+								}
+								for (Entity e3 : entityLocation[tileX-2][tileY].getEntities()) {
+									if (e3 instanceof Obstacle) {
+										return false;
+									}
+								}
+							}
+							return false;
+						}
+					}
+				}
+				break;
 		}
+		System.out.println("validate move is fked");
 		return true; // It shouldnt reach this one ever, this is just to make compiler happy
 	}
 	
