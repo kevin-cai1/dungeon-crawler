@@ -25,7 +25,7 @@ class PlayerMovementTest {
 		
 		map = gameMap.getMap();
 
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(player);
 		game = new GameEngine(gameMap);
@@ -38,7 +38,7 @@ class PlayerMovementTest {
 		System.out.println("move player up");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = expectedGameMap.getTile(4, 3);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -61,7 +61,7 @@ class PlayerMovementTest {
 		System.out.println("move player down");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = expectedGameMap.getTile(4, 5);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -84,7 +84,7 @@ class PlayerMovementTest {
 		System.out.println("move player left");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = expectedGameMap.getTile(3, 4);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -107,7 +107,7 @@ class PlayerMovementTest {
 		System.out.println("move player right");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = expectedGameMap.getTile(5, 4);
 		t.addEntity(player);
 		expectedGameMap.printMap();
@@ -130,17 +130,17 @@ class PlayerMovementTest {
 		System.out.println("invalid player move");
 		Map expectedGameMap = new Map(10);
 		Tile[][] expectedMap = expectedGameMap.getMap();
-		Player player = new Player();
+		Player player = new Player(1);
 		Tile t = expectedGameMap.getTile(4, 4);
 		t.addEntity(player);
-		Wall expectedWall = new Wall();
+		Wall expectedWall = new Wall(2);
 		Tile expectedWallTile = expectedGameMap.getTile(4, 3); // wall above the player
 		expectedWallTile.addEntity(expectedWall);
 		
 		expectedGameMap.printMap();
 		System.out.println("expected map ^");
 		
-		Wall wall = new Wall();
+		Wall wall = new Wall(2);
 		Tile wallTile = gameMap.getTile(4, 3); // wall above the player
 		wallTile.addEntity(wall);
 		gameMap.printMap();
@@ -163,7 +163,7 @@ class PlayerMovementTest {
 		System.out.println("player exit");
 
 				
-		Exit exit = new Exit();
+		Exit exit = new Exit(3);
 		Tile exitTile = gameMap.getTile(4, 3); // exit above the player
 		exitTile.addEntity(exit);
 		gameMap.printMap();
@@ -179,7 +179,7 @@ class PlayerMovementTest {
 		System.out.println("player pit");
 
 				
-		Pit pit = new Pit();
+		Pit pit = new Pit(3);
 		Tile pitTile = gameMap.getTile(4, 3); // exit above the player
 		pitTile.addEntity(pit);
 		gameMap.printMap();
@@ -195,7 +195,7 @@ class PlayerMovementTest {
 		System.out.println("player pit");
 
 				
-		Sword sword = new Sword();
+		Sword sword = new Sword(3);
 		Tile swordTile = gameMap.getTile(4, 3); // exit above the player
 		swordTile.addEntity(sword);
 		gameMap.printMap();
@@ -212,7 +212,7 @@ class PlayerMovementTest {
 		System.out.println("player potion");
 
 				
-		InvincibilityPotion potion = new InvincibilityPotion();
+		InvincibilityPotion potion = new InvincibilityPotion(3);
 		Tile potionTile = gameMap.getTile(4, 3); // exit above the player
 		potionTile.addEntity(potion);
 		gameMap.printMap();
@@ -221,6 +221,21 @@ class PlayerMovementTest {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
 		assertTrue(player.getInvincibility());
+	}
+	
+	@Test
+	void testBombPickup() { // try to make move into wall, player shouldn't move
+		System.out.println("player bomb");
+		
+		Bomb bomb = new Bomb(gameMap, 3);
+		Tile bombTile = gameMap.getTile(4, 3); // exit above the player
+		bombTile.addEntity(bomb);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		//assertTrue(player.getInvincibility()); player has bomb
 	}
 	
 

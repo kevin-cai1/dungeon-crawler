@@ -13,7 +13,7 @@ public class Map {
 		//Temporary test stuff
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
-				Floor floor = new Floor();
+				Floor floor = new Floor(0);
 				ArrayList<Entity> entities = new ArrayList<>();
 				entities.add(floor);
 				map[i][j] = new Tile(entities, i, j);
