@@ -2,6 +2,8 @@ package ass2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,31 +95,22 @@ class KillingEnemyTest {
 			game.swing(Direction.NORTH);	
 		}
 		
-		
-		if (player.checkBomb()) {
-			Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
-			placedBomb.placeBomb();
-			tickingBombs.add(placedBomb);
-		}
+		ArrayList<Bomb> tickingBombs = new ArrayList<Bomb>();
+		Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
+		placedBomb.placeBomb();
+		tickingBombs.add(placedBomb);
+
+
+		/*for(int i = 3; i > 0; i++) {
+			for (Bomb bomb : tickingBombs) {
+				System.out.println(bomb.getTimer());
 	
-				
-	if (gameState.equals(GameState.Win) || gameState.equals(GameState.Lose)) {
-		return gameState;
-	}
-	
-	// calculate enemy movements
-	if (playerMoved) {
-		moveEnemies(arrayLength, map);
-	}
-	
-	checkPlayerStatus(gameMap, player);
-	
-	for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
-		if (bomb.tick() == false) {
-			tickingBombs.remove(bomb);
-		}
-	}
-			
+				if (bomb.tick() == false) {
+					System.out.println(bomb.getTimer());
+					tickingBombs.remove(bomb);
+				}
+			}
+		}*/			
 			
 			
 			assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());

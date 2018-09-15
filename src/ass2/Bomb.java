@@ -13,7 +13,7 @@ public class Bomb extends Entity{
 		this.map = map;
 	}
 	
-	private int getTimer() {
+	public int getTimer() {
 		return timer;
 	}
 	
