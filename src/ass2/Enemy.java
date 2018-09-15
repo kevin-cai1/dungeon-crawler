@@ -32,15 +32,22 @@ public abstract class Enemy extends Entity{
 	 * @param queuePop
 	 */
 	public void visitCheck(Tile adjacent, Tile queuePop) {
+		boolean obstacle = false;
 		if(!visited.contains(adjacent)) {
 			visited.add(adjacent);
 			for(Entity entity: adjacent.getEntities()) {
-				if(!(entity instanceof Obstacle)) {
+				if((entity instanceof Obstacle)) {
+					obstacle = true;
+				}
+			}
+			if(!obstacle){
+				if(!queue.contains(adjacent)){
 					queue.offer(adjacent);
 					parent.put(adjacent, queuePop);
 				}
 			}
 		}
+
 	}
 	/**
 	 * in theory what this should do is find the closest tile to the player that the hunter can move to 

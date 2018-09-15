@@ -8,6 +8,7 @@ public class Map {
 	private int arrayLength;
 	private int idCounter;
 	public Map(int arrayLength) {
+		winConditions = new ArrayList<>();
 		this.arrayLength = arrayLength;
 		map = new Tile[arrayLength][arrayLength];
 		idCounter = 0;
@@ -28,6 +29,7 @@ public class Map {
 	}
 	//Temporary map constructor for testing CURRENTLY SHOULD MAKE A 
 	public Map() {
+		winConditions = new ArrayList<>();
 		arrayLength = 20;
 		map = new Tile[arrayLength][arrayLength];
 		//Temporary test stuff
@@ -37,18 +39,15 @@ public class Map {
 		ArrayList<Entity> wall = new ArrayList<>();
 		Wall wall2 = new Wall(genID());
 		
-		ArrayList<Entity> hunter = new ArrayList<>();
-		Hunter hunter2 = new Hunter(genID());
-		
 		ArrayList<Entity> player = new ArrayList<>();
 		Player player2 = new Player(genID());
 		
 		player.add(player2);
-		hunter.add(hunter2);
 		wall.add(wall2);
-		entities.add(arrow);
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
+				entities = new ArrayList<>();
+				entities.add(arrow);
 				if(j == 0 || i == 0) {
 					map[i][j] = new Tile(wall, i, j);
 				}
@@ -84,9 +83,6 @@ public class Map {
 				}
 				else if (i == 9 && j == 7) {
 					map[i][j] = new Tile(player, i, j);
-				}
-				else if (i == 2 && j == 3) {
-					map[i][j] = new Tile(hunter, i, j);
 				}
 				else {
 					map[i][j] = new Tile(entities, i, j);

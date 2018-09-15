@@ -22,7 +22,7 @@ class PlayerInteractionTest {
 		
 		map = gameMap.getMap();
 
-		Player player = new Player();
+		Player player = new Player(gameMap.genID());
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(player);
 		game = new GameEngine(gameMap);
@@ -31,13 +31,13 @@ class PlayerInteractionTest {
 	@Test
 	void testSwingSwordUp() {
 		//System.out.println("swing sword up");
-		Sword sword = new Sword();
+		Sword sword = new Sword(gameMap.genID());
 		Map expectedGameMap = new Map(10);
-		Player player = new Player();
+		Player player = new Player(gameMap.genID());
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(player);
 
-		Hunter hunter = new Hunter();
+		Hunter hunter = new Hunter(gameMap.genID());
 		t = gameMap.getTile(4, 3);
 		t.addEntity(hunter);
 		

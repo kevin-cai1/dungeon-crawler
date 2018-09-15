@@ -140,7 +140,7 @@ class PlayerMovementTest {
 		expectedGameMap.printMap();
 		System.out.println("expected map ^");
 		
-		Wall wall = new Wall(4);// great id
+		Wall wall = new Wall(gameMap.genID());// great id
 		Tile wallTile = gameMap.getTile(4, 3); // wall above the player
 		wallTile.addEntity(wall);
 		gameMap.printMap();

@@ -273,36 +273,6 @@ public class GameEngine {
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
 						((Enemy) e).getAction(gameMap);	// enemy validation handled on individual enemy side
-						int enemyX = tile.getX();
-						int enemyY = tile.getY();
-						Direction enemyAction = Direction.NORTH;
-						Tile enemyNextTile = null;
-						switch (enemyAction) {
-						case NORTH:
-							enemyNextTile = map[enemyX][enemyY-1];
-							break;
-						case SOUTH:
-							enemyNextTile = map[enemyX][enemyY+1];
-							break;
-						case EAST:
-							enemyNextTile = map[enemyX+1][enemyY];
-							break;
-						case WEST:
-							enemyNextTile = map[enemyX-1][enemyY];
-							break;
-						}
-						
-						for (Entity nextTileEntity : enemyNextTile.getEntities()) {
-							if (nextTileEntity instanceof Pit) {
-								tile.removeEntity(e); // remove enemy from its tile (same as walking into pit and dying)
-								moveEnemy = false;
-							}
-						}
-						if (moveEnemy) {
-							gameMap.makeMove(e, enemyAction);
-						}
-						moveEnemy = true;
-
 					}
 				}
 			}
