@@ -76,10 +76,9 @@ public class Player extends Entity{
 		return false;
 	}
 	/**
-	 * Does not check whether entity is a valid entity. i.e. if sword already exists, it will not handle this case, or if too many arrows or bombs or something
-	 * SHOULD CHECK IF SWORD ALREADY IN INVENTORY. IF ALREADY IN DONT ADD ANOTHER ONE
-	 * RETURNS FALSE IF NOT BEING PICKED UP
+	 * 
 	 * @param entity
+	 * @return
 	 */
 	public boolean putInventory(Entity entity) {
 		Set<Entity> set = inventory.keySet();
