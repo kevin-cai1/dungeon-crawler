@@ -114,8 +114,8 @@ public class Map {
 		return null;
 	}
 	public Tile getEntityLocation(int id) {
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
+		for (int i = 0; i < arrayLength; i++) {
+			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e: tile.getEntities()) {
 					if (id == e.getId()) { //does this really work
@@ -184,16 +184,13 @@ public class Map {
 		}
 	}
 		
-
-	
-	
 	// Moves an entity one space in a given direction
 	public void makeMove(Entity entity, Direction move) {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) {
-					if (e.equals(entity)) {
+					if (e.getId() == entity.getId()) {
 						Entity EntityCopy = e;
 						tile.removeEntity(e); // Remove entity from current tile
 						// Calculate the tile it needs to move to
