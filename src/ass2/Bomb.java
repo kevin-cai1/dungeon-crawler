@@ -70,12 +70,13 @@ public class Bomb extends Entity{
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		/*StringBuilder sb = new StringBuilder();
 		sb.append("Bomb Position [x][y]: ");
 		sb.append(bombPosition.getX());
 		sb.append(" ");
 		sb.append(bombPosition.getY());
 		sb.append("Bomb Timer: " + timer);
-		return sb.toString();
+		return sb.toString();*/
+		return "Q";
 	}
 }
