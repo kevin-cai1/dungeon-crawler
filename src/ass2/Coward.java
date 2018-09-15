@@ -33,62 +33,26 @@ public class Coward extends Enemy{
     		neww.addEntity(enemy); //puts it into where it should be
     	}
     	else {// i.e. when its supposed to act like a coward
-    		int mapSize = map.getArrayLength();
-    		int goAwayX = mapSize-playerX;
-    		int goAwayY = mapSize-playerY;
-    		Tile goAWay = map.getTile(goAwayX, goAwayY);
-    		validPath(map, goAWay, curPos);
-    		makeValidPath(map, goAWay, shortest);
+    		Tile tile;
+    		double[] dist = new double[4];
+    		if(curY-1 >= 0) {
+    			tile = map.getTile(curX, curY-1);//North
+    			dist[0] = distCalc(playerX, playerY,tile.getX(),tile.getY());
+    		}
+    		if(curY+1 < 20) {
+    			tile = map.getTile(curX, curY+1);//South
+    			dist[1] = distCalc(playerX, playerY,tile.getX(),tile.getY());
+    		}
+    		if(curX+1 < 20) {
+    			tile = map.getTile(curX+1, curY);//East
+    			dist[2] = distCalc(playerX, playerY,tile.getX(),tile.getY());
+    		}
+    		if(curX-1 >= 0) {
+    			tile = map.getTile(curX-1, curY);//West
+    			dist[3] = distCalc(playerX, playerY,tile.getX(),tile.getY());
+    		}
+
     	}
     }
 
-
-	private void validPath(Map map, Tile tile, Tile curPos) {
-		Tile adjacent;
-		Tile queuePop;
-		queue.add(curPos);
-		visited.add(curPos);
-		int popPosX;
-		int popPosY;
-		while(!queue.isEmpty()) {
-			queuePop = queue.remove();
-			popPosX = queuePop.getX();
-			popPosY = queuePop.getY();
-			if(queuePop.equals(tile)) {
-				break;
-			}
-			//East Direction
-			if(popPosX+1 < 20) {//20 being map size
-				adjacent = map.getTile(popPosX+1, popPosY);
-				visitCheck(adjacent, queuePop);
-			}
-			//West Direction
-			if(popPosX-1 >= 0) {
-				adjacent = map.getTile(popPosX-1, popPosY);
-				visitCheck(adjacent, queuePop);
-			}
-			//South Direction
-			if(popPosY+1 < 20) {
-				adjacent = map.getTile(popPosX, popPosY+1);
-				visitCheck(adjacent, queuePop);
-			}
-			//North Direction
-			if(popPosY-1 >= 0) {
-				adjacent = map.getTile(popPosX, popPosY-1);
-				visitCheck(adjacent, queuePop);
-			}
-		}
-	}
-    @Override
-    public void visitCheck(Tile adjacent, Tile queuePop) {
-		if(!visited.contains(adjacent)) {
-			visited.add(adjacent);
-			for(Entity entity: adjacent.getEntities()) {
-				if(!(entity instanceof Obstacle) && !(entity instanceof Player)) { //has to additionally check that it doesnt run into the player
-					queue.offer(adjacent);
-					parent.put(adjacent, queuePop);
-				}
-			}
-		}
-    }
 }
