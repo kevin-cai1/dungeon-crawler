@@ -52,8 +52,8 @@ class PlayerMovementTest {
 		gameMap.printMap();
 		System.out.println("result map^");
 		playerLocation = gameMap.getPlayerLocation();
-		assertTrue(playerLocation.getX() == expectedLocation.getX());
-		assertTrue(playerLocation.getY() == expectedLocation.getY());
+		assertTrue(playerLocation.getX() == expectedLocation.getX()); // 4
+		assertTrue(playerLocation.getY() == expectedLocation.getY()); // 3
 	}
 	
 	@Test
@@ -251,6 +251,7 @@ class PlayerMovementTest {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
 		Tile boulderLocation = gameMap.getEntityLocation(boulder.getId());
+		playerLocation = gameMap.getPlayerLocation();
 		// check player location
 		assertTrue(playerLocation.getX() == 4);
 		assertTrue(playerLocation.getY() == 3);
