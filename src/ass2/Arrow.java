@@ -8,7 +8,10 @@ public class Arrow extends Entity{
 		this.map = map;
 		this.arrowPosition = map.getPlayerLocation();
 	}
-
+	/**
+	 * Shoots an arrow in a given direction. It will hit 1 enemy and kill it or hit an Obstacle and do nothing
+	 * @param direction direction it is fired in
+	 */
 	public void shootArrow(Direction direction) {
 		this.arrowPosition = map.getPlayerLocation();
 		int arrowX = arrowPosition.getX();

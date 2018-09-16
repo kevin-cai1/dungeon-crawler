@@ -12,33 +12,19 @@ public class DesignEngine {
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
 	
-	public DesignEngine() {
+	public DesignEngine(int arrayLength) {
 		this.entityList = new ArrayList<>();
-		this.map = new Map();
+		this.map = new Map(arrayLength);
 		this.enemyWinCondition = false; //kill me now
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
 	}
-	
-	public Map runDesignMode() {
-		while (gameState == GameState.Design) {
-			
-			if (true) {/* user tries to place tile*/
-				int x = 0;
-				int y = 0;
-				Entity entity = new FloorSwitch(map.genID()); //remove this later doesnt do anything
-				placeEntity(entity, x, y);
-			}
-			
-			if (true) {/*user decides to play */
-				// launch play game mode with current dungeon design
-				gameState = GameState.Play;
-				break;
-			}
-		}
-		return new Map(); //shouldnt return new map
-	}
-	
+	/**
+	 * tries to place an entity at the specified position
+	 * @param entity
+	 * @param x
+	 * @param y
+	 */
 	public void placeEntity(Entity entity, int x, int y) {
 		if (validatePlacement(entity, x, y) == true) {
 			Tile tile = map.getTile(x, y);
@@ -46,10 +32,16 @@ public class DesignEngine {
 			tile.addEntity(entity);
 		}
 	}
-
+	/**
+	 * validates whether a position is valid on the map. i.e. entities cannot be placed on top of obstacles
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean validatePlacement(Entity entity, int x, int y) {
 		
-		if (x > 19 || x < 0 || y > 19 || y < 0) {
+		if (x > map.getArrayLength()-1 || x < 0 || y > map.getArrayLength()-1 || y < 0) {
 			return false;			// cannot place out of bounds
 		}
 		
@@ -61,10 +53,13 @@ public class DesignEngine {
 		}
 		return true;
 	}
-	
+	/**
+	 * checks if the win condition is exit
+	 * @return
+	 */
 	private boolean exitWinCondition() {
-		for (int i = 0; i < 20; i++) {
-			for (int j = 0; j < 20; j++) {
+		for (int i = 0; i < map.getArrayLength()-1; i++) {
+			for (int j = 0; j < map.getArrayLength()-1; j++) {
 				for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
 					if (e instanceof Exit) { // count all the exits
 						return true;
@@ -74,7 +69,12 @@ public class DesignEngine {
 		}
 		return false;
 	}
-	
+	public Map getMap() {
+		return this.map;
+	}
+	/**
+	 * checks what win conditions there are for the map
+	 */
 	private void setWinConditions() {
 		if (exitWinCondition()) {
 			this.enemyWinCondition = false;
