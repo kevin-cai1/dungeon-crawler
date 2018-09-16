@@ -476,7 +476,6 @@ public class GameEngine {
 								}
 								return true;
 							}
-							return false;
 						}
 					}
 				}

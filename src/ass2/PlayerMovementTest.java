@@ -260,7 +260,6 @@ class PlayerMovementTest {
 		assertTrue(boulderLocation.getY() == 2);
 	}
 
-	
 	@Test
 	void testTreasurePickup() { // try to make move into treasure, player should pick up
 		System.out.println("player treasure");
@@ -276,7 +275,6 @@ class PlayerMovementTest {
 		assertTrue(player.getTreasure() == 1); //player has bomb
 	//	assertTrue(game.checkWin(player, 1, gameMap.getArrayLength(), map));
 	}
-
 	
 	@Test
 	void testKeyPickup() {
@@ -330,6 +328,8 @@ class PlayerMovementTest {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
 		assertTrue(player.checkKey(door));
+		assertTrue(player.hasKey(key));
+		playerLocation = gameMap.getPlayerLocation();
 		assertFalse(game.movePlayerNorth(map, playerLocation, player));	// check that player cant move up into the door
 		assertFalse(player.checkKey(door));	// check that player does not have correct key
 		assertFalse(door.getStatus());		// check that the door is closed
@@ -383,5 +383,4 @@ class PlayerMovementTest {
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));	// after this, player should be at (4,1)
 		assertFalse(game.movePlayerNorth(map, playerLocation, player));	// since boulder is at (4, 0), this should fail
 	}
-	
 }
