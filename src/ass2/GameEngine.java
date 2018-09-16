@@ -587,8 +587,7 @@ public class GameEngine {
 				}
 				break;
 		}
-		System.out.println("validate move is fked");
-		return true; // It shouldnt reach this one ever, this is just to make compiler happy
+		return true; 
 	}
 	
 	/*private boolean exitWinCondition() {

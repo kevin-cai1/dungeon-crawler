@@ -2,6 +2,7 @@ package ass2;
 
 import java.util.ArrayList;
 
+
 public class Bomb extends Entity{
 	private int timer;
 	private Map map;
