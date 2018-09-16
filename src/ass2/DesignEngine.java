@@ -3,7 +3,6 @@ package ass2;
 import java.io.*;
 import java.util.ArrayList;
 
-
 public class DesignEngine {
 	private ArrayList<Entity> entityList;
 	private Map map;
@@ -20,6 +19,10 @@ public class DesignEngine {
 		this.treasureWinCondition = false;
 	}
 	
+	/**
+	 * Runs the game in designer mode
+	 * @return Map
+	 */
 	public Map runDesignMode() {
 		while (gameState == GameState.Design) {
 			
@@ -39,6 +42,12 @@ public class DesignEngine {
 		return new Map(); //shouldnt return new map
 	}
 	
+	/**
+	 * Places an entity on a specific tile
+	 * @param entity
+	 * @param x
+	 * @param y
+	 */
 	public void placeEntity(Entity entity, int x, int y) {
 		if (validatePlacement(entity, x, y) == true) {
 			Tile tile = map.getTile(x, y);
@@ -47,6 +56,13 @@ public class DesignEngine {
 		}
 	}
 
+	/**
+	 * Checks that the entity can be placed on a specific tile
+	 * @param entity
+	 * @param x
+	 * @param y
+	 * @return true if there isnt 
+	 */
 	public boolean validatePlacement(Entity entity, int x, int y) {
 		
 		if (x > 19 || x < 0 || y > 19 || y < 0) {

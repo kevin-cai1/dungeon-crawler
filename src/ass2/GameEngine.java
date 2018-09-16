@@ -34,10 +34,18 @@ public class GameEngine {
 
 	}
 	
+	/**
+	 * returns the gamestate
+	 * @return gameState (can be Paused, Win, Play, Quit, Menu, Lose, Design)
+	 */
 	public GameState getGameState() {
 		return gameState;
 	}
 	
+	/**
+	 * runs the game in 'play' mode (game mode 1)
+	 * @return the gameState (can be win, lose, play depending on how the player moved)
+	 */
 	public GameState runGame() {
 		gameState = GameState.Play;
 		setWinConditions();
@@ -159,6 +167,15 @@ public class GameEngine {
 		}
 	}
 	
+	/**
+	 * moves the player up one tile
+	 * calls validateMove and moveConsequences to ensure the move is valid
+	 * and the rest of the map and entities perform actions based on the players move
+	 * @param map
+	 * @param playerLocation initial location of the player
+	 * @param player
+	 * @return true if the player has been successfully moved up one tile
+	 */
 	public boolean movePlayerNorth(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.NORTH;
 		System.out.println("trying to move player");
@@ -181,6 +198,15 @@ public class GameEngine {
 		return false;
 	}
 	
+	/**
+	 * moves the player down one tile
+	 * calls validateMove and moveConsequences to ensure the move is valid
+	 * and the rest of the map and entities perform actions based on the players move
+	 * @param map
+	 * @param playerLocation initial location of the player
+	 * @param player
+	 * @return true if the player has been successfully moved down one tile
+	 */
 	public boolean movePlayerSouth(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.SOUTH;
 		if (this.validateMove(player, playerAction) == true) {
@@ -201,7 +227,15 @@ public class GameEngine {
 		
 	}
 
-
+	/**
+	 * moves the player right one tile
+	 * calls validateMove and moveConsequences to ensure the move is valid
+	 * and the rest of the map and entities perform actions based on the players move
+	 * @param map
+	 * @param playerLocation initial location of the player
+	 * @param player
+	 * @return true if the player has been successfully moved right one tile
+	 */
 	public boolean movePlayerEast(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.EAST;
 		if (this.validateMove(player, playerAction) == true) {
@@ -222,6 +256,15 @@ public class GameEngine {
 	
 	}
 	
+	/**
+	 * moves the player left one tile
+	 * calls validateMove and moveConsequences to ensure the move is valid
+	 * and the rest of the map and entities perform actions based on the players move
+	 * @param map
+	 * @param playerLocation initial location of the player
+	 * @param player
+	 * @return true if the player has been successfully moved left one tile
+	 */
 	public boolean movePlayerWest(Tile[][] map, Tile playerLocation, Player player) {
 		Direction playerAction = Direction.WEST;
 		if (this.validateMove(player, playerAction) == true) {
@@ -241,9 +284,16 @@ public class GameEngine {
 		return false;
 		
 	}
-
-
-
+	
+	/**
+	 * Calls boudlerWincondition, enemyWincondition, and treasureWincondition to check if win conditions have been met
+	 * iterates through the map to check if enemies still alive or if switches still untriggered
+	 * @param player
+	 * @param numTreasures number of treasures on the map
+	 * @param arrayLength size of the map
+	 * @param map
+	 * @return true if player has met win conditions 
+	 */
 	public boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
 		boolean allSwitches = true;
 		boolean allEnemiesDestroyed = true;
@@ -284,6 +334,11 @@ public class GameEngine {
 		return satisfyWin;
 	}
 
+	/**
+	 * iterates through all entities on the map and calls getAction on enemies to make them move
+	 * @param arrayLength map size
+	 * @param map
+	 */
 	private void moveEnemies(int arrayLength, Tile[][] map) {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
@@ -297,6 +352,15 @@ public class GameEngine {
 		}
 	}
 
+	/**
+	 * checks the consequences of the player making a certain move and 
+	 * performs actions according to interactions between the players move and affected entities
+	 * @param player
+	 * @param playerAction direction the player is moving
+	 * @param affectedTile the tile the player is moving onto
+	 * @param followingTile the tile behind the affected tile in the same direction
+	 * @return true if all consequences accounted for and player has been validly moved
+	 */
 	private boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
 		boolean boulderMove = true;
 		Entity pitObject = null;
@@ -383,6 +447,11 @@ public class GameEngine {
 		return movePlayer;
 	}
 	
+	/**
+	 * swings sword in a certain direction, destroying all enemies one tile away in a 3 tile long line perpendicular to the direction of the swing
+	 * similar to a T shape 
+	 * @param direction direction the sword is swung at
+	 */
 	public void swing(Direction direction) {
 		Tile player = gameMap.getPlayerLocation();
 		ArrayList<Tile> attackedTiles = new ArrayList<Tile>();
@@ -464,6 +533,11 @@ public class GameEngine {
 
 	}
 	
+	/**
+	 * checks if the inputted value or coordinate is within the boundary of the map
+	 * @param value coordinate
+	 * @return true if its within the map boundary
+	 */
 	private boolean valueInMap(int value) {
 		if(value < 0 || value >= arrayLength) {
 			return false;
@@ -471,8 +545,14 @@ public class GameEngine {
 		return true;
 	}
 	
-	// This should now work for double boulder and boulder wall. 
-	// Should validate entity movements
+	/**
+	 * checks if a move valid so entities cannot move into obstacles such as walls and closed doors
+	 * checks tiles 1 and 2 units away from the entity in the direction they are trying to move
+	 * to ensure that the move is valid (moving into two boulders, walls)
+	 * @param entity the entity trying to perform a move
+	 * @param move direction the entity is trying to move
+	 * @return true if move is valid
+	 */
 	public boolean validateMove(Entity entity, Direction move) {
 		Tile tile = gameMap.getEntityLocation(entity.getId());
 		System.out.println(entity.getId());
@@ -589,19 +669,9 @@ public class GameEngine {
 		return true; 
 	}
 	
-	/*private boolean exitWinCondition() {
-		for (int i = 0; i < arrayLength; i++) {
-			for (int j = 0; j < arrayLength; j++) {
-				for (Entity e : this.gameMap.getMap()[i][j].getEntities()) { // look through every single entity
-					if (e instanceof Exit) { // count all the treasures
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}*/
-	
+	/**
+	 * sets win conditions for the game (can be combination of killing all enemies, collecting all treasure, triggering all switches)
+	 */
 	private void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
 		if (conditions != null) {
@@ -617,7 +687,12 @@ public class GameEngine {
 		}
 	}
 	
-	// returns false on bad player status (dead)
+	/**
+	 * checks if there is an enemy on the same tile as the player to see if they have been killed
+	 * @param map
+	 * @param player
+	 * @return true if player is alive
+	 */
 	private boolean checkPlayerStatus(Map map, Player player) {
 		Tile playerLocation = map.getPlayerLocation();
 		if (player.getInvincibility() == false) {

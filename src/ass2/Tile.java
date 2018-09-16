@@ -12,18 +12,35 @@ public class Tile {
 		this.y = y;
 		// TODO Auto-generated constructor stub
 	}
+	/**
+	 * @return arrayList of entities on the tile
+	 */
 	public ArrayList<Entity> getEntities() {
 		return entities;
 	}
-	public void addEntity(Entity entity) {//change from int to Entity
+	/**
+	 * adds an entity to the tile
+	 * @param entity, entity to be added
+	 */
+	public void addEntity(Entity entity) {
 		entities.add(entity);
 	}
-	public void removeEntity(Entity entity) {//change from int to Entity
+	/**
+	 * removes an entity from the tile
+	 * @param entity, entity to be removed
+	 */
+	public void removeEntity(Entity entity) {
 		entities.remove(entity);
 	}
+	/**
+	 * @return x coordinate of the tile
+	 */
 	public int getX() {
 		return x;
 	}
+	/**
+	 * @return y coordinate of the tile
+	 */
 	public int getY() {
 		return y;
 	}

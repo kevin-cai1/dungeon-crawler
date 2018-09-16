@@ -11,7 +11,11 @@ public class Coward extends Enemy{
     public String toString() {
         return null;
     }
-
+    
+    /**
+     * calculates and performs action for coward based on its proximity to the player
+     * @param map
+     */
     @Override
     public void getAction(Map map) {
     	Tile playerPos = map.getPlayerLocation();
@@ -76,9 +80,15 @@ public class Coward extends Enemy{
     		}
     	}
     }
+    
+    /**
+     * Moves the coward to a certain tile
+     * @param map
+     * @param tile
+     */
 	private void shiftCoward(Map map, Tile tile) {
 		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
-		currPos.removeEntity(this); //removes it from tis current spot
+		currPos.removeEntity(this); //removes it from its current spot
 		Coward coward = this;
 		tile.addEntity(coward); //puts it into where it should be
 	}

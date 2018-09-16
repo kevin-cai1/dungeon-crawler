@@ -105,6 +105,12 @@ public abstract class Enemy extends Entity{
 		Tile curPos = map.getEntityLocation(this.getId());
 		pathCheck(map, curPos, tile);
 	}
+	/**
+	 * checks if there is a way to get to a certain tile
+	 * @param map
+	 * @param curPos
+	 * @param playerPos
+	 */
 	public void pathCheck(Map map, Tile curPos, Tile playerPos) {
 		Tile adjacent;
 		Tile queuePop;
@@ -141,6 +147,14 @@ public abstract class Enemy extends Entity{
 			}
 		}
 	}
+	/**
+	 * calculates the distance between two tiles
+	 * @param x1 x coordinate of tile 1
+	 * @param y1 y coordinate of tile 1
+	 * @param x2 x coordinate of tile 2
+	 * @param y2 y coordinate of tile 2
+	 * @return the distance between two tile as a double
+	 */
 	public double distCalc(int x1, int y1, int x2, int y2) {
 	    double dist;
 	    int x = Math.abs(x2-x1);
@@ -150,6 +164,11 @@ public abstract class Enemy extends Entity{
 	    dist = Math.sqrt(x+y);
 	    return dist;
 	}
+	/**
+	 * 
+	 * @param tile
+	 * @param shortest
+	 */
 	public void makePath(Tile tile, List<Tile> shortest) {
 		Tile temp = tile;
 		while(temp != null) {
