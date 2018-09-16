@@ -160,7 +160,19 @@ public class Player extends Entity{
 			}
 		}
 	}
-	
+	/**
+	 * if the key has the same unique as the one inputed return true. otherwise false
+	 * @param key
+	 * @return
+	 */
+	public boolean hasKey(Key key) {
+		for(Key key1: keys) {
+			if(key.getUnique() == key1.getUnique()) {
+				return true;
+			}
+		}
+		return false;
+	}
     @Override
     public String toString() {
        /* StringBuilder stringBuilder = new StringBuilder();

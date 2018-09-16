@@ -466,7 +466,7 @@ public class GameEngine {
 									}
 								}
 							}
-							return false;
+							return true;
 						}
 					}
 				}
