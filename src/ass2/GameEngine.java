@@ -257,6 +257,7 @@ public class GameEngine {
 							allSwitches = false;
 						}
 					} else if (e instanceof Enemy) {
+						System.out.println("found enemy");
 						allEnemiesDestroyed = false;
 					}
 				}
@@ -271,11 +272,13 @@ public class GameEngine {
 			}
 		}
 		if (enemyWinCondition) {
+			System.out.println("enemy win condition set");
 			if (allEnemiesDestroyed != true) {
 				satisfyWin = false;
 			}
 		}
 		if (treasureWinCondition) {
+			System.out.println("treasure win condition set");
 			if (player.getTreasure() != numTreasures) {
 				satisfyWin = false;
 			}
@@ -603,7 +606,7 @@ public class GameEngine {
 		return false;
 	}*/
 	
-	private void setWinConditions() {
+	public void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
 		if (conditions != null) {
 			if (conditions.contains(WinCondition.Boulder)) {
