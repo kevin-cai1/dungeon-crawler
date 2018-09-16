@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import javax.naming.TimeLimitExceededException;
 
 
+//import sun.print.BackgroundLookupListener;
+
 public class GameEngine {
 	private Map gameMap;
 	private GameState gameState;
@@ -162,7 +164,8 @@ public class GameEngine {
 	
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
-			 
+			System.out.println("move player:"+movePlayer);
+
 			if (movePlayer == true) {
 				gameMap.movePlayer(playerAction);	
 				return true;
@@ -222,7 +225,7 @@ public class GameEngine {
 			
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
-		
+			
 			if (movePlayer == true) {
 				gameMap.movePlayer(playerAction);	
 				return true;
@@ -234,7 +237,7 @@ public class GameEngine {
 
 
 
-	private boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
+	public boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
 		boolean allSwitches = true;
 		boolean allEnemiesDestroyed = true;
 		for (int i = 0; i < arrayLength; i++) {
@@ -292,6 +295,7 @@ public class GameEngine {
 		Entity pitObject = null;
 		boolean movePlayer = true;
 		ArrayList<Entity> removeEntities = new ArrayList<>();
+		ArrayList<Entity> moveEntity = new ArrayList<>();
 		for (Entity e: affectedTile.getEntities()) {
 			if (e instanceof Bomb) { //entity is a bomb
 				System.out.println("pick up bomb");
@@ -308,13 +312,15 @@ public class GameEngine {
 						pitObject = following;
 					}
 				}
+				System.out.println("moving boulder:" + boulderMove);
+				System.out.println(pitObject);
 				if (boulderMove == true) {
 					if (pitObject != null) { // boulder going into pit
 						// don't need to move boulder, just delete both boulder and pit - makes normal floor
 						removeEntities.add(e); // remove boulder
 						followingTile.removeEntity(pitObject); // remove pit
 					} else {
-						gameMap.makeMove(e, playerAction); //move the boulder the same direction as player
+						moveEntity.add(e); //move the boulder the same direction as player
 					}
 				} else {
 					movePlayer = false;
@@ -355,6 +361,9 @@ public class GameEngine {
 		// remove entities
 		for (Entity e: removeEntities) {
 			affectedTile.removeEntity(e);
+		}
+		for (Entity e: moveEntity) {
+			gameMap.makeMove(e, playerAction);
 		}
 		return movePlayer;
 	}
@@ -465,6 +474,7 @@ public class GameEngine {
 										return false;
 									}
 								}
+								return true;
 							}
 							return false;
 						}
@@ -490,6 +500,7 @@ public class GameEngine {
 										return false;
 									}
 								}
+								return true;
 							}
 							return false;
 						}
@@ -515,6 +526,7 @@ public class GameEngine {
 										return false;
 									}
 								}
+								return true;
 							}
 							return false;
 						}
@@ -540,6 +552,7 @@ public class GameEngine {
 										return false;
 									}
 								}
+								return true;
 							}
 							return false;
 						}

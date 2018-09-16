@@ -189,27 +189,32 @@ public class Map {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
+				ArrayList<Entity> removeEntity = new ArrayList<>();
+				Tile nextTile = null;
 				for (Entity e : tile.getEntities()) {
 					if (e.getId() == entity.getId()) {
 						Entity EntityCopy = e;
-						tile.removeEntity(e); // Remove entity from current tile
+						removeEntity.add(e); // Remove entity from current tile
 						// Calculate the tile it needs to move to
 						switch (move) {
 							case NORTH: 
-								tile = map[i][j-1];
+								nextTile = map[i][j-1];
 								break;
 							case EAST:
-								tile = map[i+1][j];
+								nextTile = map[i+1][j];
 								break;
 							case SOUTH:
-								tile = map[i][j+1];
+								nextTile = map[i][j+1];
 								break;
 							case WEST:
-								tile = map[i-1][j];
+								nextTile = map[i-1][j];
 								break;
 						}
-						tile.addEntity(EntityCopy); // Add entity to new tile
+						nextTile.addEntity(EntityCopy); // Add entity to new tile
 					}
+				}
+				for (Entity e1: removeEntity) {
+					tile.removeEntity(e1);
 				}
 			}
 		}
