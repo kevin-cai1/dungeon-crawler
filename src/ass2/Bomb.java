@@ -69,10 +69,10 @@ public class Bomb extends Entity{
 		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(e instanceof Enemy || e instanceof Boulder || e instanceof Player) {/*e is enemy or boulder*/
+				if(e instanceof Enemy || e instanceof Boulder) {/*e is enemy or boulder*/
 					removedEntities.add(e);
-					//System.out.println(e.toString());
-					//t.removeEntity(e);
+				} else if(e instanceof Player && map.getPlayer().getInvincibility() == false) {
+					removedEntities.add(e);
 				}
 			}
 		}
