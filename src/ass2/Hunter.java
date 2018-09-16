@@ -12,4 +12,10 @@ public class Hunter extends HunterGroup{
 	public Hunter(int id) {
 		super(id);
 	}
+	public void shift(Map map, Tile tile) {
+		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
+		currPos.removeEntity(this); //removes it from tis current spot
+		Hunter hunter = this;
+		tile.addEntity(hunter); //puts it into where it should be
+	}
 }

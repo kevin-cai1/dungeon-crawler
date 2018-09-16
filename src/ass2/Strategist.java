@@ -95,4 +95,10 @@ public class Strategist extends Enemy{
 		}
 		return tile;
 	}
+	public void shift(Map map, Tile tile) {
+		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
+		currPos.removeEntity(this); //removes it from tis current spot
+		Strategist strategist = this;
+		tile.addEntity(strategist); //puts it into where it should be
+	}
 }
