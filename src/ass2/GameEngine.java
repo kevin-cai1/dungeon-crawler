@@ -1,15 +1,6 @@
 package ass2;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-
-
-
-
-//import sun.print.BackgroundLookupListener;
 
 public class GameEngine {
 	private Map gameMap;
@@ -69,23 +60,6 @@ public class GameEngine {
 			}
 		}
 		while (true) { // game not won, user not ded or not quit
-			
-		// take user input (player control @jun)
-/*			Direction playerAction = control.returnMovement();
-			switch (playerAction) {
-				case NORTH:
-					movePlayerNorth(map, playerLocation, player);
-					break;
-				case SOUTH:
-					movePlayerSouth(map, playerLocation, player);
-					break;
-				case EAST:
-					movePlayerEast(map, playerLocation, player);
-					break;
-				case WEST:
-					movePlayerWest(map, playerLocation, player);
-					break;
-			}*/
 			boolean playerMoved = false;
 			char action = control.getValidInput();
 			if (control.isMovement(action) == true) {				// if the input is movement
@@ -679,7 +653,7 @@ public class GameEngine {
 	/**
 	 * sets win conditions for the game (can be combination of killing all enemies, collecting all treasure, triggering all switches)
 	 */
-	private void setWinConditions() {
+	public void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
 		if (conditions != null) {
 			if (conditions.contains(WinCondition.Boulder)) {

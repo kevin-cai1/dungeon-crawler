@@ -20,7 +20,9 @@ public abstract class Enemy extends Entity{
 	}
 	
 	public abstract void getAction(Map map);
-
+	/**
+	 * clears the map searching
+	 */
 	public void clear() {
 		parent.clear();
 		queue.clear();
@@ -165,7 +167,7 @@ public abstract class Enemy extends Entity{
 	    return dist;
 	}
 	/**
-	 * 
+	 * makes a path from the parent nodes and adds it to shortest
 	 * @param tile
 	 * @param shortest
 	 */
@@ -176,9 +178,14 @@ public abstract class Enemy extends Entity{
 			temp = parent.get(temp);
 		}
 		Collections.reverse(shortest);
-		//after we do a path search of some sort we have to clear 
 		clear();
 	}
+	/**
+	 * make a path either to the tile or to the nearest tile to the tile
+	 * @param map
+	 * @param tile
+	 * @param shortest
+	 */
 	public void makeValidPath(Map map, Tile tile, List<Tile> shortest) {
 		//If there is a way, then there will be a path in parent
 		if(parent.containsKey(tile)) {

@@ -71,8 +71,6 @@ public class Bomb extends Entity{
 			for(Entity e : t.getEntities()) {
 				if(e instanceof Enemy || e instanceof Boulder || e instanceof Player) {/*e is enemy or boulder*/
 					removedEntities.add(e);
-					//System.out.println(e.toString());
-					//t.removeEntity(e);
 				}
 			}
 		}

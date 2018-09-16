@@ -10,14 +10,13 @@ public class GameSystem {
 			
 			// Game Mode 1
 			// Instantiate game engine
-			GameEngine gameEngine = new GameEngine(new Map()); //need to change this
+			GameEngine gameEngine = new GameEngine(new Map(20)); //need to change this
 			// initialises the map, player controls, checks gamestate
 			GameState state = gameEngine.runGame();
 			
 			// Game Mode 2
 			// Instantiate Design engine
-			DesignEngine designEngine = new DesignEngine();
-			designEngine.runDesignMode();
+			DesignEngine designEngine = new DesignEngine(20);
 			
 			switch (state) {
 			case Win:

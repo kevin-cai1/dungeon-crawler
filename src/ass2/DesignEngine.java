@@ -18,30 +18,6 @@ public class DesignEngine {
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
 	}
-	
-	/**
-	 * Runs the game in designer mode
-	 * @return Map
-	 */
-	public Map runDesignMode() {
-		while (gameState == GameState.Design) {
-			
-			if (true) {/* user tries to place tile*/
-				int x = 0;
-				int y = 0;
-				Entity entity = new FloorSwitch(map.genID()); //remove this later doesnt do anything
-				placeEntity(entity, x, y);
-			}
-			
-			if (true) {/*user decides to play */
-				// launch play game mode with current dungeon design
-				gameState = GameState.Play;
-				break;
-			}
-		}
-		return new Map(); //shouldnt return new map
-	}
-	
 	/**
 	 * tries to place an entity at the specified position
 	 * @param entity
@@ -151,7 +127,7 @@ public class DesignEngine {
 	 * @return map read from file
 	 */
 	public Map load(String fileName) {
-		Map loadedMap = new Map();
+		Map loadedMap = new Map(20);
 		try {
 			FileInputStream fi = new FileInputStream(new File(fileName));
 			ObjectInputStream oi = new ObjectInputStream(fi);

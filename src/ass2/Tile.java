@@ -52,6 +52,5 @@ public class Tile {
 			stringBuilder.append(entities.get(i).toString());
 		}
 		return stringBuilder.toString();
-		//return Integer.toHexString(System.identityHashCode(this));
 	}
 }

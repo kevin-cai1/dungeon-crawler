@@ -13,7 +13,6 @@ public class Floor extends Entity {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		//return Integer.toHexString(System.identityHashCode(this));
 		return ".";
 	}
 }
