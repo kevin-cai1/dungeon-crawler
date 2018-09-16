@@ -137,6 +137,10 @@ public class GameEngine {
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
 				if (bomb.tick() == false) {
 					tickingBombs.remove(bomb);
+					if(gameMap.getPlayer() == null) {
+						gameState = GameState.Lose;
+						return gameState;
+					}
 				}
 			}
 			
