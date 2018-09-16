@@ -19,6 +19,7 @@ public class Bomb extends Entity{
 	
 	public void placeBomb() {
 		this.bombPosition = map.getPlayerLocation();
+		map.getTile(bombPosition.getX(), bombPosition.getY()).addEntity(this);
 		this.timer = 3;
 
 	}
@@ -56,8 +57,9 @@ public class Bomb extends Entity{
 		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(e instanceof Enemy || e instanceof Boulder) {/*e is enemy or boulder*/
+				if(e instanceof Enemy || e instanceof Boulder || e instanceof Player) {/*e is enemy or boulder*/
 					removedEntities.add(e);
+					//System.out.println(e.toString());
 					//t.removeEntity(e);
 				}
 			}
@@ -86,6 +88,6 @@ public class Bomb extends Entity{
 		sb.append(bombPosition.getY());
 		sb.append("Bomb Timer: " + timer);
 		return sb.toString();*/
-		return "Q";
+		return "BOMB";
 	}
 }
