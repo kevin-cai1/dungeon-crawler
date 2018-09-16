@@ -129,7 +129,13 @@ public class GameEngine {
 			
 			// calculate enemy movements
 			if (playerMoved) {
-				moveEnemies(arrayLength, map);
+				if(player.getInvincibility()) {
+					runEnemies(arrayLength, map);
+				}
+				else {
+					moveEnemies(arrayLength, map);
+				}
+				
 			}
 			
 			checkPlayerStatus(gameMap, player);
@@ -292,6 +298,18 @@ public class GameEngine {
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
 						((Enemy) e).getAction(gameMap); // validation on enemy side
+					}
+				}
+			}
+		}
+	}
+	private void runEnemies(int arrayLength, Tile[][] map) {
+		for (int i = 0; i < arrayLength; i++) {
+			for (int j = 0; j < arrayLength; j++) {
+				Tile tile = map[i][j];
+				for (Entity e : tile.getEntities()) { // look through every single entity
+					if (e instanceof Enemy) { // every enemy that needs to move
+						((Enemy) e).runAway(gameMap); // validation on enemy side
 					}
 				}
 			}
