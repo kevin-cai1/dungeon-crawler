@@ -121,11 +121,7 @@ class KillingEnemyTest {
 			}
 		}
 		assertEquals(placedBomb.getTimer(), 0);
-/*		System.out.println(gameMap.getTile(4, 3).getEntities().toString());
-		System.out.println(gameMap.getTile(4, 5).getEntities().toString());
-		System.out.println(gameMap.getTile(3, 4).getEntities().toString());
-		System.out.println(gameMap.getTile(5, 4).getEntities().toString());
-		System.out.println(gameMap.getTile(4, 4).getEntities().toString());*/
+		
 		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>();
 		for (Bomb bomb : tickingBombs) {
 			System.out.println(tickingBombs.size());
