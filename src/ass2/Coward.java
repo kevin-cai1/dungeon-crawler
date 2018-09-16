@@ -2,7 +2,11 @@ package ass2;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * type of enemy which moves toward player until it is 3 tiles away, then starts moving away from the player
+ * @author gordon
+ *
+ */
 public class Coward extends Enemy{
     public Coward(int id){
         super(id);
