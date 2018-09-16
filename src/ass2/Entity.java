@@ -6,6 +6,10 @@ public abstract class Entity {
 		this.id = id;
 	}
 
+	/**
+	 * returns ID of the entity
+	 * @return id of entity
+	 */
 	public int getId() {
 		return id;
 	}

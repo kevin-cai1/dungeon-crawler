@@ -3,7 +3,6 @@ package ass2;
 import java.io.*;
 import java.util.ArrayList;
 
-
 public class DesignEngine {
 	private ArrayList<Entity> entityList;
 	private Map map;
@@ -32,6 +31,7 @@ public class DesignEngine {
 			tile.addEntity(entity);
 		}
 	}
+
 	/**
 	 * validates whether a position is valid on the map. i.e. entities cannot be placed on top of obstacles
 	 * @param entity
@@ -127,7 +127,7 @@ public class DesignEngine {
 	 * @return map read from file
 	 */
 	public Map load(String fileName) {
-		Map loadedMap = new Map();
+		Map loadedMap = new Map(20);
 		try {
 			FileInputStream fi = new FileInputStream(new File(fileName));
 			ObjectInputStream oi = new ObjectInputStream(fi);

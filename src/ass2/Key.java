@@ -7,6 +7,9 @@ public class Key extends Entity{
 		super(id);
 		this.unique = unique;
 	}
+	/**
+	 * @return unique id of the key to match it with a certain door
+	 */
 	public int getUnique() {
 		return unique;
 	}

@@ -12,7 +12,6 @@ public class Map {
 		this.arrayLength = arrayLength;
 		map = new Tile[arrayLength][arrayLength];
 		idCounter = 0;
-		//Temporary test stuff
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
 				Floor floor = new Floor(genID());//great id
@@ -21,85 +20,34 @@ public class Map {
 				map[i][j] = new Tile(entities, i, j);
 			}
 		}
-		
-		
-		//System.out.println(t.getEntities());
-		//t.removeEntity(floor);
-		//t.addEntity(player);
 	}
-	//Temporary map constructor for testing CURRENTLY SHOULD MAKE A 
-	public Map() {
-		winConditions = new ArrayList<>();
-		arrayLength = 20;
-		map = new Tile[arrayLength][arrayLength];
-		//Temporary test stuff
-		ArrayList<Entity> entities = new ArrayList<>();
-		Arrow arrow = new Arrow(genID(),new Map(arrayLength));
-		
-		ArrayList<Entity> wall = new ArrayList<>();
-		Wall wall2 = new Wall(genID());
-		
-		ArrayList<Entity> player = new ArrayList<>();
-		Player player2 = new Player(genID());
-		
-		player.add(player2);
-		wall.add(wall2);
-		for(int i = 0; i < arrayLength; i++) {
-			for(int j = 0; j < arrayLength; j++) {
-				entities = new ArrayList<>();
-				entities.add(arrow);
-				if(j == 0 || i == 0) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 1 && j == 6) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 2 && j == 6) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 3 && j == 6) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 4 && j == 6) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 6) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 1) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 2) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 3) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 4) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 5 && j == 5) {
-					map[i][j] = new Tile(wall, i, j);
-				}
-				else if (i == 9 && j == 7) {
-					map[i][j] = new Tile(player, i, j);
-				}
-				else {
-					map[i][j] = new Tile(entities, i, j);
-				}
-				
-			}
-		}
-	}
+	/**
+	 * returns arrayLength
+	 * @return
+	 */
 	public int getArrayLength() {
 		return arrayLength;
 	}
+	/**
+	 * gets a tile from the map
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Tile getTile(int x, int y) {
 		return map[x][y];
 	}
+	/**
+	 * returns the 2D Tile representation of the Map
+	 * @return
+	 */
 	public Tile[][] getMap() {
 		return map;
 	}
+	/**
+	 * gets the player Tile
+	 * @return
+	 */
 	public Tile getPlayerLocation() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
@@ -113,6 +61,11 @@ public class Map {
 		}
 		return null;
 	}
+	/**
+	 * finds an entities tile based on its id
+	 * @param id
+	 * @return
+	 */
 	public Tile getEntityLocation(int id) {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
@@ -126,7 +79,10 @@ public class Map {
 		}
 		return null;
 	}
-	
+	/**
+	 * get winConditions of a map
+	 * @return
+	 */
 	public ArrayList<WinCondition> getWinConditions() {
 		return winConditions;
 	}
@@ -135,7 +91,10 @@ public class Map {
 		winConditions.add(w);
 	}
 	
-
+	/**
+	 * finds the player on the map and returns it as a Player
+	 * @return
+	 */
 	public Player getPlayer() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
@@ -219,7 +178,9 @@ public class Map {
 			}
 		}
 	}
-	
+	/**
+	 * prints out the map to stdout
+	 */
 	public void printMap() {
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {

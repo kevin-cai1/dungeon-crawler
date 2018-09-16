@@ -5,18 +5,27 @@ public class FloorSwitch extends Entity{
 	
 	public FloorSwitch(int id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 		this.triggered = false;
 	}
 	
+	/**
+	 * Changes switch trigger status to false (untriggered)
+	 */
 	public void untriggerSwitch() {
 		this.triggered = false;
 	}
 	
+	/**
+	 * Changes switch trigger status to true (triggered)
+	 */
 	public void triggerSwitch() {
 		this.triggered = true;
 	}
 	
+	/**
+	 * Returns the switch status (whether its triggered or not)
+	 * @return triggered, true if triggered, false if not
+	 */
 	public boolean getStatus() {
 		return triggered;
 	}
