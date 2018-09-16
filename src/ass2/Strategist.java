@@ -14,7 +14,7 @@ public class Strategist extends Enemy{
         return null;
     }
     /**
-     * calls getGoodTile to move Strategist towards the players next most likely location
+     * calls getGoodTile to move Strategist towards the players next most likely location, or the next closest tile if there is no good tile
      */
 	@Override
 	public void getAction(Map map) {

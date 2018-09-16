@@ -3,9 +3,7 @@ package ass2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-//need a check if player has sword and bomb getBomb will reduce inventory count of bomb reduce durability of sword as well. need to make sure if sword is dead it is removed
-//
-//need a get arrow
+
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
@@ -20,7 +18,6 @@ public class Player extends Entity{
 		invincible = 0;
 		inventory = new HashMap<>();
 		keys = new ArrayList<>();
-		// TODO Auto-generated constructor stub
 	}
 	
 	/**

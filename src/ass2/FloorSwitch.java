@@ -5,7 +5,6 @@ public class FloorSwitch extends Entity{
 	
 	public FloorSwitch(int id) {
 		super(id);
-		// TODO Auto-generated constructor stub
 		this.triggered = false;
 	}
 	

@@ -7,7 +7,6 @@ public class Door extends Obstacle{
 		super(id);
 		this.unique = unique;
 		open = false;
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * returns the status of the door (whether its open or closed)
