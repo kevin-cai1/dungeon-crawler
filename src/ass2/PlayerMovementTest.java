@@ -327,7 +327,6 @@ class PlayerMovementTest {
 		
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
-		assertTrue(player.checkKey(door));
 		assertTrue(player.hasKey(key));
 		playerLocation = gameMap.getPlayerLocation();
 		assertFalse(game.movePlayerNorth(map, playerLocation, player));	// check that player cant move up into the door
