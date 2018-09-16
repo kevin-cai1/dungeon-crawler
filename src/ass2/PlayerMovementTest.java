@@ -195,6 +195,26 @@ class PlayerMovementTest {
 	}
 	
 	@Test
+	void testPitWithHover() { // try to make move into wall, player shouldn't move
+		System.out.println("player pit");
+
+				
+		Pit pit = new Pit(3);
+		Tile pitTile = gameMap.getTile(4, 3); // exit above the player
+		pitTile.addEntity(pit);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		player.addHover();
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		playerLocation = gameMap.getPlayerLocation();
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		assertFalse(game.getGameState() == GameState.Lose);
+	}
+	
+	@Test
 	void testSwordInventory() { // try to make move into wall, player shouldn't move
 		System.out.println("player pit");
 
