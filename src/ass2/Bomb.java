@@ -2,6 +2,7 @@ package ass2;
 
 import java.util.ArrayList;
 
+
 public class Bomb extends Entity{
 	private int timer;
 	private Map map;
@@ -56,7 +57,7 @@ public class Bomb extends Entity{
 		ArrayList<Entity> removedEntities = new ArrayList<Entity>();
 		for(Tile t : explosionRadius) {
 			for(Entity e : t.getEntities()) {
-				if(e instanceof Enemy || e instanceof Boulder) {/*e is enemy or boulder*/
+				if(e instanceof Enemy || e instanceof Boulder || e instanceof Player) {/*e is enemy or boulder*/
 					removedEntities.add(e);
 					//t.removeEntity(e);
 				}
