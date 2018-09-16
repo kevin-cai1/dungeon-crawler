@@ -6,9 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.naming.TimeLimitExceededException;
 
-import com.sun.xml.internal.ws.api.FeatureConstructor;
 
 
 //import sun.print.BackgroundLookupListener;
@@ -307,6 +305,7 @@ public class GameEngine {
 							allSwitches = false;
 						}
 					} else if (e instanceof Enemy) {
+						System.out.println("found enemy");
 						allEnemiesDestroyed = false;
 					}
 				}
@@ -321,11 +320,13 @@ public class GameEngine {
 			}
 		}
 		if (enemyWinCondition) {
+			System.out.println("enemy win condition set");
 			if (allEnemiesDestroyed != true) {
 				satisfyWin = false;
 			}
 		}
 		if (treasureWinCondition) {
+			System.out.println("treasure win condition set");
 			if (player.getTreasure() != numTreasures) {
 				satisfyWin = false;
 			}
@@ -423,9 +424,15 @@ public class GameEngine {
 					removeEntities.add(e);
 				}
 			} else if (e instanceof Enemy) {	// lose if you walk into enemy
-				gameState = GameState.Lose;
+				if (player.getInvincibility() == true) { // enemy dies if player walks into them with invincibility
+					removeEntities.add(e);
+				} else {
+					gameState = GameState.Lose;
+				}
 			} else if (e instanceof Pit) {	// lose if you walk into pit
-				gameState = GameState.Lose;
+				if (player.getHover() == false) {
+					gameState = GameState.Lose;
+				}
 			} else if (e instanceof Exit) {	// win on exit
 				gameState = GameState.Win;
 			} else if (e instanceof Door) { // condition when player walks into door

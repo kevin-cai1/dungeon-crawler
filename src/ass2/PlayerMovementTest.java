@@ -24,7 +24,6 @@ class PlayerMovementTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		gameMap = new Map(20);
-		//gameMap.addWinCondition(WinCondition.Treasure);
 		
 		map = gameMap.getMap();
 
@@ -196,6 +195,26 @@ class PlayerMovementTest {
 	}
 	
 	@Test
+	void testPitWithHover() { // try to make move into wall, player shouldn't move
+		System.out.println("player pit");
+
+				
+		Pit pit = new Pit(3);
+		Tile pitTile = gameMap.getTile(4, 3); // exit above the player
+		pitTile.addEntity(pit);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		player.addHover();
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		playerLocation = gameMap.getPlayerLocation();
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		assertFalse(game.getGameState() == GameState.Lose);
+	}
+	
+	@Test
 	void testSwordInventory() { // try to make move into wall, player shouldn't move
 		System.out.println("player pit");
 
@@ -266,8 +285,8 @@ class PlayerMovementTest {
 	}
 	
 	@Test
-	void testInvalidBoulderMove() { // try to make move into boulder, nothing should move
-		System.out.println("player boulder");
+	void testBoulderIntoWall() { // try to make move into boulder, nothing should move
+		System.out.println("boulder into wall");
 		
 		Boulder boulder = new Boulder(gameMap.genID());
 		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
@@ -370,6 +389,8 @@ class PlayerMovementTest {
 	
 	@Test
 	void testTreasurePickup() { // try to make move into treasure, player should pick up
+		gameMap.addWinCondition(WinCondition.Treasure);
+
 		System.out.println("player treasure");
 		
 		Treasure treasure = new Treasure(gameMap.genID());

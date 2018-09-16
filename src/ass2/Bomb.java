@@ -13,18 +13,28 @@ public class Bomb extends Entity{
 		super(id);
 		this.map = map;
 	}
-	
+	/**
+	 * 
+	 * @return returns the timer
+	 */
 	public int getTimer() {
 		return timer;
 	}
-	
+	/**
+	 * places a bomb at the players feet
+	 */
 	public void placeBomb() {
 		this.bombPosition = map.getPlayerLocation();
+		map.getTile(bombPosition.getX(), bombPosition.getY()).addEntity(this);
 		this.timer = 3;
 
 	}
 	
 	//call this maybe
+	/**
+	 * ticks down the bomb, if timer is at 0 itll explode
+	 * @return true if not exploding false if exploded
+	 */
 	public boolean tick() {
 		if(getTimer() > 0) {
 			timer--;
@@ -36,7 +46,9 @@ public class Bomb extends Entity{
 			
 		}
 	}
-	
+	/**
+	 * destroys all enemies and boulders in a cross pattern around the bomb
+	 */
 	private void explode() {
 		int bombX = bombPosition.getX();
 		int bombY = bombPosition.getY();
@@ -59,6 +71,7 @@ public class Bomb extends Entity{
 			for(Entity e : t.getEntities()) {
 				if(e instanceof Enemy || e instanceof Boulder || e instanceof Player) {/*e is enemy or boulder*/
 					removedEntities.add(e);
+					//System.out.println(e.toString());
 					//t.removeEntity(e);
 				}
 			}
@@ -71,8 +84,13 @@ public class Bomb extends Entity{
 			}
 		}
 	}
+	/**
+	 * is the value in the map
+	 * @param value
+	 * @return false if it is not in the map true if it is
+	 */
 	private boolean valueInMap(int value) {
-		if(value < 0 || value >= 20) {
+		if(value < 0 || value >= map.getArrayLength()) {
 			return false;
 		}
 		return true;
@@ -80,13 +98,6 @@ public class Bomb extends Entity{
 	
 	@Override
 	public String toString() {
-		/*StringBuilder sb = new StringBuilder();
-		sb.append("Bomb Position [x][y]: ");
-		sb.append(bombPosition.getX());
-		sb.append(" ");
-		sb.append(bombPosition.getY());
-		sb.append("Bomb Timer: " + timer);
-		return sb.toString();*/
-		return "Q";
+		return "BOMB";
 	}
 }
