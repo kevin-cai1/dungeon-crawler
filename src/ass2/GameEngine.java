@@ -360,9 +360,15 @@ public class GameEngine {
 					removeEntities.add(e);
 				}
 			} else if (e instanceof Enemy) {	// lose if you walk into enemy
-				gameState = GameState.Lose;
+				if (player.getInvincibility() == true) { // enemy dies if player walks into them with invincibility
+					removeEntities.add(e);
+				} else {
+					gameState = GameState.Lose;
+				}
 			} else if (e instanceof Pit) {	// lose if you walk into pit
-				gameState = GameState.Lose;
+				if (player.getHover() == false) {
+					gameState = GameState.Lose;
+				}
 			} else if (e instanceof Exit) {	// win on exit
 				gameState = GameState.Win;
 			} else if (e instanceof Door) { // condition when player walks into door
