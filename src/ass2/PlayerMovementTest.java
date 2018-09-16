@@ -19,7 +19,6 @@ class PlayerMovementTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		gameMap = new Map(20);
-		//gameMap.addWinCondition(WinCondition.Treasure);
 		
 		map = gameMap.getMap();
 
@@ -261,8 +260,8 @@ class PlayerMovementTest {
 	}
 	
 	@Test
-	void testInvalidBoulderMove() { // try to make move into boulder, nothing should move
-		System.out.println("player boulder");
+	void testBoulderIntoWall() { // try to make move into boulder, nothing should move
+		System.out.println("boulder into wall");
 		
 		Boulder boulder = new Boulder(gameMap.genID());
 		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
@@ -365,6 +364,8 @@ class PlayerMovementTest {
 	
 	@Test
 	void testTreasurePickup() { // try to make move into treasure, player should pick up
+		gameMap.addWinCondition(WinCondition.Treasure);
+
 		System.out.println("player treasure");
 		
 		Treasure treasure = new Treasure(gameMap.genID());
@@ -471,18 +472,4 @@ class PlayerMovementTest {
 																		// because there is a boulder above the first one
 	}
 	
-	@Test
-	void testBoulderWall() {
-		System.out.println("Player failing to push boulder into wall");
-		
-		Boulder boulder = new Boulder(gameMap.genID());
-		Tile boulderTile = gameMap.getTile(4,  0);		
-		boulderTile.addEntity(boulder); 			// place boulder next to north wall
-		
-		Tile playerLocation = gameMap.getPlayerLocation();
-		assertTrue(game.movePlayerNorth(map, playerLocation, player));
-		assertTrue(game.movePlayerNorth(map, playerLocation, player));
-		assertTrue(game.movePlayerNorth(map, playerLocation, player));	// after this, player should be at (4,1)
-		assertFalse(game.movePlayerNorth(map, playerLocation, player));	// since boulder is at (4, 0), this should fail
-	}
 }
