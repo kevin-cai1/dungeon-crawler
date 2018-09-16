@@ -576,4 +576,20 @@ class PlayerMovementTest {
 		assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());	
 		assertTrue(gameMap.getTile(4, 5).getEntities().size() == expectedGameMap.getTile(4, 5).getEntities().size());
 	}
+	
+	@Test
+	void testEnemyContact() { // collect all treasures
+		int arrayLength = gameMap.getArrayLength();
+		Hunter enemy1 = new Hunter(gameMap.genID());
+		
+		Tile enemyTile1 = gameMap.getTile(4, 3); // enemy above the player
+		enemyTile1.addEntity(enemy1);
+		
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		assertTrue(game.getGameState() == GameState.Lose);
+		
+	}
 }

@@ -166,4 +166,24 @@ class KillingEnemyTest {
 		assertTrue(gameMap.getTile(4, 4).getEntities().size() == expectedGameMap.getTile(4, 4).getEntities().size());
 		assertTrue(gameMap.getTile(4, 0).getEntities().size() ==  expectedGameMap.getTile(4, 0).getEntities().size());
 	}
+	
+	@Test
+	void testInvincibilityKillEnemy() { // collect all treasures
+		int arrayLength = gameMap.getArrayLength();
+		Hunter enemy1 = new Hunter(gameMap.genID());
+		
+		Tile enemyTile1 = gameMap.getTile(4, 3); // enemy above the player
+		enemyTile1.addEntity(enemy1);
+		
+		Player player1 = gameMap.getPlayer();
+		player1.addInvincibility();
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		
+		assertTrue(game.movePlayerNorth(map, playerLocation, player1));
+		assertFalse(game.getGameState() == GameState.Lose); // game not over when player runs into enemy with invincibility
+		for (Entity e : enemyTile1.getEntities()) { // no enemies should exist on the tile anymore
+			assertFalse(e instanceof Enemy);
+		}
+	}
 }
