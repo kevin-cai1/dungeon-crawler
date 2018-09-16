@@ -239,7 +239,7 @@ class PlayerMovementTest {
 	}
 	
 	@Test
-	void testMoveBoulder() { // try to make move into bomb, player should pick up
+	void testMoveBoulder() { // try to make move into boulder, boulder should move
 		System.out.println("player boulder");
 		
 		Boulder boulder = new Boulder(gameMap.genID());
@@ -259,7 +259,110 @@ class PlayerMovementTest {
 		assertTrue(boulderLocation.getX() == 4);
 		assertTrue(boulderLocation.getY() == 2);
 	}
+	
+	@Test
+	void testInvalidBoulderMove() { // try to make move into boulder, nothing should move
+		System.out.println("player boulder");
+		
+		Boulder boulder = new Boulder(gameMap.genID());
+		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
+		boulderTile.addEntity(boulder);
+		Wall wall = new Wall(gameMap.genID());
+		Tile wallTile = gameMap.getTile(4, 2); // exit above the player
+		wallTile.addEntity(wall);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertFalse(game.movePlayerNorth(map, playerLocation, player));
+		Tile boulderLocation = gameMap.getEntityLocation(boulder.getId());
+		playerLocation = gameMap.getPlayerLocation();
+		// check player location
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 4);
+		// check boulder location
+		assertTrue(boulderLocation.getX() == 4);
+		assertTrue(boulderLocation.getY() == 3);
+	}
+	
+	@Test
+	void testMoveBoulderIntoPit() { // try to make move into bomb, player should pick up
+		System.out.println("player boulder");
+		
+		Boulder boulder = new Boulder(gameMap.genID());
+		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
+		boulderTile.addEntity(boulder);
+		Pit pit = new Pit(gameMap.genID());
+		Tile pitTile = gameMap.getTile(4, 2); // exit above the player
+		pitTile.addEntity(pit);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		playerLocation = gameMap.getPlayerLocation();
+		// check player location
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		// check boulder location
+		for (Entity e: pitTile.getEntities()) { // boulder and pit should disappear
+			assertFalse(e instanceof Pit);
+			assertFalse(e instanceof Boulder);
+		}
+	}
 
+	@Test
+	void testBoulderOnFloorSwitch() { // try to make move into boulder, nothing should move
+		System.out.println("boulder floor switch");
+		Boulder boulder = new Boulder(gameMap.genID());
+		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
+		boulderTile.addEntity(boulder);
+		FloorSwitch switch1 = new FloorSwitch(gameMap.genID());
+		Tile switchTile = gameMap.getTile(4, 2); // exit above the player
+		switchTile.addEntity(switch1);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		Tile boulderLocation = gameMap.getEntityLocation(boulder.getId());
+		playerLocation = gameMap.getPlayerLocation();
+		// check player location
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		// check boulder location
+		assertTrue(boulderLocation.getX() == 4);
+		assertTrue(boulderLocation.getY() == 2);
+		// check floor switch is triggered
+		assertTrue(switch1.getStatus());
+	}
+	
+	@Test
+	void testBoulderOffFloorSwitch() { // try to make move into boulder, nothing should move
+		System.out.println("boulder off floor switch");
+		Boulder boulder = new Boulder(gameMap.genID());
+		Tile boulderTile = gameMap.getTile(4, 3); // exit above the player
+		boulderTile.addEntity(boulder);
+		FloorSwitch switch1 = new FloorSwitch(gameMap.genID());
+		Tile switchTile = gameMap.getTile(4, 3); // exit above the player
+		switchTile.addEntity(switch1);
+		gameMap.printMap();
+		System.out.println("starting map ^");
+		
+		Tile playerLocation = gameMap.getPlayerLocation();
+		assertTrue(game.movePlayerNorth(map, playerLocation, player));
+		Tile boulderLocation = gameMap.getEntityLocation(boulder.getId());
+		playerLocation = gameMap.getPlayerLocation();
+		// check player location
+		assertTrue(playerLocation.getX() == 4);
+		assertTrue(playerLocation.getY() == 3);
+		// check boulder location
+		assertTrue(boulderLocation.getX() == 4);
+		assertTrue(boulderLocation.getY() == 2);
+		// check floor switch is triggered
+		assertFalse(switch1.getStatus());
+	}
+	
 	@Test
 	void testTreasurePickup() { // try to make move into treasure, player should pick up
 		System.out.println("player treasure");
@@ -273,7 +376,7 @@ class PlayerMovementTest {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
 		assertTrue(player.getTreasure() == 1); //player has bomb
-	//	assertTrue(game.checkWin(player, 1, gameMap.getArrayLength(), map));
+		assertTrue(game.checkWin(player, 1, gameMap.getArrayLength(), map));
 	}
 	
 	@Test

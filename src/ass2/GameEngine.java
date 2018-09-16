@@ -8,6 +8,8 @@ import java.util.Iterator;
 
 import javax.naming.TimeLimitExceededException;
 
+import com.sun.xml.internal.ws.api.FeatureConstructor;
+
 
 //import sun.print.BackgroundLookupListener;
 
@@ -315,6 +317,13 @@ public class GameEngine {
 					}
 					if (following instanceof Pit) {
 						pitObject = following;
+					} else if (following instanceof FloorSwitch) {
+						((FloorSwitch) following).triggerSwitch();
+					}
+				}
+				for (Entity floorSwitch: affectedTile.getEntities()) { // if there is a floor switch on the same tile as the boulder - boulder moving off floor switch
+					if (floorSwitch instanceof FloorSwitch) {
+						((FloorSwitch)floorSwitch).untriggerSwitch();
 					}
 				}
 				System.out.println("moving boulder:" + boulderMove);
@@ -324,6 +333,7 @@ public class GameEngine {
 						// don't need to move boulder, just delete both boulder and pit - makes normal floor
 						removeEntities.add(e); // remove boulder
 						followingTile.removeEntity(pitObject); // remove pit
+					
 					} else {
 						moveEntity.add(e); //move the boulder the same direction as player
 					}
