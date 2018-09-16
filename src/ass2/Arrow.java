@@ -22,7 +22,9 @@ public class Arrow extends Entity{
 						return; // arrow breaks
 					}
 					else if (e instanceof Enemy) {
-						tile[arrowX][j].removeEntity(e);					}
+						tile[arrowX][j].removeEntity(e);	
+						return;
+					}
 				}
 			}
 			break;
@@ -35,6 +37,7 @@ public class Arrow extends Entity{
 					}
 					else if (e instanceof Enemy) {
 						tile[i][arrowY].removeEntity(e);
+						return;
 					}
 				}
 			}
@@ -47,6 +50,7 @@ public class Arrow extends Entity{
 					}
 					else if (e instanceof Enemy) {
 						tile[arrowX][j].removeEntity(e);
+						return;
 					}
 				}
 			}
@@ -59,6 +63,7 @@ public class Arrow extends Entity{
 					}
 					else if (e instanceof Enemy) {
 						tile[i][arrowY].removeEntity(e);
+						return;
 					}
 				}
 			}

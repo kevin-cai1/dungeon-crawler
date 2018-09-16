@@ -124,25 +124,46 @@ class KillingEnemyTest {
 		
 		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>();
 		for (Bomb bomb : tickingBombs) {
-			System.out.println(tickingBombs.size());
 			if (bomb.tick() == false) {
-				removedBombs.add(bomb);
-				System.out.println(gameMap.getTile(4, 3).getEntities().toString());
-				System.out.println(gameMap.getTile(4, 5).getEntities().toString());
-				System.out.println(gameMap.getTile(3, 4).getEntities().toString());
-				System.out.println(gameMap.getTile(5, 4).getEntities().toString());
-				System.out.println(gameMap.getTile(4, 4).getEntities().toString());
+				removedBombs.add(bomb);	
 			}
 		}
 		for (Bomb bomb : removedBombs) {
 			tickingBombs.remove(bomb);
 		}
+		GameState gameState = GameState.Play;
+		if(gameMap.getPlayer() == null) {
+			gameState = GameState.Lose;
+		}
 		
+		assertEquals(gameState, GameState.Lose);;
 		assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());	
 		assertTrue(gameMap.getTile(4, 5).getEntities().size() == expectedGameMap.getTile(4, 5).getEntities().size());
 		assertTrue(gameMap.getTile(4, 4).getEntities().size() ==  expectedGameMap.getTile(4, 4).getEntities().size());
 		assertTrue(gameMap.getTile(3, 4).getEntities().size() ==  expectedGameMap.getTile(3, 4).getEntities().size());
 		assertTrue(gameMap.getTile(5, 4).getEntities().size() ==  expectedGameMap.getTile(5, 4).getEntities().size());
 	}
-
+	
+	@Test
+	void testShootUp() {
+		gameMap.getPlayer().putInventory(new Arrow(gameMap.genID(), gameMap));
+		Map expectedGameMap = new Map(10);
+		Tile t = expectedGameMap.getTile(4, 4);
+		player = new Player(expectedGameMap.genID());
+		t.addEntity(player);
+		expectedGameMap.getPlayer().putInventory(new Sword(expectedGameMap.genID()));
+		Hunter hunter = new Hunter(gameMap.genID());
+		t = gameMap.getTile(4, 0);
+		t.addEntity(hunter);
+		
+		System.out.println(gameMap.getTile(4, 0).getEntities().toString());
+		if (gameMap.getPlayer().checkArrow()) {
+			Arrow playersArrow = new Arrow(gameMap.genID(), gameMap);
+			playersArrow.shootArrow(Direction.NORTH);
+		}
+		
+		System.out.println(gameMap.getTile(4, 0).getEntities().toString());
+		assertTrue(gameMap.getTile(4, 4).getEntities().size() == expectedGameMap.getTile(4, 4).getEntities().size());
+		assertTrue(gameMap.getTile(4, 0).getEntities().size() ==  expectedGameMap.getTile(4, 0).getEntities().size());
+	}
 }
