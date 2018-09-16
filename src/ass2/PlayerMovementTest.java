@@ -4,6 +4,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.DynamicContainer.dynamicContainer;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class PlayerMovementTest {
@@ -484,5 +489,73 @@ class PlayerMovementTest {
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));
 		assertTrue(game.movePlayerNorth(map, playerLocation, player));	// after this, player should be at (4,1)
 		assertFalse(game.movePlayerNorth(map, playerLocation, player));	// since boulder is at (4, 0), this should fail
+	}
+	
+	@Test
+	void testBoulderBomb() {
+		gameMap.getPlayer().putInventory(new Bomb(gameMap, gameMap.genID()));			// put a bomb in player inventory
+		Map expectedGameMap = new Map(20);
+		Tile t = expectedGameMap.getTile(4, 4);
+		Bomb placedBomb = null; 
+		ArrayList<Bomb> tickingBombs = new ArrayList<Bomb>();
+		
+		if (gameMap.getPlayer().checkBomb()) {
+			placedBomb = new Bomb(gameMap, gameMap.genID());
+			placedBomb.placeBomb();
+			
+			tickingBombs.add(placedBomb);
+		}
+		assertEquals(placedBomb.getTimer(), 3);
+		
+		// Place boulder above and below player
+		gameMap.getPlayer().checkBomb();
+		Boulder b1 = new Boulder(gameMap.genID());
+		t = gameMap.getTile(4, 3);
+		t.addEntity(b1);
+		Boulder b2 = new Boulder(gameMap.genID());
+		t = gameMap.getTile(4, 5);
+		t.addEntity(b2);
+
+
+		for (Bomb bomb : tickingBombs) {
+			if (bomb.tick() == false) {
+				tickingBombs.remove(bomb);
+			}
+		}
+		assertEquals(placedBomb.getTimer(), 2); 
+		for (Bomb bomb : tickingBombs) {
+			if (bomb.tick() == false) {
+				tickingBombs.remove(bomb);
+			}
+		}
+
+		assertEquals(placedBomb.getTimer(), 1);
+		for (Bomb bomb : tickingBombs) {
+			if (bomb.tick() == false) {
+				tickingBombs.remove(bomb);
+			}
+		}
+		assertEquals(placedBomb.getTimer(), 0);
+		
+		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>();
+		for (Bomb bomb : tickingBombs) {
+			if (bomb.tick() == false) {
+				removedBombs.add(bomb);	
+			}
+		}
+		for (Bomb bomb : removedBombs) {
+			tickingBombs.remove(bomb);
+		}
+		GameState gameState = GameState.Play;
+		if(gameMap.getPlayer() == null) {
+			gameState = GameState.Lose;
+		}
+		
+		assertEquals(gameState, GameState.Lose);
+		assertTrue(gameMap.getTile(4, 3).getEntities().size() == expectedGameMap.getTile(4, 3).getEntities().size());	
+		assertTrue(gameMap.getTile(4, 5).getEntities().size() == expectedGameMap.getTile(4, 5).getEntities().size());
+	//	assertTrue(gameMap.getTile(4, 4).getEntities().size() ==  expectedGameMap.getTile(4, 4).getEntities().size());
+	//	assertTrue(gameMap.getTile(3, 4).getEntities().size() ==  expectedGameMap.getTile(3, 4).getEntities().size());
+	//	assertTrue(gameMap.getTile(5, 4).getEntities().size() ==  expectedGameMap.getTile(5, 4).getEntities().size());
 	}
 }
