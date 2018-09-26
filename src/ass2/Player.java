@@ -3,9 +3,7 @@ package ass2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-//need a check if player has sword and bomb getBomb will reduce inventory count of bomb reduce durability of sword as well. need to make sure if sword is dead it is removed
-//
-//need a get arrow
+
 public class Player extends Entity{
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
@@ -20,8 +18,12 @@ public class Player extends Entity{
 		invincible = 0;
 		inventory = new HashMap<>();
 		keys = new ArrayList<>();
-		// TODO Auto-generated constructor stub
 	}
+	
+	/**
+	 * ticks down invincibility duration of the player if invincibility potion is active
+	 * @return true if potion has been ticked down, false if remaining duration is already 0
+	 */
 	public boolean invincibleTick() {
 		if(invincible > 0) {
 			invincible--;
@@ -29,14 +31,21 @@ public class Player extends Entity{
 		}
 		return false;
 	}
+	
+	/**
+	 * increments the players treasure count in their inventory
+	 */
 	public void addTreasure() {
 		treasure++;
 	}
+	/**
+	 * @return returns number of treasure that the player is carrying
+	 */
 	public int getTreasure() {
 		return treasure;
 	}
 	/**
-	 * invincible will last for 10 turns
+	 * invinciblility will last for 10 turns
 	 */
 	public void addInvincibility() {
 		invincible = 10;
@@ -48,23 +57,37 @@ public class Player extends Entity{
 	public boolean getInvincibility() {
 		return (invincible != 0);
 	}
+	/**
+	 * adds hovering status to the player
+	 */
 	public void addHover() {
 		floaty = true;
 	}
+	/**
+	 * @return true if player has an active hovering status (hover potion in effect)
+	 */
 	public boolean getHover() {
 		return floaty;
 	}
+	/**
+	 * returns hashmap of players inventory
+	 * @return
+	 */
 	public HashMap<Entity, Integer> getInventory() {
 		return inventory;
 	}
+	/**
+	 * adds key to player inventory
+	 * @param key key to be added
+	 */
 	public void addKey(Key key) {
 		keys.add(key);
 	}
 	/**
 	 * checkKey checks if the player has the key to open the door. If they do, the door will open
-	 * not sure what should happen if the door is already open
 	 * @param door
-	 * @return returns true if the door is openable.
+	 * @return returns true if the player has the correct key for the door the door and has been opened
+	 * returns false if the player doesn't have the correct key
 	 */
 	public boolean checkKey(Door door) {
 		for(Key key: keys) {
@@ -89,7 +112,7 @@ public class Player extends Entity{
 			if(e.getClass().equals(entity.getClass())) {
 				int value = inventory.get(e);
 				value++;
-				inventory.put(e, value); //in theory it should replace
+				inventory.put(e, value); //should replace
 				return true;
 			}
 		}
@@ -142,7 +165,7 @@ public class Player extends Entity{
 			if(sword.durabilityZero()) {
 				inventory.remove(sword);
 			}
-			entity = sword; //just in case
+			entity = sword; 
 		}
 		else {
 			Set<Entity> set = inventory.keySet();
@@ -154,7 +177,7 @@ public class Player extends Entity{
 						inventory.remove(e);
 					}
 					else {
-						inventory.put(e, value); //in theory it should replace 
+						inventory.put(e, value); 
 					}
 				}
 			}
@@ -175,16 +198,6 @@ public class Player extends Entity{
 	}
     @Override
     public String toString() {
-       /* StringBuilder stringBuilder = new StringBuilder();
-        Set<Entity> set = inventory.keySet();
-        for(Entity entity: set) {
-        	stringBuilder.append(entity.toString());
-        	stringBuilder.append(" ");
-        }
-        stringBuilder.append(floaty);
-        stringBuilder.append(" ");
-        stringBuilder.append(invincible);
-        return stringBuilder.toString();*/
     	return "+";
     }
 }

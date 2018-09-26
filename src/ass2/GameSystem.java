@@ -10,7 +10,7 @@ public class GameSystem {
 			
 			// Game Mode 1
 			// Instantiate game engine
-			GameEngine gameEngine = new GameEngine(new Map()); //need to change this
+			GameEngine gameEngine = new GameEngine(new Map(20)); //need to change this
 			// initialises the map, player controls, checks gamestate
 			GameState state = gameEngine.runGame();
 			

@@ -1,5 +1,4 @@
 package ass2;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +7,6 @@ public abstract class HunterGroup extends Enemy{
 
 	public HunterGroup(int id) {
 		super(id);
-
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * finds a valid move to make and then moves the Hunter to that tile

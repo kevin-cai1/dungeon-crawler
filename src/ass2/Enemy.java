@@ -20,7 +20,9 @@ public abstract class Enemy extends Entity{
 	}
 	
 	public abstract void getAction(Map map);
-
+	/**
+	 * clears the map searching
+	 */
 	public void clear() {
 		parent.clear();
 		queue.clear();
@@ -105,6 +107,12 @@ public abstract class Enemy extends Entity{
 		Tile curPos = map.getEntityLocation(this.getId());
 		pathCheck(map, curPos, tile);
 	}
+	/**
+	 * checks if there is a way to get to a certain tile
+	 * @param map
+	 * @param curPos
+	 * @param playerPos
+	 */
 	public void pathCheck(Map map, Tile curPos, Tile playerPos) {
 		Tile adjacent;
 		Tile queuePop;
@@ -141,6 +149,14 @@ public abstract class Enemy extends Entity{
 			}
 		}
 	}
+	/**
+	 * calculates the distance between two tiles
+	 * @param x1 x coordinate of tile 1
+	 * @param y1 y coordinate of tile 1
+	 * @param x2 x coordinate of tile 2
+	 * @param y2 y coordinate of tile 2
+	 * @return the distance between two tile as a double
+	 */
 	public double distCalc(int x1, int y1, int x2, int y2) {
 	    double dist;
 	    int x = Math.abs(x2-x1);
@@ -150,6 +166,11 @@ public abstract class Enemy extends Entity{
 	    dist = Math.sqrt(x+y);
 	    return dist;
 	}
+	/**
+	 * makes a path from the parent nodes and adds it to shortest
+	 * @param tile
+	 * @param shortest
+	 */
 	public void makePath(Tile tile, List<Tile> shortest) {
 		Tile temp = tile;
 		while(temp != null) {
@@ -157,9 +178,14 @@ public abstract class Enemy extends Entity{
 			temp = parent.get(temp);
 		}
 		Collections.reverse(shortest);
-		//after we do a path search of some sort we have to clear 
 		clear();
 	}
+	/**
+	 * make a path either to the tile or to the nearest tile to the tile
+	 * @param map
+	 * @param tile
+	 * @param shortest
+	 */
 	public void makeValidPath(Map map, Tile tile, List<Tile> shortest) {
 		//If there is a way, then there will be a path in parent
 		if(parent.containsKey(tile)) {

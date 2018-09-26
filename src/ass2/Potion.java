@@ -7,9 +7,16 @@ public abstract class Potion extends Entity {
 		usage = 1;
 		// TODO Auto-generated constructor stub
 	}
-	public int getUsage() { //returns if the potion has been used or not
+	/**
+	 * Checks if the potion has been used or not
+	 * @return usage of the potion, 1 if unused, 0 if used
+	 */
+	public int getUsage() {
 		return usage;
 	}
+	/**
+	 * changes the potion usage to 0 to signify it has been used
+	 */
 	public void use() {
 		usage = 0;
 	}
