@@ -3,7 +3,7 @@ package application;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 
-public class GameController {
+public class DesignController {
 	@FXML
 	private GridPane map;
 	

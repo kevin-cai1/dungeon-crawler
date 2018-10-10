@@ -49,7 +49,14 @@ public class MenuController {
 	
 	@FXML
 	public void designMap() {
-		// load scene for design
+		// load scene for design`
+		DesignScene design = new DesignScene(s);
+		try {
+			design.display();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
