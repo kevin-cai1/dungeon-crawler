@@ -1,12 +1,10 @@
 package application;
 
-import java.io.IOException;
+ import java.io.IOException;
+ import org.omg.CORBA.PUBLIC_MEMBER;
+ import com.sun.glass.events.KeyEvent;
+ import javafx.event.Event;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
-import com.sun.glass.events.KeyEvent;
-
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

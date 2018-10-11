@@ -14,9 +14,9 @@ public class Map {
 		idCounter = 0;
 		for(int i = 0; i < arrayLength; i++) {
 			for(int j = 0; j < arrayLength; j++) {
-				Floor floor = new Floor(genID());//great id
+				//Floor floor = new Floor(genID());//great id
 				ArrayList<Entity> entities = new ArrayList<>();
-				entities.add(floor);
+				//entities.add(floor);
 				map[i][j] = new Tile(entities, i, j);
 			}
 		}

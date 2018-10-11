@@ -9,6 +9,6 @@ public class GameController {
 	
 	@FXML
 	public void initialize() {
-		
+		System.out.println("game controller");
 	}
 }

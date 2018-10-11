@@ -20,7 +20,7 @@ public class DesignScene {
 		
 	public void display() throws Exception {
 		s.setTitle(title);
-		fxmlLoader.setController(new GameController());
+		fxmlLoader.setController(new DesignController());
 	
 		try {
 			Parent root = fxmlLoader.load();
