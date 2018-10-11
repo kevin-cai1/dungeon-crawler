@@ -3,7 +3,7 @@ package application;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import ass2.*;
-import javafx.event.EventType;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Screen;
@@ -31,9 +32,27 @@ public class GameScene {
 		
 	public void display() throws Exception {
 		s.setTitle(title);
-		fxmlLoader.setController(new GameController(s));
-		fxmlLoader.load();
-		s.setScene(generateGrid());
+		Scene scene = generateGrid();
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+					case W:		System.out.println("move up");	break;
+					case S:		System.out.println("move down");break;
+					case D:		System.out.println("move right");break;
+					case A:		System.out.println("move left");break;
+					case ESCAPE:	try {
+						goHome();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} break;
+				default:
+					break;
+				}
+			}
+		});
+		s.setScene(scene);
 		s.setResizable(false);
 		s.sizeToScene();
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -177,4 +196,8 @@ public class GameScene {
 		return gameMap.getMap();
 	}
 	
+	private void goHome() throws Exception {
+		new MenuScene(s).display();
+	}
+
  }
