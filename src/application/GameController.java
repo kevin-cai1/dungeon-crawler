@@ -11,5 +11,4 @@ public class GameController {
 	public void initialize() {
 		System.out.println("game controller");
 	}
->>>>>>> MapRepresentation
 }
