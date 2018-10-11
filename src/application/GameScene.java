@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+
 import ass2.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -10,50 +11,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GameScene {
 	private Stage s;
 	private String title;
+	private Scene scene;
 	private FXMLLoader fxmlLoader;
 	private final int tileSize = 60;	// **SCALE TILESIZE DEPENDING ON MAP SIZE
 	private int mapSize = 10;
-	private Map map;
+	private GameEngine game;
 	
-	public GameScene(Stage s, Map map) {
+	public GameScene(Stage s, GameEngine game) {
 		this.s = s;
 		this.title = "Game";
-		this.map = map;
+		this.game = game;
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
+		this.scene = new Scene(generateGrid());
 	}
 		
 	public void display() throws Exception {
-		s.setTitle(title);
-		Scene scene = generateGrid();
-		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-					case W:		System.out.println("move up");	break;
-					case S:		System.out.println("move down");break;
-					case D:		System.out.println("move right");break;
-					case A:		System.out.println("move left");break;
-					case ESCAPE:	
-						try {
-							goHome();
-						} catch (Exception e) {
-							e.printStackTrace();
-						} break;
-				default:
-					break;
-				}
-			}
-		});
+		handleMove();
+		s.setTitle(title);	
 		s.setScene(scene);
 		s.setResizable(false);
 		s.sizeToScene();
@@ -65,8 +47,67 @@ public class GameScene {
 		
 	}
 	
-	public Scene generateGrid() {        
-        Tile[][] gameMap = map.getMap();
+	public void handleMove() throws Exception {
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		@Override
+		public void handle(KeyEvent event) {
+			switch (event.getCode()) {
+				case W:
+					System.out.println("w pressed");
+					game.movePlayerNorth();
+					scene.setRoot(generateGrid());
+					try {
+						display();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case S:		
+					game.movePlayerSouth();
+					scene.setRoot(generateGrid());
+					try {
+						display();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case D:		
+					game.movePlayerEast();
+					scene.setRoot(generateGrid());
+					try {
+						display();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case A:		
+					game.movePlayerWest();
+					scene.setRoot(generateGrid());
+					try {
+						display();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					break;
+				case ESCAPE:	
+					try {
+						goHome();
+					} catch (Exception e) {
+						e.printStackTrace();
+					} break;
+				default:
+					break;
+				}
+			}
+		});
+	}
+	
+	public GridPane generateGrid() {        
+        Tile[][] gameMap = game.getGameMap().getMap();
         
         GridPane gridPane = new GridPane();
         // for visualizing the different squares:
@@ -93,9 +134,8 @@ public class GameScene {
             }
         }
         // ==============================
-        Scene scene = new Scene(gridPane);
-        scene.setFill(Color.BLACK);
-        return scene;
+        
+        return gridPane;
 	}
 	
 	private Image setImage(Entity e) {

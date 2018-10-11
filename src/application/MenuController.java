@@ -3,6 +3,7 @@ package application;
 
 import ass2.Coward;
 import ass2.Exit;
+import ass2.GameEngine;
 import ass2.Hound;
 import ass2.HoverPotion;
 import ass2.Hunter;
@@ -49,7 +50,8 @@ public class MenuController {
 	
 	public void playGame() {
 		// load scene for game
-		GameScene game = new GameScene(s, generateMap());
+		GameEngine gameEngine = new GameEngine(generateMap());
+		GameScene game = new GameScene(s, gameEngine);
 		try {
 			game.display();
 		} catch (Exception e) {

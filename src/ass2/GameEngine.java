@@ -73,13 +73,13 @@ public class GameEngine {
 						playerMoved = movePlayerNorth();
 						break;
 					case SOUTH:
-						playerMoved = movePlayerSouth(map, playerLocation, player);
+						playerMoved = movePlayerSouth();
 						break;
 					case EAST:
-						playerMoved = movePlayerEast(map, playerLocation, player);
+						playerMoved = movePlayerEast();
 						break;
 					case WEST:
-						playerMoved = movePlayerWest(map, playerLocation, player);
+						playerMoved = movePlayerWest();
 						break;
 				}
 			}
