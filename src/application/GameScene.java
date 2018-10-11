@@ -49,60 +49,43 @@ public class GameScene {
 	
 	public void handleMove() throws Exception {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-		@Override
-		public void handle(KeyEvent event) {
-			switch (event.getCode()) {
-				case W:
-					System.out.println("w pressed");
-					game.movePlayerNorth();
-					scene.setRoot(generateGrid());
-					try {
-						display();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				case S:		
-					game.movePlayerSouth();
-					scene.setRoot(generateGrid());
-					try {
-						display();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				case D:		
-					game.movePlayerEast();
-					scene.setRoot(generateGrid());
-					try {
-						display();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				case A:		
-					game.movePlayerWest();
-					scene.setRoot(generateGrid());
-					try {
-						display();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-				case ESCAPE:	
-					try {
-						goHome();
-					} catch (Exception e) {
-						e.printStackTrace();
-					} break;
-				default:
-					break;
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+					case W:
+						game.movePlayerNorth();
+						
+						break;
+					case S:		
+						game.movePlayerSouth();
+						
+						break;
+					case D:		
+						game.movePlayerEast();
+						
+						break;
+					case A:		
+						game.movePlayerWest();
+						
+						break;
+					case ESCAPE:	
+						try {
+							goHome();
+						} catch (Exception e) {
+							e.printStackTrace();
+						} break;
+					default:
+						break;
+				}
+				scene.setRoot(generateGrid());
+				try {
+					display();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
+			
 		});
 	}
 	
@@ -145,13 +128,15 @@ public class GameScene {
 		} else if (e instanceof Bomb) {
 			return new Image("application/Sprites/bomb_unlit.png");
 		} else if (e instanceof Boulder) { 
-			return new Image("application/Sprites/dngn_altar_xom2.png");
+			return new Image("application/Sprites/boulder.png");
+		} else if (e instanceof FloorSwitch) {
+			return new Image("application/Sprites/pressure_plate.png");		
 		} else if (e instanceof InvincibilityPotion) {
 			return new Image("application/Sprites/emerald.png");
 		} else if (e instanceof HoverPotion) {
 			return new Image("application/Sprites/brilliant_blue.png");
 		} else if (e instanceof Key) {
-			return new Image("application/Sprites/staff02.png");
+			return new Image("application/Sprites/key.png");
 		} else if (e instanceof Treasure) { // add treasure, win if all collected
 			return new Image("application/Sprites/gold_pile.png");
 		} else if (e instanceof Arrow) {
@@ -169,17 +154,16 @@ public class GameScene {
 				return new Image("application/Sprites/human_slave.png");
 			}
 		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/grate.png");
+			return new Image("application/Sprites/shaft.png");
 		} else if (e instanceof Exit) {	// win on exit
 			return new Image("application/Sprites/dngn_exit_abyss.png");
 		} else if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
-				
+				return new Image("application/Sprites/closed_door.png");
 			} else {
-				
+				return new Image("application/Sprites/open_door.png");
 			}
-			return new Image("application/Sprites/dngn_stone_arch.png");
 		} else if (e instanceof Wall) {
 			return new Image("application/Sprites/brick_brown-vines3.png");
 		}

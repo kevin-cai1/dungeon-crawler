@@ -1,26 +1,9 @@
 package application;
 
 
-import ass2.Coward;
-import ass2.Exit;
-import ass2.GameEngine;
-import ass2.Hound;
-import ass2.HoverPotion;
-import ass2.Hunter;
-import ass2.InvincibilityPotion;
-import ass2.Map;
-import ass2.Player;
-import ass2.Strategist;
-import ass2.Sword;
-import ass2.Tile;
-import ass2.Treasure;
-import ass2.Wall;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import ass2.*;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
@@ -93,6 +76,15 @@ public class MenuController {
 		t.addEntity(new Hound(gameMap.genID()));
 		
 		t = gameMap.getTile(1, 2);
+		t.addEntity(new Wall(gameMap.genID()));
+		
+		t = gameMap.getTile(2, 4);
+		t.addEntity(new Wall(gameMap.genID()));
+		
+		t = gameMap.getTile(4, 2);
+		t.addEntity(new Boulder(gameMap.genID()));
+		
+		t = gameMap.getTile(4, 6);
 		t.addEntity(new Wall(gameMap.genID()));
 		
 		t = gameMap.getTile(1, 3);
