@@ -31,6 +31,10 @@ public class GameEngine {
 		return gameState;
 	}
 	
+	public Map getGameMap() {
+		return gameMap;
+	}
+	
 	/**
 	 * runs the game in 'play' mode (game mode 1)
 	 * @return the gameState (can be win, lose, play depending on how the player moved)
@@ -66,7 +70,7 @@ public class GameEngine {
 				Direction playerAction = control.getMovement(action);
 				switch (playerAction) {
 					case NORTH:
-						playerMoved = movePlayerNorth(map, playerLocation, player);
+						playerMoved = movePlayerNorth();
 						break;
 					case SOUTH:
 						playerMoved = movePlayerSouth(map, playerLocation, player);
@@ -154,7 +158,10 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved up one tile
 	 */
-	public boolean movePlayerNorth(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerNorth() {
+		Tile[][] map = gameMap.getMap();
+		Tile playerLocation = gameMap.getPlayerLocation();
+		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.NORTH;
 		System.out.println("trying to move player");
 		if (this.validateMove(player, playerAction) == true) {
@@ -185,7 +192,10 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved down one tile
 	 */
-	public boolean movePlayerSouth(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerSouth() {
+		Tile[][] map = gameMap.getMap();
+		Tile playerLocation = gameMap.getPlayerLocation();
+		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.SOUTH;
 		if (this.validateMove(player, playerAction) == true) {
 			int playerX = playerLocation.getX();
@@ -214,7 +224,10 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved right one tile
 	 */
-	public boolean movePlayerEast(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerEast() {
+		Tile[][] map = gameMap.getMap();
+		Tile playerLocation = gameMap.getPlayerLocation();
+		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.EAST;
 		if (this.validateMove(player, playerAction) == true) {
 			int playerX = playerLocation.getX();
@@ -243,7 +256,10 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved left one tile
 	 */
-	public boolean movePlayerWest(Tile[][] map, Tile playerLocation, Player player) {
+	public boolean movePlayerWest() {
+		Tile[][] map = gameMap.getMap();
+		Tile playerLocation = gameMap.getPlayerLocation();
+		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.WEST;
 		if (this.validateMove(player, playerAction) == true) {
 			int playerX = playerLocation.getX();

@@ -23,10 +23,12 @@ public class GameScene {
 	private FXMLLoader fxmlLoader;
 	private final int tileSize = 60;	// **SCALE TILESIZE DEPENDING ON MAP SIZE
 	private int mapSize = 10;
+	private Map map;
 	
-	public GameScene(Stage s) {
+	public GameScene(Stage s, Map map) {
 		this.s = s;
 		this.title = "Game";
+		this.map = map;
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
 	}
 		
@@ -41,12 +43,12 @@ public class GameScene {
 					case S:		System.out.println("move down");break;
 					case D:		System.out.println("move right");break;
 					case A:		System.out.println("move left");break;
-					case ESCAPE:	try {
-						goHome();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} break;
+					case ESCAPE:	
+						try {
+							goHome();
+						} catch (Exception e) {
+							e.printStackTrace();
+						} break;
 				default:
 					break;
 				}
@@ -63,18 +65,8 @@ public class GameScene {
 		
 	}
 	
-	public Scene generateGrid() {
-		Image b = createImage(Color.BLACK);
-        Image w = createImage(Color.WHITE);
-        Image[][] grid = new Image[mapSize][mapSize];
-        for (int i = 0; i < mapSize; i++) {
-        	for (int j = 0; j < mapSize; j++) {
-        		grid[i][j] = b;
-        		
-        	}
-        }
-        
-        Tile[][] map = generateMap();
+	public Scene generateGrid() {        
+        Tile[][] gameMap = map.getMap();
         
         GridPane gridPane = new GridPane();
         // for visualizing the different squares:
@@ -83,8 +75,8 @@ public class GameScene {
         //gridPane.setStyle("-fx-background-color: grey;");
         
         // loop that fills in the image
-        for (int y = 0 ; y < map.length ; y++) {
-            for (int x = 0 ; x < map[y].length ; x++) {
+        for (int y = 0 ; y < gameMap.length ; y++) {
+            for (int x = 0 ; x < gameMap[y].length ; x++) {
                 //ImageView imageView = new ImageView(grid[y][x]);
             	// add a floor to every single tile ^^
             	ImageView floorImage = new ImageView(new Image("application/Sprites/cobble_blood1.png"));
@@ -92,7 +84,7 @@ public class GameScene {
                 floorImage.setFitHeight(tileSize);
                 gridPane.add(floorImage, x, y);
                 // ^^^
-	            for (Entity e: map[x][y].getEntities()) {
+	            for (Entity e: gameMap[x][y].getEntities()) {
 	            	ImageView entityImage = new ImageView(setImage(e));
 	            	entityImage.setFitWidth(tileSize);
 	            	entityImage.setFitHeight(tileSize);
@@ -104,12 +96,6 @@ public class GameScene {
         Scene scene = new Scene(gridPane);
         scene.setFill(Color.BLACK);
         return scene;
-	}
-	
-	private Image createImage(Color color) {
-		WritableImage image = new WritableImage(1, 1);
-        image.getPixelWriter().setColor(0, 0, color);
-        return image ;
 	}
 	
 	private Image setImage(Entity e) {
@@ -160,43 +146,7 @@ public class GameScene {
 		return image;
 	}
 	
-	private Tile[][] generateMap() {
-		Map gameMap = new Map(10);
-		Tile t = gameMap.getTile(4, 4);
-		t.addEntity(new Player(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 1);
-		t.addEntity(new Hound(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 2);
-		t.addEntity(new Wall(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 3);
-		t.addEntity(new Sword(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 4);
-		t.addEntity(new Exit(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 5);
-		t.addEntity(new Treasure(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 6);
-		t.addEntity(new InvincibilityPotion(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 7);
-		t.addEntity(new Hunter(gameMap.genID()));
-		
-		t = gameMap.getTile(1, 8);
-		t.addEntity(new Strategist(gameMap.genID()));
-		
-		t = gameMap.getTile(2, 1);
-		t.addEntity(new HoverPotion(gameMap.genID()));
-		
-		t = gameMap.getTile(2, 2);
-		t.addEntity(new Coward(gameMap.genID()));
-		
-		return gameMap.getMap();
-	}
+	
 	
 	private void goHome() throws Exception {
 		new MenuScene(s).display();
