@@ -1,8 +1,9 @@
 package application;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import ass2.*;
-
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -30,6 +31,8 @@ public class GameScene {
 		
 	public void display() throws Exception {
 		s.setTitle(title);
+		fxmlLoader.setController(new GameController(s));
+		fxmlLoader.load();
 		s.setScene(generateGrid());
 		s.setResizable(false);
 		s.sizeToScene();
@@ -38,7 +41,6 @@ public class GameScene {
 		s.setX((bounds.getWidth() - s.getWidth())/2);
 		s.setY((bounds.getHeight() - s.getHeight())/2);
 		s.show();
-		
 	}
 	
 	public Scene generateGrid() {
@@ -46,10 +48,9 @@ public class GameScene {
         Image w = createImage(Color.WHITE);
         Image[][] grid = new Image[mapSize][mapSize];
         for (int i = 0; i < mapSize; i++) {
-        	for (int j = 0; j < mapSize; j++) {
-        		grid[i][j] = b;
-        		
-        	}
+        		for (int j = 0; j < mapSize; j++) {
+        			grid[i][j] = b;	
+        		}
         }
         
         Tile[][] map = generateMap();
@@ -175,4 +176,5 @@ public class GameScene {
 		
 		return gameMap.getMap();
 	}
+	
  }
