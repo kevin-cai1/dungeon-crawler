@@ -9,6 +9,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -24,6 +27,7 @@ public class GameScene {
 	private final int tileSize = 60;	// **SCALE TILESIZE DEPENDING ON MAP SIZE
 	private int mapSize = 10;
 	private GameEngine game;
+	private boolean playerMoved = false;
 	
 	public GameScene(Stage s, GameEngine game) {
 		this.s = s;
@@ -53,19 +57,19 @@ public class GameScene {
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
 					case W:
-						game.movePlayerNorth();
+						playerMoved = game.movePlayerNorth();
 						
 						break;
 					case S:		
-						game.movePlayerSouth();
+						playerMoved = game.movePlayerSouth();
 						
 						break;
 					case D:		
-						game.movePlayerEast();
+						playerMoved = game.movePlayerEast();
 						
 						break;
 					case A:		
-						game.movePlayerWest();
+						playerMoved = game.movePlayerWest();
 						
 						break;
 					case ESCAPE:	
@@ -76,6 +80,23 @@ public class GameScene {
 						} break;
 					default:
 						break;
+				}
+				if (game.getGameState().equals(GameState.Win)) {
+					try {
+						winMessage();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (game.getGameState().equals(GameState.Lose)) {
+					
+				}
+				
+				if (playerMoved) {
+					// move enemies (run or move depending on invincibility)
+				}
+				
+				if (game.checkPlayerStatus() == false) {
+					loseMessage();
 				}
 				scene.setRoot(generateGrid());
 				try {
@@ -174,5 +195,14 @@ public class GameScene {
 	
 	private void goHome() throws Exception {
 		new MenuScene(s).display();
+	}
+	
+	private void winMessage() throws Exception {
+		System.out.println("YOU WIN");
+		goHome();
+	}
+	
+	private void loseMessage() {
+		System.out.println("YOU LOSE");
 	}
  }

@@ -124,7 +124,7 @@ public class GameEngine {
 				
 			}
 			
-			checkPlayerStatus(gameMap, player);
+			checkPlayerStatus();
 			
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
 				if (bomb.tick() == false) {
@@ -708,8 +708,9 @@ public class GameEngine {
 	 * @param player
 	 * @return true if player is alive
 	 */
-	private boolean checkPlayerStatus(Map map, Player player) {
-		Tile playerLocation = map.getPlayerLocation();
+	public boolean checkPlayerStatus() {
+		Player player = gameMap.getPlayer();
+		Tile playerLocation = gameMap.getPlayerLocation();
 		if (player.getInvincibility() == false) {
 			for (Entity e : playerLocation.getEntities()) {
 				if (e instanceof Enemy) {
