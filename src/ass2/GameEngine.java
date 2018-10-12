@@ -510,7 +510,10 @@ public class GameEngine {
 	 * similar to a T shape 
 	 * @param direction direction the sword is swung at
 	 */
-	public void swing(Direction direction) {
+	public boolean swing(Direction direction) {
+		if (gameMap.getPlayer().checkSword() == false) {
+			return false;
+		}
 		Tile player = gameMap.getPlayerLocation();
 		ArrayList<Tile> attackedTiles = new ArrayList<Tile>();
 		switch (direction) {
@@ -588,8 +591,20 @@ public class GameEngine {
 				}
 			}
 		}
+		return true;
 
 	}
+	
+	public boolean placeBomb() {
+		if (gameMap.getPlayer().checkBomb()) {
+			Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
+			placedBomb.placeBomb();
+			tickingBombs.add(placedBomb);
+			return true;
+		}
+		return false;
+	}
+
 	
 	/**
 	 * checks if the inputted value or coordinate is within the boundary of the map

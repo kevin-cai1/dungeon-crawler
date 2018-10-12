@@ -33,7 +33,7 @@ public class MenuController {
 	
 	public void playGame() {
 		// load scene for game
-		GameEngine gameEngine = new GameEngine(generateMap2());
+		GameEngine gameEngine = new GameEngine(generateMap());
 		GameScene game = new GameScene(s, gameEngine);
 		try {
 			game.display();

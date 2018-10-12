@@ -76,6 +76,26 @@ public class GameScene {
 						playerMoved = game.movePlayerWest();
 						
 						break;
+					case B:		
+						playerMoved = game.movePlayerWest();
+						
+						break;
+					case UP:		
+						playerMoved = game.swing(Direction.NORTH);
+						
+						break;
+					case DOWN:		
+						playerMoved = game.swing(Direction.SOUTH);
+						
+						break;
+					case LEFT:		
+						playerMoved = game.swing(Direction.WEST);
+						
+						break;
+					case RIGHT:		
+						playerMoved = game.swing(Direction.EAST);
+						
+						break;
 					case ESCAPE:	
 						goHome();
 						break;
