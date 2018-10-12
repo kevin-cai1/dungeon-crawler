@@ -33,7 +33,7 @@ public class MenuController {
 	
 	public void playGame() {
 		// load scene for game
-		GameEngine gameEngine = new GameEngine(generateMap());
+		GameEngine gameEngine = new GameEngine(generateMap2());
 		GameScene game = new GameScene(s, gameEngine);
 		try {
 			game.display();
@@ -110,6 +110,71 @@ public class MenuController {
 		
 		t = gameMap.getTile(2, 2);
 		t.addEntity(new Coward(gameMap.genID()));
+		
+		t = gameMap.getTile(6, 2);
+		t.addEntity(new Door(1, gameMap.genID()));
+		
+		t = gameMap.getTile(6, 3);
+		t.addEntity(new Key(1, gameMap.genID()));
+		
+		t = gameMap.getTile(6, 6);
+		t.addEntity(new Pit(gameMap.genID()));
+		
+		t = gameMap.getTile(4, 1);
+		t.addEntity(new FloorSwitch(gameMap.genID()));
+		gameMap.addWinCondition(WinCondition.Boulder);
+		gameMap.addWinCondition(WinCondition.Treasure);
+		return gameMap;
+	}
+	
+	private Map generateMap2() {
+		Map gameMap = new Map(7);
+		Tile t = gameMap.getTile(1, 1);
+		t.addEntity(new Player(gameMap.genID()));
+		Tile t2;
+		for (int i = 0; i < 7; i++) {
+			t = gameMap.getTile(0, i);
+			t.addEntity(new Wall(gameMap.genID()));
+			
+			t2 = gameMap.getTile(i, 6);
+			t2.addEntity(new Wall(gameMap.genID()));
+			
+			t2 = gameMap.getTile(i, 0);
+			t2.addEntity(new Wall(gameMap.genID()));
+			
+			t2 = gameMap.getTile(6, i);
+			t2.addEntity(new Wall(gameMap.genID()));
+			
+		}
+		
+		t2 = gameMap.getTile(2,1);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(2,2);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(2,3);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(2,4);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(3, 3);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(4, 2);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(4, 5);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(5, 5);
+		t2.addEntity(new Wall(gameMap.genID()));
+		
+		t2 = gameMap.getTile(3, 2);
+		t2.addEntity(new Exit(gameMap.genID()));
+		
+
 		
 		return gameMap;
 	}

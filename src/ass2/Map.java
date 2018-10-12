@@ -145,6 +145,7 @@ public class Map {
 		
 	// Moves an entity one space in a given direction
 	public void makeMove(Entity entity, Direction move) {
+		boolean entityFound = false;
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
@@ -152,9 +153,12 @@ public class Map {
 				Tile nextTile = null;
 				for (Entity e : tile.getEntities()) {
 					if (e.getId() == entity.getId()) {
+						entityFound = true;
 						Entity EntityCopy = e;
 						removeEntity.add(e); // Remove entity from current tile
 						// Calculate the tile it needs to move to
+						System.out.println("entity location: x:" + i + "y:" + j);
+
 						switch (move) {
 							case NORTH: 
 								nextTile = map[i][j-1];
@@ -174,6 +178,9 @@ public class Map {
 				}
 				for (Entity e1: removeEntity) {
 					tile.removeEntity(e1);
+				}
+				if (entityFound == true) {
+					return;
 				}
 			}
 		}

@@ -11,16 +11,19 @@ public class GameEngine {
 	private int arrayLength;
 	private ArrayList<Bomb> tickingBombs;
 	private boolean invincibility;
+	private int numTreasures;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
-		this.gameState = GameState.Menu;
+		this.gameState = GameState.Play;
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
 		this.invincibility = false;
-		arrayLength = gameMap.getArrayLength();
-
+		this.arrayLength = gameMap.getArrayLength();
+		this.numTreasures = getNumTreasures();
+		setWinConditions();
+		System.out.println(this.boulderWinCondition + "enemy" + this.enemyWinCondition + "treasure" + this.treasureWinCondition);
 	}
 	
 	/**
@@ -29,6 +32,20 @@ public class GameEngine {
 	 */
 	public GameState getGameState() {
 		return gameState;
+	}
+	
+	private int getNumTreasures() {
+		int numTreasures = 0;
+		for (int i = 0; i < arrayLength; i++) {
+			for (int j = 0; j < arrayLength; j++) {
+				for (Entity e : gameMap.getMap()[i][j].getEntities()) { // look through every single entity
+					if (e instanceof Treasure) { // count all the treasures
+						numTreasures++;
+					}
+				}
+			}
+		}
+		return numTreasures;
 	}
 	
 	public Map getGameMap() {
@@ -53,16 +70,7 @@ public class GameEngine {
 		Player player = gameMap.getPlayer();
 		Tile playerLocation = gameMap.getPlayerLocation();
 		
-		int numTreasures = 0;
-		for (int i = 0; i < arrayLength; i++) {
-			for (int j = 0; j < arrayLength; j++) {
-				for (Entity e : map[i][j].getEntities()) { // look through every single entity
-					if (e instanceof Treasure) { // count all the treasures
-						numTreasures++;
-					}
-				}
-			}
-		}
+		
 		while (true) { // game not won, user not ded or not quit
 			boolean playerMoved = false;
 			char action = control.getValidInput();
@@ -142,11 +150,32 @@ public class GameEngine {
 				}
 			}
 			
-			if (checkWin(player, numTreasures, arrayLength, map) == true) {
+			if (checkWin() == true) {
 				gameState = GameState.Win;
 				return gameState;
 			}
 		}
+	}
+	
+	public GameState tickEffects() {
+		if (tickingBombs != null) {
+			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
+				if (bomb.tick() == false) {
+					tickingBombs.remove(bomb);
+					if(gameMap.getPlayer() == null) {
+						gameState = GameState.Lose;
+						return gameState;
+					}
+				}
+			}
+		}
+		
+		if (invincibility == true) {
+			if (gameMap.getPlayer().invincibleTick() == false) { //invincibility tick, false when doesn't tick (no more invincibility)
+				invincibility = false;
+			}
+		}
+		return gameState;
 	}
 	
 	/**
@@ -288,7 +317,9 @@ public class GameEngine {
 	 * @param map
 	 * @return true if player has met win conditions 
 	 */
-	public boolean checkWin(Player player, int numTreasures, int arrayLength, Tile[][] map) {
+	public boolean checkWin() {
+		Player player = gameMap.getPlayer();
+		Tile[][] map = gameMap.getMap();
 		boolean allSwitches = true;
 		boolean allEnemiesDestroyed = true;
 		for (int i = 0; i < arrayLength; i++) {
@@ -308,8 +339,13 @@ public class GameEngine {
 			}
 		}
 		
-		boolean satisfyWin = true;
+		boolean satisfyWin;
 		
+		if (boulderWinCondition || enemyWinCondition || treasureWinCondition) {
+			satisfyWin = true;
+		} else {
+			satisfyWin = false;
+		}
 		if (boulderWinCondition) {
 			if (allSwitches != true) {
 				satisfyWin = false;
@@ -327,7 +363,9 @@ public class GameEngine {
 				satisfyWin = false;
 			}
 		}
-		
+		if (satisfyWin == true) {
+			gameState = GameState.Win;
+		}
 		return satisfyWin;
 	}
 
@@ -423,7 +461,11 @@ public class GameEngine {
 				player.addKey((Key)e);
 				removeEntities.add(e);
 			} else if (e instanceof Treasure) { // add treasure, win if all collected
+				System.out.println("PLAYER STANDING ON TREASURE");
 				player.addTreasure();
+				removeEntities.add(e);
+				System.out.println("player has: " + player.getTreasure() + "treasures");
+				System.out.println("map has: " + numTreasures + "treasures");
 			} else if (e instanceof Arrow) {
 				player.putInventory(e);
 				removeEntities.add(e);
@@ -457,6 +499,7 @@ public class GameEngine {
 			affectedTile.removeEntity(e);
 		}
 		for (Entity e: moveEntity) {
+			System.out.println("moving " + e.getClass() );
 			gameMap.makeMove(e, playerAction);
 		}
 		return movePlayer;
@@ -689,6 +732,7 @@ public class GameEngine {
 	 */
 	public void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
+		System.out.println("win conditions" + conditions);
 		if (conditions != null) {
 			if (conditions.contains(WinCondition.Boulder)) {
 				this.boulderWinCondition = true;

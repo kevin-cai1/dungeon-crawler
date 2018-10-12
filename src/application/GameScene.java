@@ -37,8 +37,12 @@ public class GameScene {
 		this.scene = new Scene(generateGrid());
 	}
 		
-	public void display() throws Exception {
-		handleMove();
+	public void display() {
+		try {
+			handleMove();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		s.setTitle(title);	
 		s.setScene(scene);
 		s.setResizable(false);
@@ -73,20 +77,13 @@ public class GameScene {
 						
 						break;
 					case ESCAPE:	
-						try {
-							goHome();
-						} catch (Exception e) {
-							e.printStackTrace();
-						} break;
+						goHome();
+						break;
 					default:
 						break;
 				}
 				if (game.getGameState().equals(GameState.Win)) {
-					try {
-						winMessage();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					winMessage();
 				} else if (game.getGameState().equals(GameState.Lose)) {
 					
 				}
@@ -98,13 +95,18 @@ public class GameScene {
 				if (game.checkPlayerStatus() == false) {
 					loseMessage();
 				}
-				scene.setRoot(generateGrid());
-				try {
-					display();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				
+				if (game.tickEffects() == GameState.Lose) {
+					loseMessage();
 				}
+				
+				if (game.checkWin() == true) {
+					System.out.println("checked win");
+					winMessage();
+				}
+				
+				scene.setRoot(generateGrid());
+				display();
 			}
 			
 		});
@@ -193,11 +195,16 @@ public class GameScene {
 	
 	
 	
-	private void goHome() throws Exception {
-		new MenuScene(s).display();
+	private void goHome() {
+		try {
+			new MenuScene(s).display();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void winMessage() throws Exception {
+	private void winMessage() {
 		System.out.println("YOU WIN");
 		goHome();
 	}
