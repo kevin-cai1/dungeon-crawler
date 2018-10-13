@@ -332,7 +332,6 @@ public class GameEngine {
 							allSwitches = false;
 						}
 					} else if (e instanceof Enemy) {
-						System.out.println("found enemy");
 						allEnemiesDestroyed = false;
 					}
 				}
@@ -374,19 +373,26 @@ public class GameEngine {
 	 * @param arrayLength map size
 	 * @param map
 	 */
-	private void moveEnemies(int arrayLength, Tile[][] map) {
+	public void moveEnemies() {
+		Tile[][] map = gameMap.getMap();
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
-						((Enemy) e).getAction(gameMap); // validation on enemy side
+						//((Enemy) e).getAction(gameMap); // validation on enemy side
+						enemies.add((Enemy)e);
 					}
 				}
 			}
 		}
+		for (Enemy enemy: enemies) {
+			enemy.getAction(gameMap);
+		}
 	}
-	private void runEnemies(int arrayLength, Tile[][] map) {
+	public void runEnemies() {
+		Tile[][] map = gameMap.getMap();
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
@@ -598,7 +604,10 @@ public class GameEngine {
 	public boolean placeBomb() {
 		if (gameMap.getPlayer().checkBomb()) {
 			Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
+			System.out.println(placedBomb.getClass());
 			placedBomb.placeBomb();
+			System.out.println(placedBomb.getClass());
+
 			tickingBombs.add(placedBomb);
 			return true;
 		}
@@ -628,7 +637,6 @@ public class GameEngine {
 	 */
 	public boolean validateMove(Entity entity, Direction move) {
 		Tile tile = gameMap.getEntityLocation(entity.getId());
-		System.out.println(entity.getId());
 		int tileX = tile.getX();
 		int tileY = tile.getY();
 		Tile[][] entityLocation = gameMap.getMap();

@@ -2,8 +2,14 @@ package application;
 
 import java.io.IOException;
 
+import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 
 import ass2.*;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -28,6 +34,11 @@ public class GameScene {
 	private int mapSize = 10;
 	private GameEngine game;
 	private boolean playerMoved = false;
+	
+	final BooleanProperty LPressed = new SimpleBooleanProperty(false);
+	final BooleanProperty DPressed = new SimpleBooleanProperty(false);
+	final BooleanBinding DAndLPressed = LPressed.and(DPressed);
+
 	
 	public GameScene(Stage s, GameEngine game) {
 		this.s = s;
@@ -55,7 +66,17 @@ public class GameScene {
 		
 	}
 	
+	
 	public void handleMove() throws Exception {
+		DAndLPressed.addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
+				// TODO Auto-generated method stub
+				game.swing(Direction.EAST);
+				
+			}
+		});
+		
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
@@ -69,16 +90,18 @@ public class GameScene {
 						
 						break;
 					case D:		
-						playerMoved = game.movePlayerEast();
-						
+						if (LPressed.getValue() == false) {
+							playerMoved = game.movePlayerEast();
+						}
+						DPressed.set(true);
 						break;
 					case A:		
 						playerMoved = game.movePlayerWest();
 						
 						break;
 					case B:		
-						playerMoved = game.movePlayerWest();
-						
+						//playerMoved = game.placeBomb();
+						System.out.println("DROP BOMB");
 						break;
 					case UP:		
 						playerMoved = game.swing(Direction.NORTH);
@@ -96,6 +119,9 @@ public class GameScene {
 						playerMoved = game.swing(Direction.EAST);
 						
 						break;
+					case L:		
+						LPressed.set(true);
+						break;
 					case ESCAPE:	
 						goHome();
 						break;
@@ -110,6 +136,12 @@ public class GameScene {
 				
 				if (playerMoved) {
 					// move enemies (run or move depending on invincibility)
+					if(game.getGameMap().getPlayer().getInvincibility()) {
+						game.runEnemies();
+					}
+					else {
+						game.moveEnemies();
+					}
 				}
 				
 				if (game.checkPlayerStatus() == false) {
@@ -127,6 +159,52 @@ public class GameScene {
 				
 				scene.setRoot(generateGrid());
 				display();
+			}
+			
+		});
+		
+		scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				case W:
+					
+					break;
+				case S:		
+					
+					break;
+				case D:		
+					DPressed.set(false);
+					break;
+				case A:		
+					
+					break;
+				case B:		
+					
+					break;
+				case UP:		
+					
+					break;
+				case DOWN:		
+					
+					break;
+				case LEFT:		
+					
+					break;
+				case RIGHT:		
+					
+					break;
+				case L:		
+					LPressed.set(false);
+					break;
+				case ESCAPE:	
+					goHome();
+					break;
+				default:
+					break;
+			}
+				
 			}
 			
 		});
@@ -169,6 +247,21 @@ public class GameScene {
 		if (e instanceof Player) {
 			return new Image("application/Sprites/human_m.png");
 		} else if (e instanceof Bomb) {
+			/*switch (((Bomb) e).getTimer()) {
+			case 4:		// unlit
+				
+				break;
+			case 3:
+				
+				break;
+			case 2:
+				
+				break;
+			case 1:
+				
+				break;
+			*/
+			
 			return new Image("application/Sprites/bomb_unlit.png");
 		} else if (e instanceof Boulder) { 
 			return new Image("application/Sprites/boulder.png");

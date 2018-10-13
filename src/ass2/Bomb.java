@@ -12,6 +12,7 @@ public class Bomb extends Entity{
 	public Bomb(Map map, int id) {
 		super(id);
 		this.map = map;
+		this.timer = 4;
 	}
 	/**
 	 * 

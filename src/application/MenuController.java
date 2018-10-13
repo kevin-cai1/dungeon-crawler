@@ -117,6 +117,9 @@ public class MenuController {
 		t = gameMap.getTile(6, 3);
 		t.addEntity(new Key(1, gameMap.genID()));
 		
+		t = gameMap.getTile(6, 4);
+		t.addEntity(new Bomb(gameMap,gameMap.genID()));
+		
 		t = gameMap.getTile(6, 6);
 		t.addEntity(new Pit(gameMap.genID()));
 		
