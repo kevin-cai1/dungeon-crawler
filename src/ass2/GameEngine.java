@@ -128,10 +128,10 @@ public class GameEngine {
 			// calculate enemy movements
 			if (playerMoved) {
 				if(player.getInvincibility()) {
-					runEnemies(arrayLength, map);
+					runEnemies();
 				}
 				else {
-					moveEnemies(arrayLength, map);
+					moveEnemies();
 				}
 				
 			}
@@ -202,7 +202,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY-1];
-			Tile followingTile = map[playerX][playerY-2];
+			Tile followingTile = null;
+			if (playerY-2 >= 0) {
+				followingTile = map[playerX][playerY-2];
+			}
 	
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
@@ -234,8 +237,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY+1];
-			Tile followingTile = map[playerX][playerY+2];
-			
+			Tile followingTile = null;
+			if (playerY+2 < arrayLength) {
+				followingTile = map[playerX][playerY+2];
+			}
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
@@ -266,8 +271,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX+1][playerY];
-			Tile followingTile = map[playerX+2][playerY];
-			
+			Tile followingTile = null;
+			if (playerX+2 < arrayLength) {
+				followingTile = map[playerX+2][playerY];
+			}
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
@@ -298,7 +305,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX-1][playerY];
-			Tile followingTile = map[playerX-2][playerY];
+			Tile followingTile = null;
+			if (playerX-2 >= 0) {
+				followingTile = map[playerX-2][playerY];
+			}
 			
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
@@ -640,6 +650,7 @@ public class GameEngine {
 	 * @return true if move is valid
 	 */
 	public boolean validateMove(Entity entity, Direction move) {
+		System.out.println("array length: " + arrayLength);
 		Tile tile = gameMap.getEntityLocation(entity.getId());
 		int tileX = tile.getX();
 		int tileY = tile.getY();
@@ -673,7 +684,7 @@ public class GameEngine {
 				}
 				break;
 			case EAST:
-				if (tileX == 19) {
+				if (tileX == arrayLength-1) {
 					return false;
 				}
 				else {
@@ -683,7 +694,7 @@ public class GameEngine {
 								return true;
 							}
 							if (e2 instanceof Boulder) {
-								if (tileX > 17) {
+								if (tileX > arrayLength-3) {
 									return false;
 								}
 								for (Entity e3 : entityLocation[tileX+2][tileY].getEntities()) {
@@ -699,7 +710,7 @@ public class GameEngine {
 				}
 				break;
 			case SOUTH:
-				if (tileY == 19) {
+				if (tileY == arrayLength-1) {
 					return false;
 				}
 				else {
@@ -709,7 +720,7 @@ public class GameEngine {
 								return true;
 							}
 							if (e2 instanceof Boulder) {
-								if (tileY > 17) {
+								if (tileY > arrayLength-3) {
 									return false;
 								}
 								for (Entity e3 : entityLocation[tileX][tileY+2].getEntities()) {

@@ -1,5 +1,6 @@
 package application;
 
+
 import ass2.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -14,10 +15,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -212,10 +218,10 @@ public class GameScene {
 		});
 	}
 	
-	public GridPane generateGrid() {        
+	public BorderPane generateGrid() {        
         Tile[][] gameMap = game.getGameMap().getMap();
-        
-        GridPane gridPane = new GridPane();
+        BorderPane gameDisplay = new BorderPane();
+        GridPane gameGrid = new GridPane();
         // for visualizing the different squares:
         //gridPane.setHgap(2);
         //gridPane.setVgap(2);
@@ -229,19 +235,30 @@ public class GameScene {
             	ImageView floorImage = new ImageView(new Image("application/Sprites/cobble_blood1.png"));
                 floorImage.setFitWidth(tileSize);
                 floorImage.setFitHeight(tileSize);
-                gridPane.add(floorImage, x, y);
+                gameGrid.add(floorImage, x, y);
                 // ^^^
 	            for (Entity e: gameMap[x][y].getEntities()) {
 	            	ImageView entityImage = new ImageView(setImage(e));
 	            	entityImage.setFitWidth(tileSize);
 	            	entityImage.setFitHeight(tileSize);
-	            	gridPane.add(entityImage, x, y);
+	            	gameGrid.add(entityImage, x, y);
 	            }
             }
         }
         // ==============================
+        gameDisplay.setCenter(gameGrid);
         
-        return gridPane;
+        FlowPane sidebar = new FlowPane();
+        sidebar.setPrefWrapLength(170);
+        sidebar.setStyle("-fx-background-color: #1A1A1A;");
+        
+        Label heading = new Label("Inventory");
+        heading.setFont(new Font("Impact", 40));
+        heading.setTextFill(Color.GREY);
+        sidebar.getChildren().add(heading);
+        
+        gameDisplay.setRight(sidebar);
+        return gameDisplay;
 	}
 	
 	private Image setImage(Entity e) {
