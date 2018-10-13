@@ -1,9 +1,5 @@
 package application;
 
-import java.io.IOException;
-
-import com.sun.org.apache.xml.internal.serializer.ElemDesc;
-
 import ass2.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -37,6 +33,7 @@ public class GameScene {
 	
 	final BooleanProperty LPressed = new SimpleBooleanProperty(false);
 	final BooleanProperty DPressed = new SimpleBooleanProperty(false);
+
 	final BooleanBinding DAndLPressed = LPressed.and(DPressed);
 
 	
@@ -123,6 +120,12 @@ public class GameScene {
 						LPressed.set(true);
 						break;
 					case ESCAPE:	
+						/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
+							game.setGameState(GameState.Paused);
+						} else {	// player is resuming
+							game.setGameState(GameState.Play);
+						}
+						pauseGame();*/
 						goHome();
 						break;
 					default:
@@ -134,7 +137,7 @@ public class GameScene {
 					
 				}
 				
-				if (playerMoved) {
+				/*if (playerMoved) {
 					// move enemies (run or move depending on invincibility)
 					if(game.getGameMap().getPlayer().getInvincibility()) {
 						game.runEnemies();
@@ -142,7 +145,7 @@ public class GameScene {
 					else {
 						game.moveEnemies();
 					}
-				}
+				}*/
 				
 				if (game.checkPlayerStatus() == false) {
 					loseMessage();
@@ -199,7 +202,6 @@ public class GameScene {
 					LPressed.set(false);
 					break;
 				case ESCAPE:	
-					goHome();
 					break;
 				default:
 					break;
@@ -307,6 +309,14 @@ public class GameScene {
 	}
 	
 	
+	
+	private void pauseGame() {
+		if (game.getGameState() == GameState.Paused) {
+			// pause the game
+		} else {
+			// close the window
+		}
+	}
 	
 	private void goHome() {
 		try {

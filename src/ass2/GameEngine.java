@@ -34,6 +34,10 @@ public class GameEngine {
 		return gameState;
 	}
 	
+	public void setGameState(GameState state) {
+		gameState = state;
+	}
+	
 	private int getNumTreasures() {
 		int numTreasures = 0;
 		for (int i = 0; i < arrayLength; i++) {
