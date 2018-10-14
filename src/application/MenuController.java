@@ -30,13 +30,14 @@ public class MenuController {
 	public void initialize() {
 			
 	}
-	
+	@FXML
 	public void playGame() {
 		// load scene for game
 		GameEngine gameEngine = new GameEngine(generateMap());
 		GameScene game = new GameScene(s, gameEngine);
 		try {
 			game.display();
+			System.out.println("Is this being run constantly");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -53,7 +53,6 @@ public class GameScene {
 		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
 		this.scene = new Scene(generateGrid());
 		this.prevKeyPress = new ArrayList<>();
-		System.out.println(prevKeyPress);
 	}
 		
 	public void display() {
@@ -139,7 +138,7 @@ public class GameScene {
 							}
 							pauseGame();*/
 							goHome();
-							break;
+							return;
 						default:
 							break;
 					}
