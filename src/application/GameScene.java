@@ -22,6 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -32,7 +33,7 @@ public class GameScene {
 	private String title;
 	private Scene scene;
 	private FXMLLoader fxmlLoader;
-	private final int tileSize = 60;	// **SCALE TILESIZE DEPENDING ON MAP SIZE
+	private final int tileSize;		// **SCALE TILESIZE DEPENDING ON MAP SIZE
 	private int mapSize = 10;
 	private GameEngine game;
 	private boolean playerMoved = false;
@@ -48,7 +49,8 @@ public class GameScene {
 		this.title = "Game";
 		this.game = game;
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
-		this.scene = new Scene(generateGrid());
+		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
+		this.scene = new Scene(generateGrid());		
 	}
 		
 	public void display() {
@@ -247,18 +249,61 @@ public class GameScene {
         }
         // ==============================
         gameDisplay.setCenter(gameGrid);
-        
-        FlowPane sidebar = new FlowPane();
-        sidebar.setPrefWrapLength(170);
-        sidebar.setStyle("-fx-background-color: #1A1A1A;");
-        
-        Label heading = new Label("Inventory");
-        heading.setFont(new Font("Impact", 40));
-        heading.setTextFill(Color.GREY);
-        sidebar.getChildren().add(heading);
-        
-        gameDisplay.setRight(sidebar);
+      
+        gameDisplay.setRight(setSidebar());
         return gameDisplay;
+	}
+	
+	private FlowPane setSidebar() {
+		FlowPane sidebar = new FlowPane();
+		sidebar.setPrefWrapLength(170);
+		sidebar.setStyle("-fx-background-color: #1A1A1A;");
+		
+		Label heading = new Label("Inventory");
+		heading.setFont(new Font("Impact", 40));
+		heading.setTextFill(Color.GREY);
+		sidebar.getChildren().add(heading);
+		
+		HBox Sword = new HBox();
+		Sword.setStyle("-fx-background-color: #1A1A1A;");
+		Sword.setSpacing(10);
+		ImageView sword = new ImageView(new Image("application/Sprites/orcish_great_sword.png"));
+		sword.setFitHeight(40);
+		sword.setFitWidth(40);
+		Label swordCount = new Label();
+		swordCount.setText(Integer.toString((game.getGameMap().getPlayer().getSwordUses())) + " uses");
+		swordCount.setFont(new Font("Impact", 32));
+		swordCount.setTextFill(Color.GREY);
+		Sword.getChildren().addAll(sword, swordCount);
+		
+		HBox Bomb = new HBox();
+		Bomb.setStyle("-fx-background-color: #1A1A1A;");
+		Bomb.setSpacing(10);
+		ImageView bomb = new ImageView(new Image("application/Sprites/bomb_unlit.png"));
+		bomb.setFitHeight(40);
+		bomb.setFitWidth(40);
+		Label bombCount = new Label();
+		bombCount.setText(Integer.toString((game.getGameMap().getPlayer().getBombsLeft())) + " left");
+		bombCount.setFont(new Font("Impact", 32));
+		bombCount.setTextFill(Color.GREY);
+		Bomb.getChildren().addAll(bomb, bombCount);
+		
+		HBox Arrow = new HBox();
+		Arrow.setStyle("-fx-background-color: #1A1A1A;");
+		Arrow.setSpacing(10);
+		ImageView arrow = new ImageView(new Image("application/Sprites/arrow.png"));
+		arrow.setFitHeight(40);
+		arrow.setFitWidth(40);
+		Label arrowCount = new Label();
+		arrowCount.setText(Integer.toString((game.getGameMap().getPlayer().getBombsLeft())) + " left");
+		arrowCount.setFont(new Font("Impact", 32));
+		arrowCount.setTextFill(Color.GREY);
+		Arrow.getChildren().addAll(arrow, arrowCount);
+		
+		
+		sidebar.getChildren().addAll(Sword, Bomb, Arrow);
+		
+		return sidebar;
 	}
 	
 	private Image setImage(Entity e) {
@@ -295,7 +340,7 @@ public class GameScene {
 		} else if (e instanceof Treasure) { // add treasure, win if all collected
 			return new Image("application/Sprites/gold_pile.png");
 		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/longbow.png");
+			return new Image("application/Sprites/arrow.png");
 		} else if (e instanceof Sword) {
 			return new Image("application/Sprites/orcish_great_sword.png");
 		} else if (e instanceof Enemy) {	// lose if you walk into enemy
