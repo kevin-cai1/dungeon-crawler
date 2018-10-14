@@ -1,16 +1,7 @@
 package application;
 
-
-<<<<<<< HEAD
-import java.awt.event.KeyEvent;
-
-import ass2.Exit;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-=======
 import ass2.*;
 
->>>>>>> master
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

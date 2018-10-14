@@ -108,7 +108,6 @@ public class GameScene {
 						break;
 					case UP:		
 						playerMoved = game.swing(Direction.NORTH);
-						
 						break;
 					case DOWN:		
 						playerMoved = game.swing(Direction.SOUTH);
@@ -337,7 +336,8 @@ public class GameScene {
 	
 	private void goHome() {
 		try {
-			new MenuScene(s).display();
+			MenuScene menuScene = new MenuScene(s);
+			menuScene.display();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
