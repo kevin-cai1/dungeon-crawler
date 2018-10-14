@@ -1,0 +1,36 @@
+#pane{
+    -fx-background-image: url('./Sprites/background.jpg');
+    -fx-background-size: 100% 100%;    
+ }
+
+#play {
+    -fx-image: url('./Sprites/play_button.png');
+}
+
+#play:hover {
+    -fx-image: url('./Sprites/play_selected.png');
+}
+
+#design{
+    -fx-image: url('./Sprites/design_button.png');
+}
+
+#design:hover {
+    -fx-image: url('./Sprites/design_selected.png');
+}
+
+#options {
+    -fx-image: url('./Sprites/options_button.png');
+}
+
+#options:hover {
+    -fx-image: url('./Sprites/options_selected.png');
+}
+
+#quit {
+    -fx-image: url('./Sprites/quit_button.png');
+}
+
+#quit:hover {
+    -fx-image: url('./Sprites/quit_selected.png');
+}
