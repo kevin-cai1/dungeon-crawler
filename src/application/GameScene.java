@@ -33,14 +33,19 @@ public class GameScene {
 	public void display() throws Exception {
 		s.setTitle(title);
 		Scene scene = generateGrid();
+		Map playMap = generateMap();
+		GameEngine gameEngine = new GameEngine(playMap);
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
-					case W:		System.out.println("move up");	break;
+					case W:		System.out.println("move up") ;	break;
 					case S:		System.out.println("move down");break;
 					case D:		System.out.println("move right");break;
 					case A:		System.out.println("move left");break;
+					case Q: 		System.out.println("bomb"); break;
+					case E:		System.out.println("Sword"); break;
+					case R: 		System.out.println("arrow"); break;
 					case ESCAPE:	try {
 						goHome();
 					} catch (Exception e) {
@@ -74,7 +79,7 @@ public class GameScene {
         	}
         }
         
-        Tile[][] map = generateMap();
+        Tile[][] map = generateMap().getMap();
         
         GridPane gridPane = new GridPane();
         // for visualizing the different squares:
@@ -160,7 +165,7 @@ public class GameScene {
 		return image;
 	}
 	
-	private Tile[][] generateMap() {
+	private Map generateMap() {
 		Map gameMap = new Map(10);
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(new Player(gameMap.genID()));
@@ -195,7 +200,7 @@ public class GameScene {
 		t = gameMap.getTile(2, 2);
 		t.addEntity(new Coward(gameMap.genID()));
 		
-		return gameMap.getMap();
+		return gameMap;
 	}
 	
 	private void goHome() throws Exception {
