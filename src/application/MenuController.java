@@ -1,6 +1,5 @@
 package application;
 
-
 import ass2.*;
 
 import javafx.fxml.FXML;
@@ -47,7 +46,6 @@ public class MenuController {
 	
 	@FXML
 	public void designMap() {
-
 		// load scene for design`
 		DesignScene design = new DesignScene(s);
 		try {

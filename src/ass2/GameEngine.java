@@ -537,15 +537,27 @@ public class GameEngine {
 		}
 		Tile player = gameMap.getPlayerLocation();
 		ArrayList<Tile> attackedTiles = new ArrayList<Tile>();
+		int tileInFrontX = player.getX();
+		int tileInFrontY = player.getY();
+		boolean tileInFrontWall = false;
 		switch (direction) {
 			case NORTH:
-				if(valueInMap(player.getY() - 2)) {
-					int attackedX = player.getX();
-					int attackedY = player.getY() - 2;
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontY -= 1;
+				if(valueInMap(player.getY() - 2) && valueInMap(tileInFrontY)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX();
+						int attackedY = player.getY() - 2;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
-				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+				for(int i = -1; i <= 1; i++) {	
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() - 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() - 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -555,13 +567,21 @@ public class GameEngine {
 				
 				break;
 			case SOUTH:
-				if(valueInMap(player.getY() + 2)) {
-					int attackedX = player.getX();
-					int attackedY = player.getY() + 2;
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontY += 1;
+				if(valueInMap(player.getY() + 2) && valueInMap(tileInFrontY)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX();
+						int attackedY = player.getY() + 2;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() + 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() + 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -569,13 +589,22 @@ public class GameEngine {
 				}
 				break;
 			case EAST:
-				if(valueInMap(player.getX() + 2)) {
-					int attackedX = player.getX() + 2;
-					int attackedY = player.getY();
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontX += 1;
+				if(valueInMap(player.getX() + 2) && valueInMap(tileInFrontX)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX() + 2;
+						int attackedY = player.getY();
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() + 1)) {
 						int attackedX = player.getX() + 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -583,13 +612,22 @@ public class GameEngine {
 				}
 				break;
 			case WEST:
-				if(valueInMap(player.getX() - 2)) {
-					int attackedX = player.getX() - 2;
-					int attackedY = player.getY();
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontX -= 1;
+				if(valueInMap(player.getX() - 2) && valueInMap(tileInFrontX)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX() - 2;
+						int attackedY = player.getY();
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() - 1)) {
 						int attackedX = player.getX() - 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
