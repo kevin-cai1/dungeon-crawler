@@ -543,8 +543,8 @@ public class GameEngine {
 					int attackedY = player.getY() - 2;
 					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
 				}
-				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+				for(int i = -1; i <= 1; i++) {	
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() - 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() - 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -560,7 +560,7 @@ public class GameEngine {
 					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() + 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() + 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -574,7 +574,7 @@ public class GameEngine {
 					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() + 1)) {
 						int attackedX = player.getX() + 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -588,7 +588,7 @@ public class GameEngine {
 					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() - 1)) {
 						int attackedX = player.getX() - 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
