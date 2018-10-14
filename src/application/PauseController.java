@@ -33,4 +33,18 @@ public class PauseController {
 		MenuScene menuScene = new MenuScene(stage);
 		menuScene.display();
 	}
+	
+	@FXML
+	public void openOptions() {
+		// load scene for design
+	}
+	
+	@FXML
+	public void resumeGame() {
+		
+	}
+	@FXML
+	public void quitGame() {
+		System.exit(1);
+	}
 }

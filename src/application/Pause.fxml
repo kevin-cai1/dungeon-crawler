@@ -17,7 +17,7 @@
             <Image url="@Sprites/play_button.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="optionsButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="optionsButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="175.0" onMouseClicked="#openOption" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/options_button.png" />
          </image>
@@ -27,7 +27,7 @@
             <Image url="@Sprites/quit_selected.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="quitgameButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="297.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="quitButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="297.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_button.png" />
          </image>
