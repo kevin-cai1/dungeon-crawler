@@ -1,6 +1,8 @@
 package application;
 
 
+import java.util.ArrayList;
+
 import ass2.*;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -8,6 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -18,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -38,6 +42,8 @@ public class GameScene {
 	private GameEngine game;
 	private boolean playerMoved = false;
 	
+	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
+	
 	final BooleanProperty LPressed = new SimpleBooleanProperty(false);
 	final BooleanProperty DPressed = new SimpleBooleanProperty(false);
 
@@ -50,7 +56,9 @@ public class GameScene {
 		this.game = game;
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
 		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
-		this.scene = new Scene(generateGrid());		
+		this.scene = new Scene(generateGrid());
+		this.prevKeyPress = new ArrayList<>();
+		System.out.println(prevKeyPress);
 	}
 		
 	public void display() {
@@ -85,60 +93,65 @@ public class GameScene {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-					case W:
-						playerMoved = game.movePlayerNorth();
-						
-						break;
-					case S:		
-						playerMoved = game.movePlayerSouth();
-						
-						break;
-					case D:		
-						if (LPressed.getValue() == false) {
-							playerMoved = game.movePlayerEast();
-						}
-						DPressed.set(true);
-						break;
-					case A:		
-						playerMoved = game.movePlayerWest();
-						
-						break;
-					case B:		
-						//playerMoved = game.placeBomb();
-						System.out.println("DROP BOMB");
-						break;
-					case UP:		
-						playerMoved = game.swing(Direction.NORTH);
-						
-						break;
-					case DOWN:		
-						playerMoved = game.swing(Direction.SOUTH);
-						
-						break;
-					case LEFT:		
-						playerMoved = game.swing(Direction.WEST);
-						
-						break;
-					case RIGHT:		
-						playerMoved = game.swing(Direction.EAST);
-						
-						break;
-					case L:		
-						LPressed.set(true);
-						break;
-					case ESCAPE:	
-						/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
-							game.setGameState(GameState.Paused);
-						} else {	// player is resuming
-							game.setGameState(GameState.Play);
-						}
-						pauseGame();*/
-						goHome();
-						break;
-					default:
-						break;
+				if(!(prevKeyPress.contains(event.getCode()))) {
+					switch (event.getCode()) {
+						case W:
+							playerMoved = game.movePlayerNorth();
+							
+							break;
+						case S:		
+							playerMoved = game.movePlayerSouth();
+							
+							break;
+						case D:		
+							if (LPressed.getValue() == false) {
+								playerMoved = game.movePlayerEast();
+							}
+							DPressed.set(true);
+							break;
+						case A:		
+							playerMoved = game.movePlayerWest();
+							
+							break;
+						case B:		
+							//playerMoved = game.placeBomb();
+							System.out.println("DROP BOMB");
+							break;
+						case UP:		
+							playerMoved = game.swing(Direction.NORTH);
+							
+							break;
+						case DOWN:		
+							playerMoved = game.swing(Direction.SOUTH);
+							
+							break;
+						case LEFT:		
+							playerMoved = game.swing(Direction.WEST);
+							
+							break;
+						case RIGHT:		
+							playerMoved = game.swing(Direction.EAST);
+							
+							break;
+						case L:		
+							LPressed.set(true);
+							break;
+						case ESCAPE:	
+							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
+								game.setGameState(GameState.Paused);
+							} else {	// player is resuming
+								game.setGameState(GameState.Play);
+							}
+							pauseGame();*/
+							goHome();
+							break;
+						default:
+							break;
+					}
+					prevKeyPress.add(event.getCode());
 				}
+
+				
 				if (game.getGameState().equals(GameState.Win)) {
 					winMessage();
 				} else if (game.getGameState().equals(GameState.Lose)) {
@@ -179,42 +192,42 @@ public class GameScene {
 			@Override
 			public void handle(KeyEvent event) {
 				switch (event.getCode()) {
-				case W:
-					
-					break;
-				case S:		
-					
-					break;
-				case D:		
-					DPressed.set(false);
-					break;
-				case A:		
-					
-					break;
-				case B:		
-					
-					break;
-				case UP:		
-					
-					break;
-				case DOWN:		
-					
-					break;
-				case LEFT:		
-					
-					break;
-				case RIGHT:		
-					
-					break;
-				case L:		
-					LPressed.set(false);
-					break;
-				case ESCAPE:	
-					break;
-				default:
-					break;
-			}
-				
+					case W:
+						
+						break;
+					case S:		
+						
+						break;
+					case D:		
+						DPressed.set(false);
+						break;
+					case A:		
+						
+						break;
+					case B:		
+						
+						break;
+					case UP:		
+						
+						break;
+					case DOWN:		
+						
+						break;
+					case LEFT:		
+						
+						break;
+					case RIGHT:		
+						
+						break;
+					case L:		
+						LPressed.set(false);
+						break;
+					case ESCAPE:	
+						break;
+					default:
+						break;
+				}
+				prevKeyPress.remove(event.getCode());
 			}
 			
 		});

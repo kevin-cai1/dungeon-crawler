@@ -532,6 +532,7 @@ public class GameEngine {
 	 */
 	public boolean swing(Direction direction) {
 		if (gameMap.getPlayer().checkSword() == false) {
+			System.out.println("hello");
 			return false;
 		}
 		Tile player = gameMap.getPlayerLocation();
