@@ -135,9 +135,8 @@ public class GameScene {
 								game.setGameState(GameState.Paused);
 							} else {	// player is resuming
 								game.setGameState(GameState.Play);
-							}
-							pauseGame();*/
-							goHome();
+							}*/
+							pauseGame();
 							return;
 						default:
 							break;
@@ -378,10 +377,12 @@ public class GameScene {
 	
 	
 	private void pauseGame() {
-		if (game.getGameState() == GameState.Paused) {
-			// pause the game
-		} else {
-			// close the window
+		try {
+			PauseScene pauseScene = new PauseScene(s);
+			pauseScene.display();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
 		}
 	}
 	
