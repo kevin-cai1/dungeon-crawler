@@ -12,6 +12,7 @@ public class GameEngine {
 	private ArrayList<Bomb> tickingBombs;
 	private boolean invincibility;
 	private int numTreasures;
+	private GameStateInterface gameStateInterface;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
@@ -22,6 +23,7 @@ public class GameEngine {
 		this.invincibility = false;
 		this.arrayLength = gameMap.getArrayLength();
 		this.numTreasures = getNumTreasures();
+		this.gameStateInterface = new Play();
 		setWinConditions();
 		System.out.println(this.boulderWinCondition + "enemy" + this.enemyWinCondition + "treasure" + this.treasureWinCondition);
 	}
@@ -378,6 +380,7 @@ public class GameEngine {
 		}
 		if (satisfyWin == true) {
 			gameState = GameState.Win;
+			gameStateInterface = new Win();
 		}
 		return satisfyWin;
 	}
@@ -840,5 +843,29 @@ public class GameEngine {
 			}
 		}
 		return true;
+	}
+	
+	public void setGameStateInterface(GameStateInterface gameStateInterface) {
+		this.gameStateInterface = gameStateInterface;
+	}
+	
+	public void checkGameState() {
+		gameStateInterface.checkState(this);
+	}
+	
+	public boolean getBoulderWinCondition() {
+		return this.boulderWinCondition;
+	}
+	
+	public boolean getEnemyWinCondition() {
+		return this.enemyWinCondition;
+	}
+	
+	public boolean getTreasureWinCondition() {
+		return this.treasureWinCondition;
+	}
+	
+	public int getNumberTreasures() {
+		return this.numTreasures;
 	}
 }
