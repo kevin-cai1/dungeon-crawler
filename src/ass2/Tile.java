@@ -1,8 +1,9 @@
 package ass2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Tile {
+public class Tile implements Serializable {
 	private ArrayList<Entity> entities; //to replace Integer with Entity abstract class
 	private int x; //stores the x position of where you are on the map
 	private int y; //stores the y position of where you are on the map
