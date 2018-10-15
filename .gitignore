@@ -24,3 +24,8 @@ bin/ass2/Wall.class
 *.xml
 *.iml
 /bin/
+.DS_Store
+bin/testmap.txt
+build.fxbuild
+bin/testmap.txt
+bin/testmap.txt
