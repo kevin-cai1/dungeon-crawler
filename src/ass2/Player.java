@@ -57,6 +57,11 @@ public class Player extends Entity{
 	public boolean getInvincibility() {
 		return (invincible != 0);
 	}
+	
+	public int getInvincibilityTick() {
+		return invincible;
+	}
+	
 	/**
 	 * adds hovering status to the player
 	 */
@@ -76,6 +81,28 @@ public class Player extends Entity{
 	public HashMap<Entity, Integer> getInventory() {
 		return inventory;
 	}
+	
+	public int getSwordUses() {
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Sword) {
+				return ((Sword)e).getDurability();
+			}
+		}
+		return 0;
+	}
+	
+	public int getBombsLeft() {
+		int bombCount = 0;
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Bomb) {
+				bombCount++;
+			}
+		}
+		return bombCount;
+	}
+	
 	/**
 	 * adds key to player inventory
 	 * @param key key to be added

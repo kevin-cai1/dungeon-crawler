@@ -34,6 +34,10 @@ public class GameEngine {
 		return gameState;
 	}
 	
+	public void setGameState(GameState state) {
+		gameState = state;
+	}
+	
 	private int getNumTreasures() {
 		int numTreasures = 0;
 		for (int i = 0; i < arrayLength; i++) {
@@ -124,10 +128,10 @@ public class GameEngine {
 			// calculate enemy movements
 			if (playerMoved) {
 				if(player.getInvincibility()) {
-					runEnemies(arrayLength, map);
+					runEnemies();
 				}
 				else {
-					moveEnemies(arrayLength, map);
+					moveEnemies();
 				}
 				
 			}
@@ -198,7 +202,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY-1];
-			Tile followingTile = map[playerX][playerY-2];
+			Tile followingTile = null;
+			if (playerY-2 >= 0) {
+				followingTile = map[playerX][playerY-2];
+			}
 	
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
@@ -230,8 +237,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY+1];
-			Tile followingTile = map[playerX][playerY+2];
-			
+			Tile followingTile = null;
+			if (playerY+2 < arrayLength) {
+				followingTile = map[playerX][playerY+2];
+			}
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
@@ -262,8 +271,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX+1][playerY];
-			Tile followingTile = map[playerX+2][playerY];
-			
+			Tile followingTile = null;
+			if (playerX+2 < arrayLength) {
+				followingTile = map[playerX+2][playerY];
+			}
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
@@ -294,7 +305,10 @@ public class GameEngine {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX-1][playerY];
-			Tile followingTile = map[playerX-2][playerY];
+			Tile followingTile = null;
+			if (playerX-2 >= 0) {
+				followingTile = map[playerX-2][playerY];
+			}
 			
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
@@ -332,7 +346,6 @@ public class GameEngine {
 							allSwitches = false;
 						}
 					} else if (e instanceof Enemy) {
-						System.out.println("found enemy");
 						allEnemiesDestroyed = false;
 					}
 				}
@@ -374,19 +387,26 @@ public class GameEngine {
 	 * @param arrayLength map size
 	 * @param map
 	 */
-	private void moveEnemies(int arrayLength, Tile[][] map) {
+	public void moveEnemies() {
+		Tile[][] map = gameMap.getMap();
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof Enemy) { // every enemy that needs to move
-						((Enemy) e).getAction(gameMap); // validation on enemy side
+						//((Enemy) e).getAction(gameMap); // validation on enemy side
+						enemies.add((Enemy)e);
 					}
 				}
 			}
 		}
+		for (Enemy enemy: enemies) {
+			enemy.getAction(gameMap);
+		}
 	}
-	private void runEnemies(int arrayLength, Tile[][] map) {
+	public void runEnemies() {
+		Tile[][] map = gameMap.getMap();
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
@@ -512,19 +532,32 @@ public class GameEngine {
 	 */
 	public boolean swing(Direction direction) {
 		if (gameMap.getPlayer().checkSword() == false) {
+			System.out.println("hello");
 			return false;
 		}
 		Tile player = gameMap.getPlayerLocation();
 		ArrayList<Tile> attackedTiles = new ArrayList<Tile>();
+		int tileInFrontX = player.getX();
+		int tileInFrontY = player.getY();
+		boolean tileInFrontWall = false;
 		switch (direction) {
 			case NORTH:
-				if(valueInMap(player.getY() - 2)) {
-					int attackedX = player.getX();
-					int attackedY = player.getY() - 2;
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontY -= 1;
+				if(valueInMap(player.getY() - 2) && valueInMap(tileInFrontY)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX();
+						int attackedY = player.getY() - 2;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
-				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+				for(int i = -1; i <= 1; i++) {	
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() - 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() - 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -534,13 +567,21 @@ public class GameEngine {
 				
 				break;
 			case SOUTH:
-				if(valueInMap(player.getY() + 2)) {
-					int attackedX = player.getX();
-					int attackedY = player.getY() + 2;
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontY += 1;
+				if(valueInMap(player.getY() + 2) && valueInMap(tileInFrontY)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX();
+						int attackedY = player.getY() + 2;
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getX() + i)) {
+					if(valueInMap(player.getX() + i) && valueInMap(player.getY() + 1)) {
 						int attackedX = player.getX() + i;
 						int attackedY = player.getY() + 1;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -548,13 +589,22 @@ public class GameEngine {
 				}
 				break;
 			case EAST:
-				if(valueInMap(player.getX() + 2)) {
-					int attackedX = player.getX() + 2;
-					int attackedY = player.getY();
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontX += 1;
+				if(valueInMap(player.getX() + 2) && valueInMap(tileInFrontX)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX() + 2;
+						int attackedY = player.getY();
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() + 1)) {
 						int attackedX = player.getX() + 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -562,13 +612,22 @@ public class GameEngine {
 				}
 				break;
 			case WEST:
-				if(valueInMap(player.getX() - 2)) {
-					int attackedX = player.getX() - 2;
-					int attackedY = player.getY();
-					attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+				tileInFrontX -= 1;
+				if(valueInMap(player.getX() - 2) && valueInMap(tileInFrontX)) {
+					for(Entity e : gameMap.getTile(tileInFrontX, tileInFrontY).getEntities()) {
+						if(e instanceof Obstacle) {
+							tileInFrontWall = true;
+						}
+					}
+					if(tileInFrontWall == false) {
+						int attackedX = player.getX() - 2;
+						int attackedY = player.getY();
+						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
+					}
+
 				}
 				for(int i = -1; i <= 1; i++) {
-					if(valueInMap(player.getY() + i)) {
+					if(valueInMap(player.getY() + i) && valueInMap(player.getX() - 1)) {
 						int attackedX = player.getX() - 1;
 						int attackedY = player.getY() + i;
 						attackedTiles.add(gameMap.getTile(attackedX, attackedY));
@@ -598,7 +657,10 @@ public class GameEngine {
 	public boolean placeBomb() {
 		if (gameMap.getPlayer().checkBomb()) {
 			Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
+			System.out.println(placedBomb.getClass());
 			placedBomb.placeBomb();
+			System.out.println(placedBomb.getClass());
+
 			tickingBombs.add(placedBomb);
 			return true;
 		}
@@ -627,8 +689,8 @@ public class GameEngine {
 	 * @return true if move is valid
 	 */
 	public boolean validateMove(Entity entity, Direction move) {
+		System.out.println("array length: " + arrayLength);
 		Tile tile = gameMap.getEntityLocation(entity.getId());
-		System.out.println(entity.getId());
 		int tileX = tile.getX();
 		int tileY = tile.getY();
 		Tile[][] entityLocation = gameMap.getMap();
@@ -661,7 +723,7 @@ public class GameEngine {
 				}
 				break;
 			case EAST:
-				if (tileX == 19) {
+				if (tileX == arrayLength-1) {
 					return false;
 				}
 				else {
@@ -671,7 +733,7 @@ public class GameEngine {
 								return true;
 							}
 							if (e2 instanceof Boulder) {
-								if (tileX > 17) {
+								if (tileX > arrayLength-3) {
 									return false;
 								}
 								for (Entity e3 : entityLocation[tileX+2][tileY].getEntities()) {
@@ -687,7 +749,7 @@ public class GameEngine {
 				}
 				break;
 			case SOUTH:
-				if (tileY == 19) {
+				if (tileY == arrayLength-1) {
 					return false;
 				}
 				else {
@@ -697,7 +759,7 @@ public class GameEngine {
 								return true;
 							}
 							if (e2 instanceof Boulder) {
-								if (tileY > 17) {
+								if (tileY > arrayLength-3) {
 									return false;
 								}
 								for (Entity e3 : entityLocation[tileX][tileY+2].getEntities()) {
