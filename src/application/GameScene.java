@@ -4,21 +4,10 @@ package application;
 import java.util.ArrayList;
 
 import ass2.*;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,6 +19,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -37,7 +27,6 @@ public class GameScene {
 	private Stage s;
 	private String title;
 	private Scene scene;
-	private FXMLLoader fxmlLoader;
 	private final int tileSize;		// **SCALE TILESIZE DEPENDING ON MAP SIZE
 	private int mapSize = 10;
 	private GameEngine game;
@@ -50,7 +39,6 @@ public class GameScene {
 		this.s = s;
 		this.title = "Game";
 		this.game = game;
-		this.fxmlLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
 		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
 		this.scene = new Scene(generateGrid());
 		this.prevKeyPress = new ArrayList<>();
@@ -83,19 +71,32 @@ public class GameScene {
 				if(!(prevKeyPress.contains(event.getCode()))) {
 					switch (event.getCode()) {
 						case W:
-							playerMoved = game.movePlayerNorth();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.NORTH);
+							} else {
+								playerMoved = game.movePlayerNorth();
+							}
 							break;
 						case S:		
-							playerMoved = game.movePlayerSouth();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.SOUTH);
+							} else {
+								playerMoved = game.movePlayerSouth();
+							}
 							break;
 						case D:		
-							playerMoved = game.movePlayerEast();
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.EAST);
+							} else {
+								playerMoved = game.movePlayerEast();
+							}
 							break;
 						case A:		
-							playerMoved = game.movePlayerWest();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.WEST);
+							} else {
+								playerMoved = game.movePlayerWest();
+							}
 							break;
 						case B:		
 							//playerMoved = game.placeBomb();
@@ -164,15 +165,18 @@ public class GameScene {
 				
 				if (game.checkPlayerStatus() == false) {
 					loseMessage();
+					return;
 				}
 				
 				if (game.tickEffects() == GameState.Lose) {
 					loseMessage();
+					return;
 				}
 				
 				if (game.checkWin() == true) {
 					System.out.println("checked win");
 					winMessage();
+					return;
 				}
 				
 				scene.setRoot(generateGrid());
@@ -226,12 +230,14 @@ public class GameScene {
 	}
 	
 	private FlowPane setSidebar() {
+		Font textFont = Font.font("Goudy Old Style", FontWeight.BOLD ,34);
+		Font headingFont = Font.font("Goudy Old Style", FontWeight.BOLD ,44);
 		FlowPane sidebar = new FlowPane();
-		sidebar.setPrefWrapLength(170);
+		sidebar.setPrefWrapLength(180);
 		sidebar.setStyle("-fx-background-color: #272727;");
 		
 		Label InventoryLabel = new Label("Inventory");
-		InventoryLabel.setFont(new Font("Impact", 40));
+		InventoryLabel.setFont(headingFont);
 		InventoryLabel.setTextFill(Color.GREY);
 		
 		HBox Sword = new HBox();
@@ -242,7 +248,7 @@ public class GameScene {
 		sword.setFitWidth(40);
 		Label swordCount = new Label();
 		swordCount.setText(Integer.toString((game.getGameMap().getPlayer().getSwordUses())) + " uses");
-		swordCount.setFont(new Font("Impact", 32));
+		swordCount.setFont(textFont);
 		swordCount.setTextFill(Color.GREY);
 		Sword.getChildren().addAll(sword, swordCount);
 		
@@ -254,7 +260,7 @@ public class GameScene {
 		bomb.setFitWidth(40);
 		Label bombCount = new Label();
 		bombCount.setText(Integer.toString((game.getGameMap().getPlayer().getBombsLeft())) + " left");
-		bombCount.setFont(new Font("Impact", 32));
+		bombCount.setFont(textFont);
 		bombCount.setTextFill(Color.GREY);
 		Bomb.getChildren().addAll(bomb, bombCount);
 		
@@ -265,8 +271,8 @@ public class GameScene {
 		arrow.setFitHeight(40);
 		arrow.setFitWidth(40);
 		Label arrowCount = new Label();
-		arrowCount.setText(Integer.toString((game.getGameMap().getPlayer().getBombsLeft())) + " left");
-		arrowCount.setFont(new Font("Impact", 32));
+		arrowCount.setText(Integer.toString((game.getGameMap().getPlayer().getArrowsLeft())) + " left");
+		arrowCount.setFont(textFont);
 		arrowCount.setTextFill(Color.GREY);
 		Arrow.getChildren().addAll(arrow, arrowCount);
 		
@@ -278,7 +284,7 @@ public class GameScene {
 		treasure.setFitWidth(40);
 		Label treasureCount = new Label();
 		treasureCount.setText(Integer.toString((game.getGameMap().getPlayer().getTreasure())) + " obtained");
-		treasureCount.setFont(new Font("Impact", 32));
+		treasureCount.setFont(textFont);
 		treasureCount.setTextFill(Color.GREY);
 		Treasure.getChildren().addAll(treasure, treasureCount);
 		
@@ -286,43 +292,105 @@ public class GameScene {
 		Keys.setStyle("-fx-background-color: #272727;");
 		Keys.setSpacing(10);
 		ImageView key1;
-		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.small) == true) {
+		if (game.getGameMap().getPlayer().hasKey(KeyEnum.SMALL) == true) {
 			key1 = new ImageView(new Image("application/Sprites/key.png"));
-		//} else {
-		//	key1 = new ImageView(new Image("application/Sprites/gold_pile.png"));
-		//}
+		} else {
+			key1 = new ImageView(new Image("application/Sprites/blank_key.png"));
+		}
 		key1.setFitHeight(40);
 		key1.setFitWidth(40);
 		
 		ImageView key2;
-		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.medium) == true) {
+		if (game.getGameMap().getPlayer().hasKey(KeyEnum.MEDIUM) == true) {
 			key2 = new ImageView(new Image("application/Sprites/key.png"));
-		//} else {
-		//	key2 = new ImageView(new Image("application/Sprites/gold_pile.png"));
-		//}
+		} else {
+			key2 = new ImageView(new Image("application/Sprites/blank_key.png"));
+		}
 		key2.setFitHeight(40);
 		key2.setFitWidth(40);
 		
 		ImageView key3;
-		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.large) == true) {
+		if (game.getGameMap().getPlayer().hasKey(KeyEnum.LARGE) == true) {
 			key3 = new ImageView(new Image("application/Sprites/key.png"));
-		//} else {
-		//	key3 = new ImageView(new Image("application/Sprites/gold_pile.png"));
-		//}
+		} else {
+			key3 = new ImageView(new Image("application/Sprites/blank_key.png"));
+		}
 		key3.setFitHeight(40);
 		key3.setFitWidth(40);
 		Keys.setAlignment(Pos.CENTER);
 		Keys.getChildren().addAll(key1, key2, key3);
 		
+		HBox Invincibility = new HBox();
+		Invincibility.setStyle("-fx-background-color: #272727;");
+		Invincibility.setSpacing(10);
+		ImageView invincibility = new ImageView(new Image("application/Sprites/emerald.png"));
+		invincibility.setFitHeight(40);
+		invincibility.setFitWidth(40);
+		Label invincibilityCount = new Label();
+		invincibilityCount.setText(Integer.toString((game.getGameMap().getPlayer().getInvincibilityTick())) + " turns");
+		invincibilityCount.setFont(textFont);
+		invincibilityCount.setTextFill(Color.GREY);
+		Invincibility.getChildren().addAll(invincibility, invincibilityCount);
 		
+		HBox Hover = new HBox();
+		Hover.setStyle("-fx-background-color: #272727;");
+		Hover.setSpacing(10);
+		ImageView hover = new ImageView(new Image("application/Sprites/brilliant_blue.png"));
+		hover.setFitHeight(40);
+		hover.setFitWidth(40);
+		Label hoverSet = new Label();
+		if (game.getGameMap().getPlayer().getHover() == true) {
+			hoverSet.setText("active");
+		} else {
+			hoverSet.setText("inactive");
+		}
+		hoverSet.setFont(textFont);
+		hoverSet.setTextFill(Color.GREY);
+		Hover.getChildren().addAll(hover, hoverSet);
 		
 		Label WinConditionLabel = new Label("Win Conditions");
-		WinConditionLabel.setFont(new Font("Impact", 30));
+		WinConditionLabel.setFont(textFont);
 		WinConditionLabel.setTextFill(Color.GREY);
 		
+		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, Invincibility, Hover, WinConditionLabel);
+
 		
+		if (game.checkBoulderCondition()) {
+			HBox boulderWin = new HBox();
+			boulderWin.setStyle("-fx-background-color: #272727;");
+			boulderWin.setSpacing(10);
+			Label boulders = new Label();
+			boulders.setText("Switches: " + game.switchesTriggered() + "/" + game.getNumSwitches());
+			boulders.setFont(textFont);
+			boulders.setTextFill(Color.GREY);
+			boulderWin.getChildren().add(boulders);
+			sidebar.getChildren().add(boulderWin);
+		}
 		
-		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, WinConditionLabel);
+		if (game.checkEnemyConditon()) {
+			HBox enemyWin = new HBox();
+			enemyWin.setStyle("-fx-background-color: #272727;");
+			enemyWin.setSpacing(10);
+			Label enemy = new Label();
+			enemy.setText("Enemies: " + game.enemiesKilled() + "/" + game.getNumEnemies());
+			enemy.setFont(textFont);
+			enemy.setTextFill(Color.GREY);
+			enemyWin.getChildren().add(enemy);
+			sidebar.getChildren().add(enemyWin);
+		}
+		
+		if (game.checkTreasureCondition()) {
+			HBox treasureWin = new HBox();
+			treasureWin.setStyle("-fx-background-color: #272727;");
+			treasureWin.setSpacing(10);
+			Label treasures = new Label();
+			treasures.setText("Treasures: " + game.getGameMap().getPlayer().getTreasure() + "/" + game.getNumTreasures());
+			treasures.setFont(textFont);
+			treasures.setTextFill(Color.GREY);
+			treasureWin.getChildren().add(treasures);
+			sidebar.getChildren().add(treasureWin);
+		}
+		
 		
 		return sidebar;
 	}
@@ -422,5 +490,6 @@ public class GameScene {
 	
 	private void loseMessage() {
 		System.out.println("YOU LOSE");
+		goHome();
 	}
  }
