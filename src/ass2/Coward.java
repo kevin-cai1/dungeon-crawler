@@ -8,7 +8,9 @@ import java.util.List;
  *
  */
 public class Coward extends Enemy{
-    public Coward(int id){
+	private static final long serialVersionUID = 4394549041466275612L;
+
+	public Coward(int id){
         super(id);
     }
     @Override

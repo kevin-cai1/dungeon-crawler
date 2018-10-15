@@ -7,6 +7,7 @@ package ass2;
  *
  */
 public class InvincibilityPotion extends Potion {
+	private static final long serialVersionUID = 1195682391454281854L;
 	public InvincibilityPotion(int id) {
 		super(id);
 	}

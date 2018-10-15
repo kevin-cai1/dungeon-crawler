@@ -7,6 +7,8 @@ package ass2;
  *
  */
 public class Pit extends Entity{
+	private static final long serialVersionUID = 4446135853250097299L;
+
 	public Pit(int id) {
 		super(id);
 	}

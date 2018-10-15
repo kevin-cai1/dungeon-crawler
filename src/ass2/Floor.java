@@ -6,6 +6,8 @@ package ass2;
  *
  */
 public class Floor extends Entity {
+	private static final long serialVersionUID = -993712534621957071L;
+
 	public Floor(int id) {
 		super(id);
 	}

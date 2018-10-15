@@ -7,7 +7,9 @@ package ass2;
  *
  */
 public abstract class Obstacle extends Entity{
-    Obstacle(int id){
+	private static final long serialVersionUID = -5453213846705403331L;
+
+	Obstacle(int id){
         super(id);
     }
 

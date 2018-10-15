@@ -98,7 +98,6 @@ public class DesignEngine {
 			}
 		}
 	}
-	
 /**
  * saves the map into a text file with the input.txt
  * @param map
@@ -106,9 +105,8 @@ public class DesignEngine {
  */
 	public void save(Map map, String fileName) {
 		Map savedMap = map;
-		
 		try {
-			FileOutputStream f = new FileOutputStream(new File(fileName + ".txt"));
+			FileOutputStream f = new FileOutputStream(new File(fileName+".txt"));
 			ObjectOutputStream o = new ObjectOutputStream(f);
 			o.writeObject(savedMap);
 			o.close();
@@ -116,6 +114,7 @@ public class DesignEngine {
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found");
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.out.println("Error initializing stream");
 		}
 

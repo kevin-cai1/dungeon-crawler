@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 public class Bomb extends Entity{
+	private static final long serialVersionUID = -381504809806691495L;
 	private int timer;
 	private Map map;
 	private Tile bombPosition;
