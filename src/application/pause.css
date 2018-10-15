@@ -1,0 +1,15 @@
+#resume {
+    -fx-image: url('./Sprites/play_button.png');
+}
+
+#resume:hover {
+    -fx-image: url('./Sprites/play_selected.png');
+}
+
+#returnMenu{
+    -fx-image: url('./Sprites/design_button.png');
+}
+
+#returnMenu:hover {
+    -fx-image: url('./Sprites/design_selected.png');
+}

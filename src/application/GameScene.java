@@ -43,11 +43,6 @@ public class GameScene {
 	private boolean playerMoved = false;
 	
 	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
-	
-	final BooleanProperty LPressed = new SimpleBooleanProperty(false);
-	final BooleanProperty DPressed = new SimpleBooleanProperty(false);
-
-	final BooleanBinding DAndLPressed = LPressed.and(DPressed);
 
 	
 	public GameScene(Stage s, GameEngine game) {
@@ -58,7 +53,6 @@ public class GameScene {
 		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
 		this.scene = new Scene(generateGrid());
 		this.prevKeyPress = new ArrayList<>();
-		System.out.println(prevKeyPress);
 	}
 		
 	public void display() {
@@ -81,14 +75,6 @@ public class GameScene {
 	
 	
 	public void handleMove() throws Exception {
-		DAndLPressed.addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean arg1, Boolean arg2) {
-				// TODO Auto-generated method stub
-				game.swing(Direction.EAST);
-				
-			}
-		});
 		
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -104,10 +90,7 @@ public class GameScene {
 							
 							break;
 						case D:		
-							if (LPressed.getValue() == false) {
-								playerMoved = game.movePlayerEast();
-							}
-							DPressed.set(true);
+							playerMoved = game.movePlayerEast();
 							break;
 						case A:		
 							playerMoved = game.movePlayerWest();
@@ -133,18 +116,28 @@ public class GameScene {
 							playerMoved = game.swing(Direction.EAST);
 							
 							break;
-						case L:		
-							LPressed.set(true);
+						case L:
+							if(prevKeyPress.contains(KeyCode.W)) {
+								playerMoved = game.swing(Direction.NORTH);
+							}
+							else if(prevKeyPress.contains(KeyCode.A)) {
+								playerMoved = game.swing(Direction.WEST);
+							}
+							else if(prevKeyPress.contains(KeyCode.S)) {
+								playerMoved = game.swing(Direction.SOUTH);
+							}
+							else if(prevKeyPress.contains(KeyCode.D)) {
+								playerMoved = game.swing(Direction.EAST);
+							}
 							break;
 						case ESCAPE:	
 							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
 								game.setGameState(GameState.Paused);
 							} else {	// player is resuming
 								game.setGameState(GameState.Play);
-							}
-							pauseGame();*/
-							goHome();
-							break;
+							}*/
+							pauseGame();
+							return;
 						default:
 							break;
 					}
@@ -199,7 +192,6 @@ public class GameScene {
 						
 						break;
 					case D:		
-						DPressed.set(false);
 						break;
 					case A:		
 						
@@ -220,7 +212,6 @@ public class GameScene {
 						
 						break;
 					case L:		
-						LPressed.set(false);
 						break;
 					case ESCAPE:	
 						break;
@@ -386,10 +377,12 @@ public class GameScene {
 	
 	
 	private void pauseGame() {
-		if (game.getGameState() == GameState.Paused) {
-			// pause the game
-		} else {
-			// close the window
+		try {
+			PauseScene pauseScene = new PauseScene(s);
+			pauseScene.display();
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
 		}
 	}
 	

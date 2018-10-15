@@ -11,7 +11,7 @@ public class PauseController {
 	private ImageView resumeButton;
 	
 	@FXML
-	private ImageView returntomenuButton;
+	private ImageView returnToMenuButton;
 	
 	@FXML
 	private ImageView quitButton;
@@ -33,15 +33,14 @@ public class PauseController {
 		MenuScene menuScene = new MenuScene(stage);
 		menuScene.display();
 	}
-	
+	@FXML
+	private void returnToGame() {
+		// TODO Auto-generated method stub
+
+	}
 	@FXML
 	public void openOptions() {
 		// load scene for design
-	}
-	
-	@FXML
-	public void resumeGame() {
-		
 	}
 	@FXML
 	public void quitGame() {

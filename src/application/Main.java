@@ -11,7 +11,8 @@ public class Main extends Application {
 		primaryStage.setHeight(400);
 		this.primaryStage = primaryStage;
 		
-		new MenuScene(this.primaryStage).display();
+		MenuScene menuScene = new MenuScene(this.primaryStage);
+		menuScene.display();
 	}
 	
 	public static void main(String[] args) {
