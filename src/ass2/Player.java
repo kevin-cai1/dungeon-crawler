@@ -103,6 +103,15 @@ public class Player extends Entity{
 		return bombCount;
 	}
 	
+	public boolean hasKey(/*KeyEnum keyNum*/) {
+		for (Key key: keys) {
+			if (key.getUnique() == keyNum) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * adds key to player inventory
 	 * @param key key to be added

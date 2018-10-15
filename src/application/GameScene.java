@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -184,40 +185,6 @@ public class GameScene {
 
 			@Override
 			public void handle(KeyEvent event) {
-				switch (event.getCode()) {
-					case W:
-						
-						break;
-					case S:		
-						
-						break;
-					case D:		
-						break;
-					case A:		
-						
-						break;
-					case B:		
-						
-						break;
-					case UP:		
-						
-						break;
-					case DOWN:		
-						
-						break;
-					case LEFT:		
-						
-						break;
-					case RIGHT:		
-						
-						break;
-					case L:		
-						break;
-					case ESCAPE:	
-						break;
-					default:
-						break;
-				}
 				prevKeyPress.remove(event.getCode());
 			}
 			
@@ -261,15 +228,14 @@ public class GameScene {
 	private FlowPane setSidebar() {
 		FlowPane sidebar = new FlowPane();
 		sidebar.setPrefWrapLength(170);
-		sidebar.setStyle("-fx-background-color: #1A1A1A;");
+		sidebar.setStyle("-fx-background-color: #272727;");
 		
-		Label heading = new Label("Inventory");
-		heading.setFont(new Font("Impact", 40));
-		heading.setTextFill(Color.GREY);
-		sidebar.getChildren().add(heading);
+		Label InventoryLabel = new Label("Inventory");
+		InventoryLabel.setFont(new Font("Impact", 40));
+		InventoryLabel.setTextFill(Color.GREY);
 		
 		HBox Sword = new HBox();
-		Sword.setStyle("-fx-background-color: #1A1A1A;");
+		Sword.setStyle("-fx-background-color: #272727;");
 		Sword.setSpacing(10);
 		ImageView sword = new ImageView(new Image("application/Sprites/orcish_great_sword.png"));
 		sword.setFitHeight(40);
@@ -281,7 +247,7 @@ public class GameScene {
 		Sword.getChildren().addAll(sword, swordCount);
 		
 		HBox Bomb = new HBox();
-		Bomb.setStyle("-fx-background-color: #1A1A1A;");
+		Bomb.setStyle("-fx-background-color: #272727;");
 		Bomb.setSpacing(10);
 		ImageView bomb = new ImageView(new Image("application/Sprites/bomb_unlit.png"));
 		bomb.setFitHeight(40);
@@ -293,7 +259,7 @@ public class GameScene {
 		Bomb.getChildren().addAll(bomb, bombCount);
 		
 		HBox Arrow = new HBox();
-		Arrow.setStyle("-fx-background-color: #1A1A1A;");
+		Arrow.setStyle("-fx-background-color: #272727;");
 		Arrow.setSpacing(10);
 		ImageView arrow = new ImageView(new Image("application/Sprites/arrow.png"));
 		arrow.setFitHeight(40);
@@ -304,8 +270,59 @@ public class GameScene {
 		arrowCount.setTextFill(Color.GREY);
 		Arrow.getChildren().addAll(arrow, arrowCount);
 		
+		HBox Treasure = new HBox();
+		Treasure.setStyle("-fx-background-color: #272727;");
+		Treasure.setSpacing(10);
+		ImageView treasure = new ImageView(new Image("application/Sprites/gold_pile.png"));
+		treasure.setFitHeight(40);
+		treasure.setFitWidth(40);
+		Label treasureCount = new Label();
+		treasureCount.setText(Integer.toString((game.getGameMap().getPlayer().getTreasure())) + " obtained");
+		treasureCount.setFont(new Font("Impact", 32));
+		treasureCount.setTextFill(Color.GREY);
+		Treasure.getChildren().addAll(treasure, treasureCount);
 		
-		sidebar.getChildren().addAll(Sword, Bomb, Arrow);
+		HBox Keys = new HBox();
+		Keys.setStyle("-fx-background-color: #272727;");
+		Keys.setSpacing(10);
+		ImageView key1;
+		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.small) == true) {
+			key1 = new ImageView(new Image("application/Sprites/key.png"));
+		//} else {
+		//	key1 = new ImageView(new Image("application/Sprites/gold_pile.png"));
+		//}
+		key1.setFitHeight(40);
+		key1.setFitWidth(40);
+		
+		ImageView key2;
+		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.medium) == true) {
+			key2 = new ImageView(new Image("application/Sprites/key.png"));
+		//} else {
+		//	key2 = new ImageView(new Image("application/Sprites/gold_pile.png"));
+		//}
+		key2.setFitHeight(40);
+		key2.setFitWidth(40);
+		
+		ImageView key3;
+		//if (game.getGameMap().getPlayer().hasKey(KeyEnum.large) == true) {
+			key3 = new ImageView(new Image("application/Sprites/key.png"));
+		//} else {
+		//	key3 = new ImageView(new Image("application/Sprites/gold_pile.png"));
+		//}
+		key3.setFitHeight(40);
+		key3.setFitWidth(40);
+		Keys.setAlignment(Pos.CENTER);
+		Keys.getChildren().addAll(key1, key2, key3);
+		
+		
+		
+		Label WinConditionLabel = new Label("Win Conditions");
+		WinConditionLabel.setFont(new Font("Impact", 30));
+		WinConditionLabel.setTextFill(Color.GREY);
+		
+		
+		
+		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, WinConditionLabel);
 		
 		return sidebar;
 	}
