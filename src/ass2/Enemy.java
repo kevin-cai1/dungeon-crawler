@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class Enemy extends Entity{
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6012493085994945056L;
 	protected LinkedList<Tile> queue;
 	protected Set<Tile> visited;
 	protected HashMap<Tile, Tile> parent; //child on the left, parent on the right

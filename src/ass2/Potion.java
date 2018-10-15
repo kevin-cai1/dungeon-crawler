@@ -1,6 +1,8 @@
 package ass2;
 
 public abstract class Potion extends Entity {
+
+	private static final long serialVersionUID = 5592611473736843783L;
 	private int usage;
 	public Potion(int id) {
 		super(id);

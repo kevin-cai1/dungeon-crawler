@@ -1,6 +1,7 @@
 package ass2;
 
 public class Arrow extends Entity{
+	private static final long serialVersionUID = 1506889601338882844L;
 	private Map map;
 	private Tile arrowPosition;
 	public Arrow(int id, Map map) {

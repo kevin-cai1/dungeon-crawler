@@ -1,6 +1,7 @@
 package ass2;
 
 public class Key extends Entity{
+	private static final long serialVersionUID = 7431080476416073678L;
 	//unique identifier for this key
 	private int unique;
 	public Key(int unique, int id) {

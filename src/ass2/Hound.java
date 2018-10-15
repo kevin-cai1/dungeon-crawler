@@ -6,7 +6,7 @@ package ass2;
  *
  */
 public class Hound extends HunterGroup{
-	private static final long serialVersionUID = 11L;
+	private static final long serialVersionUID = -6198662982200874264L;
 	public Hound(int id){
         super(id);
     }

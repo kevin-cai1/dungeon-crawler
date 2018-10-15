@@ -1,6 +1,7 @@
 package ass2;
 
 public class Door extends Obstacle{
+	private static final long serialVersionUID = -7293555033461316018L;
 	private int unique;
 	private boolean open;
 	public Door(int unique, int id) {
