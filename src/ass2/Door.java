@@ -2,12 +2,12 @@ package ass2;
 
 public class Door extends Obstacle{
 	private static final long serialVersionUID = -7293555033461316018L;
-	private int unique;
+	private KeyEnum unique;
 	private boolean open;
-	public Door(int unique, int id) {
+	public Door(KeyEnum unique, int id) {
 		super(id);
 		this.unique = unique;
-		open = false;
+		this.open = false;
 	}
 	/**
 	 * returns the status of the door (whether its open or closed)
@@ -26,7 +26,7 @@ public class Door extends Obstacle{
 	 * returns the unique id of the door so it can be matched to a key
 	 * @return unique id of the door
 	 */
-	public int getUnique() {
+	public KeyEnum getUnique() {
 		return unique;
 	}
 	@Override
