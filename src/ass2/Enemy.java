@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public abstract class Enemy extends Entity{
+	private static final long serialVersionUID = 1L;
 	protected LinkedList<Tile> queue;
 	protected Set<Tile> visited;
 	protected HashMap<Tile, Tile> parent; //child on the left, parent on the right
@@ -60,12 +61,14 @@ public abstract class Enemy extends Entity{
 	public Tile ClosestTile(Map map, Tile dest) {
 		Tile[][] tileMap = map.getMap();
 		double temp;
-		double dist = 29; //the maximum distance estimated from a 20x20 map
+		int length = map.getArrayLength();
+		double dist = Math.sqrt(Math.pow(length, 2) + Math.pow(length, 2)); //the maximum distance estimated from a 20x20 map
+		
 		Tile tile = map.getEntityLocation(this.getId());//the closest reachable tile initially set to the hunter
 		Tile tempTile;
 		boolean obstacle = false;
-		for(int i = 0; i < 20; i++) { //20 being map size
-			for(int j = 0; j < 20; j++) {
+		for(int i = 0; i < length; i++) { //20 being map size
+			for(int j = 0; j < length; j++) {
 				tempTile = tileMap[i][j];
 				temp = distCalc(tempTile.getX(),tempTile.getY(),dest.getX(), dest.getY());
 				for(Entity e: tempTile.getEntities()) {
@@ -120,6 +123,7 @@ public abstract class Enemy extends Entity{
 		visited.add(curPos);
 		int popPosX;
 		int popPosY;
+		int length = map.getArrayLength();
 		while(!queue.isEmpty()) {
 			queuePop = queue.remove();
 			popPosX = queuePop.getX();
@@ -128,7 +132,7 @@ public abstract class Enemy extends Entity{
 				break;
 			}
 			//East Direction
-			if(popPosX+1 < 20) {//20 being map size
+			if(popPosX+1 < length) {//20 being map size
 				adjacent = map.getTile(popPosX+1, popPosY);
 				visitCheck(adjacent, queuePop);
 			}
@@ -138,7 +142,7 @@ public abstract class Enemy extends Entity{
 				visitCheck(adjacent, queuePop);
 			}
 			//South Direction
-			if(popPosY+1 < 20) {
+			if(popPosY+1 < length) {
 				adjacent = map.getTile(popPosX, popPosY+1);
 				visitCheck(adjacent, queuePop);
 			}
@@ -204,6 +208,7 @@ public abstract class Enemy extends Entity{
     	int curY = curPos.getY();
     	int playerX = playerPos.getX();
     	int playerY = playerPos.getY();
+    	int length = map.getArrayLength();
 		Tile tile0 = null;
 		Tile tile1 = null;
 		Tile tile2 = null;
@@ -213,11 +218,11 @@ public abstract class Enemy extends Entity{
 			tile0 = map.getTile(curX, curY-1);//North
 			dist[0] = distCalc(playerX, playerY,tile0.getX(),tile0.getY());
 		}
-		if(curY+1 < 20) {
+		if(curY+1 < length) {
 			tile1 = map.getTile(curX, curY+1);//South
 			dist[1] = distCalc(playerX, playerY,tile1.getX(),tile1.getY());
 		}
-		if(curX+1 < 20) {
+		if(curX+1 < length) {
 			tile2 = map.getTile(curX+1, curY);//East
 			dist[2] = distCalc(playerX, playerY,tile2.getX(),tile2.getY());
 		}

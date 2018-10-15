@@ -6,7 +6,8 @@ package ass2;
  *
  */
 public class Hound extends HunterGroup{
-    public Hound(int id){
+	private static final long serialVersionUID = 11L;
+	public Hound(int id){
         super(id);
     }
 	public void shift(Map map, Tile tile) {
