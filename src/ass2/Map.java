@@ -1,8 +1,10 @@
 package ass2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Map {
+public class Map implements Serializable {
+	private static final long serialVersionUID = 1111111111;
 	private Tile[][] map;
 	private ArrayList<WinCondition> winConditions;
 	private int arrayLength;

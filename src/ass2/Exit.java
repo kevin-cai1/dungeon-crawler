@@ -6,6 +6,8 @@ package ass2;
  *
  */
 public class Exit extends Entity{
+	private static final long serialVersionUID = 2049487000383996268L;
+
 	public Exit(int id) {
 		super(id);
 	}

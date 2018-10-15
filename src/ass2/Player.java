@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Player extends Entity{
+	private static final long serialVersionUID = -509942623542938978L;
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
 	private int invincible;

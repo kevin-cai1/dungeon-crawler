@@ -1,5 +1,8 @@
 package application;
 
+import ass2.DesignEngine;
+import ass2.GameEngine;
+import ass2.Map;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -34,9 +37,12 @@ public class PauseController {
 		menuScene.display();
 	}
 	@FXML
-	private void returnToGame() {
+	private void returnToGame() throws Exception{
 		// TODO Auto-generated method stub
-
+		DesignEngine designEngine = new DesignEngine(10);
+		Map map = designEngine.load("temp.txt");
+		GameScene gameScene = new GameScene(stage, new GameEngine(map));
+		gameScene.display();
 	}
 	@FXML
 	public void openOptions() {

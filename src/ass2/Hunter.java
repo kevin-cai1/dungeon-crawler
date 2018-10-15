@@ -9,6 +9,7 @@ package ass2;
  * 
  */
 public class Hunter extends HunterGroup{
+	private static final long serialVersionUID = 2333610026325389622L;
 	public Hunter(int id) {
 		super(id);
 	}

@@ -6,6 +6,8 @@ package ass2;
  *
  */
 public class HoverPotion extends Potion{
+	private static final long serialVersionUID = 4018096673534715070L;
+
 	public HoverPotion(int id) {
 		super(id);
 		// TODO Auto-generated constructor stub
