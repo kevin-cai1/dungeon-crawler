@@ -72,15 +72,21 @@ public class DesignScene {
 				event.consume();
 			}
 		});*/
+		gameGrid.setOnDragOver(event -> {
+			Dragboard dragboard = event.getDragboard();
+			if(dragboard.hasString()) {
+				event.acceptTransferModes(TransferMode.MOVE);
+			}
+			event.consume();
+		});
 		gameGrid.setOnDragDropped(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
-				System.out.println("hello");
-				if(event.getGestureSource() != gameGrid && event.getDragboard().hasString()) {
-					Node source = (Node)event.getSource();
-					Integer colIndex = GridPane.getColumnIndex(source);
-					Integer rowIndex = GridPane.getRowIndex(source);
-					System.out.println("Dropped onto" + colIndex.intValue() + rowIndex.intValue());
-				}
+				Dragboard dragboard = event.getDragboard();
+				Node node = event.getPickResult().getIntersectedNode();
+				int colIndex = GridPane.getColumnIndex(node);
+				int rowIndex = GridPane.getRowIndex(node);
+				gameGrid.add(entityTextToImage(dragboard.getString()),colIndex,rowIndex);
+				event.consume();
 			}
 		});
 		
@@ -135,7 +141,49 @@ public class DesignScene {
 		toolBar.getChildren().addAll(checkBox1, checkBox2, checkBox3);
 		return toolBar;
 	}
-
+	private ImageView entityTextToImage(String name){
+		ImageView imageView = new ImageView();
+		if (name.equals("Arrow")) {
+			imageView.setImage(new Image("application/Sprites/arrow.png"));
+		} else if (name.equals("Bomb")) {
+			imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
+		} else if (name.equals("Boulder")) {
+			imageView.setImage(new Image("application/Sprites/boulder.png"));
+		} else if (name.equals("Coward")) {
+			imageView.setImage(new Image("application/Sprites/coward.png"));
+		} else if (name.equals("Door")) {
+			imageView.setImage(new Image("application/Sprites/closed_door.png"));
+		} else if (name.equals("Exit")) {
+			imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
+		} else if (name.equals("Floor Switch")) {
+			imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
+		} else if (name.equals("Hound")) {
+			imageView.setImage(new Image("application/Sprites/hound.png"));
+		} else if (name.equals("Hover Potion")) {
+			imageView.setImage(new Image("application/Sprites/hover_potion.png"));
+		} else if (name.equals("Hunter")) {
+			imageView.setImage(new Image("application/Sprites/hunter.png"));
+		} else if (name.equals("Invincibility Potion")) {
+			imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
+		} else if (name.equals("Key")) {
+			imageView.setImage(new Image("application/Sprites/key.png"));
+		} else if (name.equals("Pit")) {
+			imageView.setImage(new Image("application/Sprites/shaft.png"));
+		} else if (name.equals("Player")) {
+			imageView.setImage(new Image("application/Sprites/player.png"));
+		} else if (name.equals("Strategist")) {
+			imageView.setImage(new Image("application/Sprites/strategist.png"));
+		} else if (name.equals("Sword")) {
+			imageView.setImage(new Image("application/Sprites/sword.png"));
+		} else if (name.equals("Treasure")) {
+			imageView.setImage(new Image("application/Sprites/gold_pile.png"));
+		} else if (name.equals("Wall")) {
+			imageView.setImage(new Image("application/Sprites/wall.png"));
+		}
+		imageView.setFitWidth(tileSize);
+		imageView.setFitHeight(tileSize);
+		return imageView;
+	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
 		Label heading = new Label("Entities to choose from");

@@ -179,12 +179,7 @@ public class GameEngine {
 					}
 				}
 			}
-			
-			if (invincibility == true) {
-				if (player.invincibleTick() == false) { //invincibility tick, false when doesn't tick (no more invincibility)
-					invincibility = false;
-				}
-			}
+
 			
 			if (checkWin() == true) {
 				gameState = GameState.Win;
