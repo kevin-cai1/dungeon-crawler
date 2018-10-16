@@ -49,7 +49,7 @@ public class DesignScene {
 		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
-		
+		gameGrid.setStyle("-fx-grid-lines-visible: true");
 	}
 
 	public void display() {
