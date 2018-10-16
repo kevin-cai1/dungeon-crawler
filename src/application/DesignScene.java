@@ -1,10 +1,14 @@
 package application;
 
+import java.awt.event.MouseAdapter;
 import java.io.IOException;
+
+import javax.xml.transform.Source;
 
 import ass2.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -12,6 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -24,7 +34,8 @@ public class DesignScene {
 	private FXMLLoader fxmlLoader;
 	private int mapSize = 10;
 	private int tileSize;
-
+	private ListView<String> listView;
+	private GridPane gameGrid;
 	private DesignEngine designEngine;
 
 	public DesignScene(Stage s) {
@@ -33,6 +44,7 @@ public class DesignScene {
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Design.fxml"));
 		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
+		this.gameGrid = new GridPane();
 	}
 
 	public void display() {
@@ -45,13 +57,28 @@ public class DesignScene {
 		s.setX((bounds.getWidth() - s.getWidth()) / 2);
 		s.setY((bounds.getHeight() - s.getHeight()) / 2);
 		s.show();
-
+		listView.setOnDragDetected(new EventHandler<MouseEvent>() {
+			public void handle(MouseEvent event) {
+				System.out.println(listView.getSelectionModel().getSelectedItem());
+				Dragboard dragboard = listView.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent content = new ClipboardContent();
+				content.putString(listView.getAccessibleText());
+				dragboard.setContent(content);
+				event.consume();
+			}
+		});
+		gameGrid.setOnDragEntered(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				if(event.getGestureSource() != gameGrid && event.getDragboard().hasString()) {
+				}
+			}
+		});
+		
 	}
 
 	public BorderPane generateGrid() {
 		Tile[][] gameMap = designEngine.getMap().getMap();
 		BorderPane gameDisplay = new BorderPane();
-		GridPane gameGrid = new GridPane();
 		// for visualizing the different squares:
 		//gridPane.setHgap(2);
 		//gridPane.setVgap(2);
@@ -104,7 +131,7 @@ public class DesignScene {
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
-		ListView<String> listView = new ListView<String>();
+		listView = new ListView<String>();
 		ObservableList<String> items = FXCollections.observableArrayList(
 				"Arrow", "Bomb", "Boulder", "Coward", "Door", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
 		listView.setItems(items);
