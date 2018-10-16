@@ -82,19 +82,36 @@ public class GameScene {
 				if(!(prevKeyPress.contains(event.getCode()))) {
 					switch (event.getCode()) {
 						case W:
-							playerMoved = game.movePlayerNorth();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.NORTH);
+							}
+							else{
+								playerMoved = game.movePlayerNorth();
+							}							
 							break;
 						case S:		
-							playerMoved = game.movePlayerSouth();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.SOUTH);
+							}
+							else {
+								playerMoved = game.movePlayerSouth();
+							}							
 							break;
 						case D:		
-							playerMoved = game.movePlayerEast();
+							if(prevKeyPress.contains(KeyCode.D)) {
+								playerMoved = game.swing(Direction.EAST);
+							}
+							else {
+								playerMoved = game.movePlayerEast();
+							}
 							break;
 						case A:		
-							playerMoved = game.movePlayerWest();
-							
+							if(prevKeyPress.contains(KeyCode.L)) {
+								playerMoved = game.swing(Direction.WEST);
+							}
+							else {
+								playerMoved = game.movePlayerWest();
+							}									
 							break;
 						case B:		
 							//playerMoved = game.placeBomb();
@@ -117,18 +134,6 @@ public class GameScene {
 							
 							break;
 						case L:
-							if(prevKeyPress.contains(KeyCode.W)) {
-								playerMoved = game.swing(Direction.NORTH);
-							}
-							else if(prevKeyPress.contains(KeyCode.A)) {
-								playerMoved = game.swing(Direction.WEST);
-							}
-							else if(prevKeyPress.contains(KeyCode.S)) {
-								playerMoved = game.swing(Direction.SOUTH);
-							}
-							else if(prevKeyPress.contains(KeyCode.D)) {
-								playerMoved = game.swing(Direction.EAST);
-							}
 							break;
 						case ESCAPE:	
 							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
