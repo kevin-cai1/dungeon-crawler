@@ -31,6 +31,10 @@ public class GameScene {
 	private int mapSize = 10;
 	private GameEngine game;
 	private boolean playerMoved = false;
+	private PlayerMovement moveNorth;
+	private PlayerMovement moveEast;
+	private PlayerMovement moveSouth;
+	private PlayerMovement moveWest;
 	
 	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
 
@@ -74,14 +78,16 @@ public class GameScene {
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.NORTH);
 							} else {
-								playerMoved = game.movePlayerNorth();
+								//playerMoved = game.movePlayerNorth();
+								playerMoved = moveNorth.movePlayer(game);
 							}
 							break;
 						case S:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.SOUTH);
 							} else {
-								playerMoved = game.movePlayerSouth();
+								//playerMoved = game.movePlayerSouth();
+								playerMoved = moveSouth.movePlayer(game);
 							}
 							break;
 						case D:		
@@ -89,14 +95,15 @@ public class GameScene {
 								playerMoved = game.swing(Direction.EAST);
 							}
 							else {
-								playerMoved = game.movePlayerEast();
+								//playerMoved = game.movePlayerEast();
+								playerMoved = moveEast.movePlayer(game);
 							}							
 							break;
 						case A:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.WEST);
 							} else {
-								playerMoved = game.movePlayerWest();
+								playerMoved = moveWest.movePlayer(game);
 							}						
 							break;
 						case B:		

@@ -19,8 +19,16 @@ public class GameEngine {
 	private int totalEnemies;
 	private int numSwitches;
 	private boolean invincibility;
+	private PlayerMovement moveNorth;
+	private PlayerMovement moveEast;
+	private PlayerMovement moveSouth;
+	private PlayerMovement moveWest;
 	
 	public GameEngine(Map map) {
+		this.moveEast = new MoveEast();
+		this.moveNorth = new MoveNorth();
+		this.moveSouth = new MoveSouth();
+		this.moveWest = new MoveWest();
 		this.gameMap = map;
 		//this.gameState = GameState.Play;
 		this.enemyWinCondition = false;
@@ -121,16 +129,16 @@ public class GameEngine {
 				Direction playerAction = control.getMovement(action);
 				switch (playerAction) {
 					case NORTH:
-						playerMoved = movePlayerNorth();
+						playerMoved = moveNorth.movePlayer(this);
 						break;
 					case SOUTH:
-						playerMoved = movePlayerSouth();
+						playerMoved = moveSouth.movePlayer(this);
 						break;
 					case EAST:
-						playerMoved = movePlayerEast();
+						playerMoved = moveEast.movePlayer(this);
 						break;
 					case WEST:
-						playerMoved = movePlayerWest();
+						playerMoved = moveWest.movePlayer(this);
 						break;
 				}
 			}
@@ -227,7 +235,7 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved up one tile
 	 */
-	public boolean movePlayerNorth() {
+	/*public boolean movePlayerNorth() {
 		Tile[][] map = gameMap.getMap();
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
@@ -253,7 +261,7 @@ public class GameEngine {
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	/**
 	 * moves the player down one tile
@@ -264,7 +272,7 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved down one tile
 	 */
-	public boolean movePlayerSouth() {
+	/*public boolean movePlayerSouth() {
 		Tile[][] map = gameMap.getMap();
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
@@ -287,7 +295,7 @@ public class GameEngine {
 		}
 		return false;
 		
-	}
+	}*/
 
 	/**
 	 * moves the player right one tile
@@ -298,7 +306,7 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved right one tile
 	 */
-	public boolean movePlayerEast() {
+	/*public boolean movePlayerEast() {
 		Tile[][] map = gameMap.getMap();
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
@@ -321,7 +329,7 @@ public class GameEngine {
 		}
 		return false;
 	
-	}
+	}*/
 	
 	/**
 	 * moves the player left one tile
@@ -332,7 +340,7 @@ public class GameEngine {
 	 * @param player
 	 * @return true if the player has been successfully moved left one tile
 	 */
-	public boolean movePlayerWest() {
+	/*public boolean movePlayerWest() {
 		Tile[][] map = gameMap.getMap();
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
@@ -356,7 +364,7 @@ public class GameEngine {
 		}
 		return false;
 		
-	}
+	}*/
 	
 	public int switchesTriggered() {
 		int switchesTriggered = 0;
@@ -500,7 +508,7 @@ public class GameEngine {
 	 * @param followingTile the tile behind the affected tile in the same direction
 	 * @return true if all consequences accounted for and player has been validly moved
 	 */
-	private boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
+	public boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
 		boolean boulderMove = true;
 		Entity pitObject = null;
 		boolean movePlayer = true;

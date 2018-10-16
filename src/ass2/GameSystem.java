@@ -12,7 +12,7 @@ public class GameSystem {
 			// Instantiate game engine
 			GameEngine gameEngine = new GameEngine(new Map(20)); //need to change this
 			// initialises the map, player controls, checks gamestate
-			GameState state = gameEngine.runGame();
+			/*GameState state = gameEngine.runGame();
 			
 			// Game Mode 2
 			// Instantiate Design engine
@@ -30,7 +30,7 @@ public class GameSystem {
 				break;
 			default:
 				break;
-			}
+			}*/
 		}
 	}
 }
