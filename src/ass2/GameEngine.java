@@ -927,6 +927,7 @@ public class GameEngine {
 	}
 	
 	// Checks win conditions to see if you have won. returns true if you won, returns false otherwise
+	// what it checks dependso n t
 	// Also sets the gameStateInterface depending on the win conditions
 	// E.g. if there is an exit condition but your playerstatus == false, gamestate gets set to lose
 	public boolean checkGameState() {
