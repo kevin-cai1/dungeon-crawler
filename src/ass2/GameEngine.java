@@ -2,11 +2,13 @@ package ass2;
 
 import java.util.ArrayList;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import javafx.scene.layout.TilePane;
 
 public class GameEngine {
 	private Map gameMap;
-	private GameState gameState;
+	//private GameState gameState;
 	private boolean enemyWinCondition;
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
@@ -20,7 +22,7 @@ public class GameEngine {
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
-		this.gameState = GameState.Play;
+		//this.gameState = GameState.Play;
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
@@ -38,13 +40,13 @@ public class GameEngine {
 	 * returns the gamestate
 	 * @return gameState (can be Paused, Win, Play, Quit, Menu, Lose, Design)
 	 */
-	public GameState getGameState() {
+	/*public GameState getGameState() {
 		return gameState;
 	}
 	
 	public void setGameState(GameState state) {
 		gameState = state;
-	}
+	}*/
 	
 	public boolean checkBoulderCondition() {
 		return this.boulderWinCondition;
@@ -96,8 +98,9 @@ public class GameEngine {
 	 * runs the game in 'play' mode (game mode 1)
 	 * @return the gameState (can be win, lose, play depending on how the player moved)
 	 */
-	public GameState runGame() {
-		gameState = GameState.Play;
+	public GameStateInterface runGame() {
+		gameStateInterface = new Play();
+		//gameState = GameState.Play;
 		setWinConditions();
 		// runs the game
 		// gets player moves
@@ -157,8 +160,8 @@ public class GameEngine {
 			}
 			
 						
-			if (gameState.equals(GameState.Win) || gameState.equals(GameState.Lose)) {
-				return gameState;
+			if (gameStateInterface instanceof Play || gameStateInterface instanceof Lose) {
+				return gameStateInterface;
 			}
 			
 			// calculate enemy movements
@@ -178,8 +181,8 @@ public class GameEngine {
 				if (bomb.tick() == false) {
 					tickingBombs.remove(bomb);
 					if(gameMap.getPlayer() == null) {
-						gameState = GameState.Lose;
-						return gameState;
+						gameStateInterface =  new Lose();
+						return gameStateInterface;
 					}
 				}
 			}
@@ -191,20 +194,20 @@ public class GameEngine {
 			}
 			
 			if (gameStateInterface.checkState(this) == true) {
-				gameState = GameState.Win;
-				return gameState;
+				gameStateInterface = new Win();
+				return gameStateInterface;
 			}
 		}
 	}
 	
-	public GameState tickEffects() {
+	public GameStateInterface tickEffects() {
 		if (tickingBombs != null) {
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
 				if (bomb.tick() == false) {
 					tickingBombs.remove(bomb);
 					if(gameMap.getPlayer() == null) {
-						gameState = GameState.Lose;
-						return gameState;
+						gameStateInterface = new Lose();
+						return gameStateInterface;
 					}
 				}
 			}
@@ -212,7 +215,7 @@ public class GameEngine {
 		
 		gameMap.getPlayer().invincibleTick();
 		
-		return gameState;
+		return gameStateInterface;
 	}
 	
 	/**
@@ -566,14 +569,14 @@ public class GameEngine {
 				if (player.getInvincibility() == true) { // enemy dies if player walks into them with invincibility
 					removeEntities.add(e);
 				} else {
-					gameState = GameState.Lose;
+					gameStateInterface = new Lose();
 				}
 			} else if (e instanceof Pit) {	// lose if you walk into pit
 				if (player.getHover() == false) {
-					gameState = GameState.Lose;
+					gameStateInterface = new Lose();
 				}
 			} else if (e instanceof Exit) {	// win on exit
-				gameState = GameState.Win;
+				gameStateInterface = new Win();
 			} else if (e instanceof Door) { // condition when player walks into door
 				Door door = (Door)e;
 				if (door.getStatus() == false) { // closed
@@ -923,8 +926,15 @@ public class GameEngine {
 		this.gameStateInterface = gameStateInterface;
 	}
 	
-	public void checkGameState() {
-		gameStateInterface.checkState(this);
+	// Checks win conditions to see if you have won. returns true if you won, returns false otherwise
+	// Also sets the gameStateInterface depending on the win conditions
+	// E.g. if there is an exit condition but your playerstatus == false, gamestate gets set to lose
+	public boolean checkGameState() {
+		return gameStateInterface.checkState(this);
+	}
+	
+	public GameStateInterface getGameStateInterface() {
+		return this.gameStateInterface;
 	}
 	
 	public boolean getBoulderWinCondition() {

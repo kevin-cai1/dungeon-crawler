@@ -147,10 +147,10 @@ public class GameScene {
 				}
 
 				
-				if (game.getGameState().equals(GameState.Win)) {
+				if (game.getGameStateInterface() instanceof Win) {
 					winMessage();
 					return;
-				} else if (game.getGameState().equals(GameState.Lose)) {
+				} else if (game.getGameStateInterface() instanceof Lose) {
 					
 				}
 				
@@ -169,12 +169,12 @@ public class GameScene {
 					return;
 				}
 				
-				if (game.tickEffects() == GameState.Lose) {
+				if (game.tickEffects() instanceof Lose) {
 					loseMessage();
 					return;
 				}
 				
-				if (game.checkWin() == true) {
+				if (game.checkGameState() == true) {
 					System.out.println("checked win");
 					winMessage();
 					return;
