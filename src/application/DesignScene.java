@@ -1,16 +1,20 @@
 package application;
 
+import java.awt.Event;
 import java.awt.event.MouseAdapter;
 import java.io.IOException;
 
 import javax.xml.transform.Source;
 
 import ass2.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,7 +41,7 @@ public class DesignScene {
 	private ListView<String> listView;
 	private GridPane gameGrid;
 	private DesignEngine designEngine;
-
+	private final ObjectProperty<ListCell<String>> dragSource = new SimpleObjectProperty<>();
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -45,6 +49,7 @@ public class DesignScene {
 		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
+		
 	}
 
 	public void display() {
@@ -57,7 +62,7 @@ public class DesignScene {
 		s.setX((bounds.getWidth() - s.getWidth()) / 2);
 		s.setY((bounds.getHeight() - s.getHeight()) / 2);
 		s.show();
-		listView.setOnDragDetected(new EventHandler<MouseEvent>() {
+		/*listView.setOnDragDetected(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				System.out.println(listView.getSelectionModel().getSelectedItem());
 				Dragboard dragboard = listView.startDragAndDrop(TransferMode.ANY);
@@ -66,10 +71,15 @@ public class DesignScene {
 				dragboard.setContent(content);
 				event.consume();
 			}
-		});
-		gameGrid.setOnDragEntered(new EventHandler<DragEvent>() {
+		});*/
+		gameGrid.setOnDragDropped(new EventHandler<DragEvent>() {
 			public void handle(DragEvent event) {
+				System.out.println("hello");
 				if(event.getGestureSource() != gameGrid && event.getDragboard().hasString()) {
+					Node source = (Node)event.getSource();
+					Integer colIndex = GridPane.getColumnIndex(source);
+					Integer rowIndex = GridPane.getRowIndex(source);
+					System.out.println("Dropped onto" + colIndex.intValue() + rowIndex.intValue());
 				}
 			}
 		});
@@ -89,7 +99,7 @@ public class DesignScene {
 			for (int x = 0; x < gameMap[y].length; x++) {
 				//ImageView imageView = new ImageView(grid[y][x]);
 				// add a floor to every single tile ^^
-				ImageView floorImage = new ImageView(new Image("application/Sprites/cobble_blood1.png"));
+				ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
 				floorImage.setFitWidth(tileSize);
 				floorImage.setFitHeight(tileSize);
 				gameGrid.add(floorImage, x, y);
@@ -135,59 +145,73 @@ public class DesignScene {
 		ObservableList<String> items = FXCollections.observableArrayList(
 				"Arrow", "Bomb", "Boulder", "Coward", "Door", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
 		listView.setItems(items);
-		listView.setCellFactory(param -> new ListCell<String>() {
-			private ImageView imageView = new ImageView();
-
-			@Override
-			public void updateItem(String name, boolean empty) {
-				super.updateItem(name, empty);
-				if (empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					if (name.equals("Arrow")) {
-						imageView.setImage(new Image("application/Sprites/arrow.png"));
-					} else if (name.equals("Bomb")) {
-						imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
-					} else if (name.equals("Boulder")) {
-						imageView.setImage(new Image("application/Sprites/boulder.png"));
-					} else if (name.equals("Coward")) {
-						imageView.setImage(new Image("application/Sprites/human_slave.png"));
-					} else if (name.equals("Door")) {
-						imageView.setImage(new Image("application/Sprites/closed_door.png"));
-					} else if (name.equals("Exit")) {
-						imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
-					} else if (name.equals("Floor Switch")) {
-						imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
-					} else if (name.equals("Hound")) {
-						imageView.setImage(new Image("application/Sprites/hound.png"));
-					} else if (name.equals("Hover Potion")) {
-						imageView.setImage(new Image("application/Sprites/brilliant_blue.png"));
-					} else if (name.equals("Hunter")) {
-						imageView.setImage(new Image("application/Sprites/orc_warlord.png"));
-					} else if (name.equals("Invincibility Potion")) {
-						imageView.setImage(new Image("application/Sprites/emerald.png"));
-					} else if (name.equals("Key")) {
-						imageView.setImage(new Image("application/Sprites/key.png"));
-					} else if (name.equals("Pit")) {
-						imageView.setImage(new Image("application/Sprites/shaft.png"));
-					} else if (name.equals("Player")) {
-						imageView.setImage(new Image("application/Sprites/human_m.png"));
-					} else if (name.equals("Strategist")) {
-						imageView.setImage(new Image("application/Sprites/deep_elf_conjurer.png"));
-					} else if (name.equals("Sword")) {
-						imageView.setImage(new Image("application/Sprites/orcish_great_sword.png"));
-					} else if (name.equals("Treasure")) {
-						imageView.setImage(new Image("application/Sprites/gold_pile.png"));
-					} else if (name.equals("Wall")) {
-						imageView.setImage(new Image("application/Sprites/brick_brown-vines3.png"));
+		listView.setCellFactory(param -> {
+			ListCell<String> cell = new ListCell<String>() {
+				private ImageView imageView = new ImageView();
+	
+				@Override
+				public void updateItem(String name, boolean empty) {
+					super.updateItem(name, empty);
+					if (empty) {
+						setText(null);
+						setGraphic(null);
+					} else {
+						if (name.equals("Arrow")) {
+							imageView.setImage(new Image("application/Sprites/arrow.png"));
+						} else if (name.equals("Bomb")) {
+							imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
+						} else if (name.equals("Boulder")) {
+							imageView.setImage(new Image("application/Sprites/boulder.png"));
+						} else if (name.equals("Coward")) {
+							imageView.setImage(new Image("application/Sprites/coward.png"));
+						} else if (name.equals("Door")) {
+							imageView.setImage(new Image("application/Sprites/closed_door.png"));
+						} else if (name.equals("Exit")) {
+							imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
+						} else if (name.equals("Floor Switch")) {
+							imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
+						} else if (name.equals("Hound")) {
+							imageView.setImage(new Image("application/Sprites/hound.png"));
+						} else if (name.equals("Hover Potion")) {
+							imageView.setImage(new Image("application/Sprites/hover_potion.png"));
+						} else if (name.equals("Hunter")) {
+							imageView.setImage(new Image("application/Sprites/hunter.png"));
+						} else if (name.equals("Invincibility Potion")) {
+							imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
+						} else if (name.equals("Key")) {
+							imageView.setImage(new Image("application/Sprites/key.png"));
+						} else if (name.equals("Pit")) {
+							imageView.setImage(new Image("application/Sprites/shaft.png"));
+						} else if (name.equals("Player")) {
+							imageView.setImage(new Image("application/Sprites/player.png"));
+						} else if (name.equals("Strategist")) {
+							imageView.setImage(new Image("application/Sprites/strategist.png"));
+						} else if (name.equals("Sword")) {
+							imageView.setImage(new Image("application/Sprites/sword.png"));
+						} else if (name.equals("Treasure")) {
+							imageView.setImage(new Image("application/Sprites/gold_pile.png"));
+						} else if (name.equals("Wall")) {
+							imageView.setImage(new Image("application/Sprites/wall.png"));
+						}
+	
+						setText(name);
+						setGraphic(imageView);
 					}
-
-					setText(name);
-					setGraphic(imageView);
 				}
-			}
+			};
+			cell.setOnDragDetected(Event -> {
+				if(!cell.isEmpty()) {
+					Dragboard dragboard = cell.startDragAndDrop(TransferMode.ANY);
+					ClipboardContent clipboardContent = new ClipboardContent();
+					clipboardContent.putString(cell.getItem());
+					dragboard.setContent(clipboardContent);
+					dragSource.set(cell);
+					System.out.println(cell.getItem());
+				}
+			});
+			return cell;
 		});
+		
 		vBox.getChildren().addAll(heading, listView);
 		return vBox;
 	}
