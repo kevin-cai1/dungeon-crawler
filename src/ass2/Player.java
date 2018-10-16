@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Player extends Entity{
+	private static final long serialVersionUID = -509942623542938978L;
 	private HashMap<Entity, Integer> inventory;
 	private ArrayList<Key> keys;
 	private int invincible;
@@ -101,6 +102,26 @@ public class Player extends Entity{
 			}
 		}
 		return bombCount;
+	}
+	
+	public int getArrowsLeft() {
+		int arrowCount = 0;
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Arrow) {
+				arrowCount++;
+			}
+		}
+		return arrowCount;
+	}
+	
+	public boolean hasKey(KeyEnum keyNum) {
+		for (Key key: keys) {
+			if (key.getUnique() == keyNum) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

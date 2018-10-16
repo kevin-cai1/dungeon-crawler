@@ -1,6 +1,7 @@
 package ass2;
 
 public class Sword extends Entity{
+	private static final long serialVersionUID = 3366629573301873939L;
 	private int durability;
 	public Sword(int id) {
 		super(id);

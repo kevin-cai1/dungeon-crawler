@@ -1,15 +1,15 @@
 #resume {
-    -fx-image: url('./Sprites/play_button.png');
+    -fx-image: url('./Sprites/temp_resume_button.png');
 }
 
 #resume:hover {
-    -fx-image: url('./Sprites/play_selected.png');
+    -fx-image: url('./Sprites/temp_resume_button_selected.png');
 }
 
 #returnMenu{
-    -fx-image: url('./Sprites/design_button.png');
+    -fx-image: url('./Sprites/return_menu.png');
 }
 
 #returnMenu:hover {
-    -fx-image: url('./Sprites/design_selected.png');
+    -fx-image: url('./Sprites/return_menu_selected.png');
 }

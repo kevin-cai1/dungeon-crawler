@@ -5,6 +5,8 @@ import java.util.List;
 
 public abstract class HunterGroup extends Enemy{
 
+	private static final long serialVersionUID = -7535511482858588253L;
+
 	public HunterGroup(int id) {
 		super(id);
 	}

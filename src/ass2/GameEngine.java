@@ -2,6 +2,8 @@ package ass2;
 
 import java.util.ArrayList;
 
+import javafx.scene.layout.TilePane;
+
 public class GameEngine {
 	private Map gameMap;
 	private GameState gameState;
@@ -10,9 +12,10 @@ public class GameEngine {
 	private boolean treasureWinCondition;
 	private int arrayLength;
 	private ArrayList<Bomb> tickingBombs;
-	private boolean invincibility;
 	private int numTreasures;
 	private GameStateInterface gameStateInterface;
+	private int totalEnemies;
+	private int numSwitches;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
@@ -20,10 +23,12 @@ public class GameEngine {
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
-		this.invincibility = false;
 		this.arrayLength = gameMap.getArrayLength();
 		this.numTreasures = getNumTreasures();
 		this.gameStateInterface = new Play();
+		this.numTreasures = getNumItems()[0];
+		this.totalEnemies = getNumItems()[2];
+		this.numSwitches = getNumItems()[1];
 		setWinConditions();
 		System.out.println(this.boulderWinCondition + "enemy" + this.enemyWinCondition + "treasure" + this.treasureWinCondition);
 	}
@@ -40,18 +45,46 @@ public class GameEngine {
 		gameState = state;
 	}
 	
-	private int getNumTreasures() {
-		int numTreasures = 0;
+	public boolean checkBoulderCondition() {
+		return this.boulderWinCondition;
+	}
+	
+	public boolean checkTreasureCondition() {
+		return this.treasureWinCondition;
+	}
+	
+	public boolean checkEnemyConditon() {
+		return this.enemyWinCondition;
+	}
+	
+	public int getNumTreasures() {
+		return this.numTreasures;
+	}
+	
+	public int getNumEnemies() {
+		return this.totalEnemies;
+	}
+	
+	public int getNumSwitches() {
+		return this.numSwitches;
+	}
+	
+	private int[] getNumItems() {
+		int[] numItems = {0,0,0};	//numItems[0] for treasure, numItems[1] for switches, numItems[2] for enemies
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				for (Entity e : gameMap.getMap()[i][j].getEntities()) { // look through every single entity
 					if (e instanceof Treasure) { // count all the treasures
-						numTreasures++;
+						numItems[0]++;
+					} else if (e instanceof FloorSwitch) {
+						numItems[1]++;
+					} else if (e instanceof Enemy) {
+						numItems[2]++;
 					}
 				}
 			}
 		}
-		return numTreasures;
+		return numItems;
 	}
 	
 	public Map getGameMap() {
@@ -176,11 +209,8 @@ public class GameEngine {
 			}
 		}
 		
-		if (invincibility == true) {
-			if (gameMap.getPlayer().invincibleTick() == false) { //invincibility tick, false when doesn't tick (no more invincibility)
-				invincibility = false;
-			}
-		}
+		gameMap.getPlayer().invincibleTick();
+		
 		return gameState;
 	}
 	
@@ -322,6 +352,41 @@ public class GameEngine {
 		}
 		return false;
 		
+	}
+	
+	public int switchesTriggered() {
+		int switchesTriggered = 0;
+		Tile[][] map = gameMap.getMap();
+		for (int i = 0; i < arrayLength; i++) {
+			for (int j = 0; j < arrayLength; j++) {
+				Tile tile = map[i][j];
+				for (Entity e : tile.getEntities()) { // look through every single entity
+					if (e instanceof FloorSwitch) { // every floor switch
+						FloorSwitch switch1 = (FloorSwitch)e;
+						if (switch1.getStatus() == true) {
+							switchesTriggered++;
+						}
+					}
+				}
+			}
+		}
+		return switchesTriggered;
+	}
+	
+	public int enemiesKilled() {
+		int enemies = 0;
+		Tile[][] map = gameMap.getMap();
+		for (int i = 0; i < arrayLength; i++) {
+			for (int j = 0; j < arrayLength; j++) {
+				Tile tile = map[i][j];
+				for (Entity e : tile.getEntities()) { // look through every single entity
+					if (e instanceof Enemy) { // every floor switch
+						enemies++;
+					}
+				}
+			}
+		}
+		return enemies;
 	}
 	
 	/**
@@ -716,6 +781,8 @@ public class GameEngine {
 								for (Entity e3 : entityLocation[tileX][tileY-2].getEntities()) {
 									if (e3 instanceof Obstacle) {
 										return false;
+									} else if (e3 instanceof Enemy) {
+										return false;
 									}
 								}
 								return true;
@@ -741,6 +808,8 @@ public class GameEngine {
 								}
 								for (Entity e3 : entityLocation[tileX+2][tileY].getEntities()) {
 									if (e3 instanceof Obstacle) {
+										return false;
+									} else if (e3 instanceof Enemy) {
 										return false;
 									}
 								}
@@ -768,6 +837,8 @@ public class GameEngine {
 								for (Entity e3 : entityLocation[tileX][tileY+2].getEntities()) {
 									if (e3 instanceof Obstacle) {
 										return false;
+									} else if (e3 instanceof Enemy) {
+										return false;
 									}
 								}
 								return true;
@@ -793,6 +864,8 @@ public class GameEngine {
 								}
 								for (Entity e3 : entityLocation[tileX-2][tileY].getEntities()) {
 									if (e3 instanceof Obstacle) {
+										return false;
+									} else if (e3 instanceof Enemy) {
 										return false;
 									}
 								}
