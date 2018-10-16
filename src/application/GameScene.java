@@ -149,6 +149,7 @@ public class GameScene {
 				
 				if (game.getGameState().equals(GameState.Win)) {
 					winMessage();
+					return;
 				} else if (game.getGameState().equals(GameState.Lose)) {
 					
 				}
@@ -230,6 +231,7 @@ public class GameScene {
 	}
 	
 	private FlowPane setSidebar() {
+		Player player = game.getGameMap().getPlayer();
 		Font textFont = Font.font("Goudy Old Style", FontWeight.BOLD ,34);
 		Font headingFont = Font.font("Goudy Old Style", FontWeight.BOLD ,44);
 		FlowPane sidebar = new FlowPane();
@@ -247,7 +249,7 @@ public class GameScene {
 		sword.setFitHeight(40);
 		sword.setFitWidth(40);
 		Label swordCount = new Label();
-		swordCount.setText(Integer.toString((game.getGameMap().getPlayer().getSwordUses())) + " uses");
+		swordCount.setText(Integer.toString(player.getSwordUses()) + " uses");
 		swordCount.setFont(textFont);
 		swordCount.setTextFill(Color.GREY);
 		Sword.getChildren().addAll(sword, swordCount);
@@ -259,7 +261,7 @@ public class GameScene {
 		bomb.setFitHeight(40);
 		bomb.setFitWidth(40);
 		Label bombCount = new Label();
-		bombCount.setText(Integer.toString((game.getGameMap().getPlayer().getBombsLeft())) + " left");
+		bombCount.setText(Integer.toString(player.getBombsLeft()) + " left");
 		bombCount.setFont(textFont);
 		bombCount.setTextFill(Color.GREY);
 		Bomb.getChildren().addAll(bomb, bombCount);
@@ -271,7 +273,7 @@ public class GameScene {
 		arrow.setFitHeight(40);
 		arrow.setFitWidth(40);
 		Label arrowCount = new Label();
-		arrowCount.setText(Integer.toString((game.getGameMap().getPlayer().getArrowsLeft())) + " left");
+		arrowCount.setText(Integer.toString(player.getArrowsLeft()) + " left");
 		arrowCount.setFont(textFont);
 		arrowCount.setTextFill(Color.GREY);
 		Arrow.getChildren().addAll(arrow, arrowCount);
@@ -283,7 +285,7 @@ public class GameScene {
 		treasure.setFitHeight(40);
 		treasure.setFitWidth(40);
 		Label treasureCount = new Label();
-		treasureCount.setText(Integer.toString((game.getGameMap().getPlayer().getTreasure())) + " obtained");
+		treasureCount.setText(Integer.toString(player.getTreasure()) + " obtained");
 		treasureCount.setFont(textFont);
 		treasureCount.setTextFill(Color.GREY);
 		Treasure.getChildren().addAll(treasure, treasureCount);
@@ -292,7 +294,7 @@ public class GameScene {
 		Keys.setStyle("-fx-background-color: #272727;");
 		Keys.setSpacing(10);
 		ImageView key1;
-		if (game.getGameMap().getPlayer().hasKey(KeyEnum.SMALL) == true) {
+		if (player.hasKey(KeyEnum.SMALL) == true) {
 			key1 = new ImageView(new Image("application/Sprites/key.png"));
 		} else {
 			key1 = new ImageView(new Image("application/Sprites/blank_key.png"));
@@ -301,7 +303,7 @@ public class GameScene {
 		key1.setFitWidth(40);
 		
 		ImageView key2;
-		if (game.getGameMap().getPlayer().hasKey(KeyEnum.MEDIUM) == true) {
+		if (player.hasKey(KeyEnum.MEDIUM) == true) {
 			key2 = new ImageView(new Image("application/Sprites/key.png"));
 		} else {
 			key2 = new ImageView(new Image("application/Sprites/blank_key.png"));
@@ -310,7 +312,7 @@ public class GameScene {
 		key2.setFitWidth(40);
 		
 		ImageView key3;
-		if (game.getGameMap().getPlayer().hasKey(KeyEnum.LARGE) == true) {
+		if (player.hasKey(KeyEnum.LARGE) == true) {
 			key3 = new ImageView(new Image("application/Sprites/key.png"));
 		} else {
 			key3 = new ImageView(new Image("application/Sprites/blank_key.png"));
@@ -327,7 +329,7 @@ public class GameScene {
 		invincibility.setFitHeight(40);
 		invincibility.setFitWidth(40);
 		Label invincibilityCount = new Label();
-		invincibilityCount.setText(Integer.toString((game.getGameMap().getPlayer().getInvincibilityTick())) + " turns");
+		invincibilityCount.setText(Integer.toString(player.getInvincibilityTick()) + " turns");
 		invincibilityCount.setFont(textFont);
 		invincibilityCount.setTextFill(Color.GREY);
 		Invincibility.getChildren().addAll(invincibility, invincibilityCount);
@@ -339,7 +341,7 @@ public class GameScene {
 		hover.setFitHeight(40);
 		hover.setFitWidth(40);
 		Label hoverSet = new Label();
-		if (game.getGameMap().getPlayer().getHover() == true) {
+		if (player.getHover() == true) {
 			hoverSet.setText("active");
 		} else {
 			hoverSet.setText("inactive");
@@ -384,7 +386,7 @@ public class GameScene {
 			treasureWin.setStyle("-fx-background-color: #272727;");
 			treasureWin.setSpacing(10);
 			Label treasures = new Label();
-			treasures.setText("Treasures: " + game.getGameMap().getPlayer().getTreasure() + "/" + game.getNumTreasures());
+			treasures.setText("Treasures: " + player.getTreasure() + "/" + game.getNumTreasures());
 			treasures.setFont(textFont);
 			treasures.setTextFill(Color.GREY);
 			treasureWin.getChildren().add(treasures);
@@ -458,8 +460,6 @@ public class GameScene {
 		}
 		return image;
 	}
-	
-	
 	
 	private void pauseGame() {
 		try {

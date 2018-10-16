@@ -777,6 +777,8 @@ public class GameEngine {
 								for (Entity e3 : entityLocation[tileX][tileY-2].getEntities()) {
 									if (e3 instanceof Obstacle) {
 										return false;
+									} else if (e3 instanceof Enemy) {
+										return false;
 									}
 								}
 								return true;
@@ -802,6 +804,8 @@ public class GameEngine {
 								}
 								for (Entity e3 : entityLocation[tileX+2][tileY].getEntities()) {
 									if (e3 instanceof Obstacle) {
+										return false;
+									} else if (e3 instanceof Enemy) {
 										return false;
 									}
 								}
@@ -829,6 +833,8 @@ public class GameEngine {
 								for (Entity e3 : entityLocation[tileX][tileY+2].getEntities()) {
 									if (e3 instanceof Obstacle) {
 										return false;
+									} else if (e3 instanceof Enemy) {
+										return false;
 									}
 								}
 								return true;
@@ -854,6 +860,8 @@ public class GameEngine {
 								}
 								for (Entity e3 : entityLocation[tileX-2][tileY].getEntities()) {
 									if (e3 instanceof Obstacle) {
+										return false;
+									} else if (e3 instanceof Enemy) {
 										return false;
 									}
 								}
