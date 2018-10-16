@@ -56,9 +56,16 @@ public class Play implements GameStateInterface {
 			}
 		}
 		if (satisfyWin == true) {
-			//gameState = GameState.Win;
 			gameEngine.setGameStateInterface(new Win());
 			gameEngine.setGameState(GameState.Win);
+		}
+		else if (satisfyWin == false && gameEngine.checkPlayerStatus() == false) {
+			gameEngine.setGameState(GameState.Lose);
+			gameEngine.setGameStateInterface(new Lose());
+		}
+		else if (satisfyWin == false && gameEngine.checkPlayerStatus() == true) {
+			// doesnt need to do anything because its already in 'play state'
+			return satisfyWin;
 		}
 		return satisfyWin;
 	}

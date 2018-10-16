@@ -16,6 +16,7 @@ public class GameEngine {
 	private GameStateInterface gameStateInterface;
 	private int totalEnemies;
 	private int numSwitches;
+	private boolean invincibility;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
@@ -189,7 +190,7 @@ public class GameEngine {
 				}
 			}
 			
-			if (checkWin() == true) {
+			if (gameStateInterface.checkState(this) == true) {
 				gameState = GameState.Win;
 				return gameState;
 			}
@@ -398,7 +399,7 @@ public class GameEngine {
 	 * @param map
 	 * @return true if player has met win conditions 
 	 */
-	public boolean checkWin() {
+	/*public boolean checkWin() {
 		Player player = gameMap.getPlayer();
 		Tile[][] map = gameMap.getMap();
 		boolean allSwitches = true;
@@ -448,7 +449,7 @@ public class GameEngine {
 			gameStateInterface = new Win();
 		}
 		return satisfyWin;
-	}
+	}*/
 
 	/**
 	 * iterates through all entities on the map and calls getAction on enemies to make them move
