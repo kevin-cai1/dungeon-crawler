@@ -112,10 +112,16 @@ public class MenuController {
 		t.addEntity(new Coward(gameMap.genID()));
 		
 		t = gameMap.getTile(6, 2);
-		t.addEntity(new Door(KeyEnum.SMALL, gameMap.genID()));
+		t.addEntity(new Door(KeyEnum.MEDIUM, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 3);
-		t.addEntity(new Key(KeyEnum.SMALL, gameMap.genID()));
+		t.addEntity(new Key(KeyEnum.MEDIUM, gameMap.genID()));
+		
+		t = gameMap.getTile(8, 2);
+		t.addEntity(new Door(KeyEnum.LARGE, gameMap.genID()));
+		
+		t = gameMap.getTile(8, 3);
+		t.addEntity(new Key(KeyEnum.LARGE, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 4);
 		t.addEntity(new Bomb(gameMap,gameMap.genID()));
