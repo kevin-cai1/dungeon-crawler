@@ -210,7 +210,7 @@ public class GameScene {
             for (int x = 0 ; x < gameMap[y].length ; x++) {
                 //ImageView imageView = new ImageView(grid[y][x]);
             	// add a floor to every single tile ^^
-            	ImageView floorImage = new ImageView(new Image("application/Sprites/cobble_blood1.png"));
+            	ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
                 floorImage.setFitWidth(tileSize);
                 floorImage.setFitHeight(tileSize);
                 gameGrid.add(floorImage, x, y);
@@ -245,7 +245,7 @@ public class GameScene {
 		HBox Sword = new HBox();
 		Sword.setStyle("-fx-background-color: #272727;");
 		Sword.setSpacing(10);
-		ImageView sword = new ImageView(new Image("application/Sprites/orcish_great_sword.png"));
+		ImageView sword = new ImageView(new Image("application/Sprites/sword.png"));
 		sword.setFitHeight(40);
 		sword.setFitWidth(40);
 		Label swordCount = new Label();
@@ -304,7 +304,7 @@ public class GameScene {
 		
 		ImageView key2;
 		if (player.hasKey(KeyEnum.MEDIUM) == true) {
-			key2 = new ImageView(new Image("application/Sprites/key.png"));
+			key2 = new ImageView(new Image("application/Sprites/key1.png"));
 		} else {
 			key2 = new ImageView(new Image("application/Sprites/blank_key.png"));
 		}
@@ -313,7 +313,7 @@ public class GameScene {
 		
 		ImageView key3;
 		if (player.hasKey(KeyEnum.LARGE) == true) {
-			key3 = new ImageView(new Image("application/Sprites/key.png"));
+			key3 = new ImageView(new Image("application/Sprites/key2.png"));
 		} else {
 			key3 = new ImageView(new Image("application/Sprites/blank_key.png"));
 		}
@@ -325,7 +325,7 @@ public class GameScene {
 		HBox Invincibility = new HBox();
 		Invincibility.setStyle("-fx-background-color: #272727;");
 		Invincibility.setSpacing(10);
-		ImageView invincibility = new ImageView(new Image("application/Sprites/emerald.png"));
+		ImageView invincibility = new ImageView(new Image("application/Sprites/invincibility_potion.png"));
 		invincibility.setFitHeight(40);
 		invincibility.setFitWidth(40);
 		Label invincibilityCount = new Label();
@@ -337,7 +337,7 @@ public class GameScene {
 		HBox Hover = new HBox();
 		Hover.setStyle("-fx-background-color: #272727;");
 		Hover.setSpacing(10);
-		ImageView hover = new ImageView(new Image("application/Sprites/brilliant_blue.png"));
+		ImageView hover = new ImageView(new Image("application/Sprites/hover_potion.png"));
 		hover.setFitHeight(40);
 		hover.setFitWidth(40);
 		Label hoverSet = new Label();
@@ -398,9 +398,9 @@ public class GameScene {
 	}
 	
 	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/cobble_blood1.png");
+		Image image = new Image("application/Sprites/floor.png");
 		if (e instanceof Player) {
-			return new Image("application/Sprites/human_m.png");
+			return new Image("application/Sprites/player.png");
 		} else if (e instanceof Bomb) {
 			/*switch (((Bomb) e).getTimer()) {
 			case 4:		// unlit
@@ -423,26 +423,34 @@ public class GameScene {
 		} else if (e instanceof FloorSwitch) {
 			return new Image("application/Sprites/pressure_plate.png");		
 		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/emerald.png");
+			return new Image("application/Sprites/invincibility_potion.png");
 		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/brilliant_blue.png");
+			return new Image("application/Sprites/hover_potion.png");
 		} else if (e instanceof Key) {
+			KeyEnum keyID = ((Key) e).getUnique();
+			if (keyID == KeyEnum.SMALL) {
+				return new Image("application/Sprites/key.png");
+			} else if (keyID == KeyEnum.MEDIUM) {
+				return new Image("application/Sprites/key1.png");
+			} else if (keyID == KeyEnum.LARGE) {
+				return new Image("application/Sprites/key2.png");
+			}
 			return new Image("application/Sprites/key.png");
 		} else if (e instanceof Treasure) { // add treasure, win if all collected
 			return new Image("application/Sprites/gold_pile.png");
 		} else if (e instanceof Arrow) {
 			return new Image("application/Sprites/arrow.png");
 		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/orcish_great_sword.png");
+			return new Image("application/Sprites/sword.png");
 		} else if (e instanceof Enemy) {	// lose if you walk into enemy
 			if (e instanceof Hunter) {
-				return new Image("application/Sprites/orc_warlord.png");
+				return new Image("application/Sprites/hunter.png");
 			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/deep_elf_conjurer.png");
+				return new Image("application/Sprites/strategist.png");
 			} else if (e instanceof Hound) {
 				return new Image("application/Sprites/hound.png");
 			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/human_slave.png");
+				return new Image("application/Sprites/coward.png");
 			}
 		} else if (e instanceof Pit) {	// lose if you walk into pit
 			return new Image("application/Sprites/shaft.png");
@@ -451,12 +459,20 @@ public class GameScene {
 		} else if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
+				KeyEnum doorID = ((Door) e).getUnique();
+				if (doorID == KeyEnum.SMALL) {
+					return new Image("application/Sprites/closed_door.png");
+				} else if (doorID == KeyEnum.MEDIUM) {
+					return new Image("application/Sprites/closed_door1.png");
+				} else if (doorID == KeyEnum.LARGE) {
+					return new Image("application/Sprites/closed_door2.png");
+				}
 				return new Image("application/Sprites/closed_door.png");
 			} else {
 				return new Image("application/Sprites/open_door.png");
 			}
 		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/brick_brown-vines3.png");
+			return new Image("application/Sprites/wall.png");
 		}
 		return image;
 	}
