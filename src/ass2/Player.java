@@ -104,6 +104,26 @@ public class Player extends Entity{
 		return bombCount;
 	}
 	
+	public int getArrowsLeft() {
+		int arrowCount = 0;
+		Set<Entity> set = inventory.keySet();
+		for(Entity e: set) {
+			if(e instanceof Arrow) {
+				arrowCount++;
+			}
+		}
+		return arrowCount;
+	}
+	
+	public boolean hasKey(KeyEnum keyNum) {
+		for (Key key: keys) {
+			if (key.getUnique() == keyNum) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * adds key to player inventory
 	 * @param key key to be added
