@@ -3,6 +3,7 @@ package application;
 import java.awt.Event;
 import java.awt.event.MouseAdapter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.transform.Source;
 
@@ -62,16 +63,19 @@ public class DesignScene {
 		s.setX((bounds.getWidth() - s.getWidth()) / 2);
 		s.setY((bounds.getHeight() - s.getHeight()) / 2);
 		s.show();
-		/*listView.setOnDragDetected(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				System.out.println(listView.getSelectionModel().getSelectedItem());
-				Dragboard dragboard = listView.startDragAndDrop(TransferMode.ANY);
-				ClipboardContent content = new ClipboardContent();
-				content.putString(listView.getAccessibleText());
-				dragboard.setContent(content);
-				event.consume();
+		gameGrid.setOnDragDetected(Event -> {
+			Node node = Event.getPickResult().getIntersectedNode();
+			int colIndex = GridPane.getColumnIndex(node);
+			int rowIndex = GridPane.getRowIndex(node);
+			ArrayList<Entity> entities = designEngine.getMap().getTile(colIndex, rowIndex).getEntities();
+			if(!entities.isEmpty()) {
+				Dragboard dragboard = gameGrid.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent clipboardContent = new ClipboardContent();
+				clipboardContent.putString(entities.get(entities.size()-1).toString());
+				dragboard.setContent(clipboardContent);
+				System.out.println(entities.get(entities.size()-1).toString());
 			}
-		});*/
+		});
 		gameGrid.setOnDragOver(event -> {
 			Dragboard dragboard = event.getDragboard();
 			if(dragboard.hasString()) {
@@ -83,9 +87,15 @@ public class DesignScene {
 			public void handle(DragEvent event) {
 				Dragboard dragboard = event.getDragboard();
 				Node node = event.getPickResult().getIntersectedNode();
+				Map map = designEngine.getMap();
 				int colIndex = GridPane.getColumnIndex(node);
 				int rowIndex = GridPane.getRowIndex(node);
-				gameGrid.add(entityTextToImage(dragboard.getString()),colIndex,rowIndex);
+				if(designEngine.placeEntity(entityTextToEntity(dragboard.getString()),colIndex,rowIndex)){
+					gameGrid.add(entityTextToImage(dragboard.getString()),colIndex,rowIndex);
+				}
+				else{
+					System.out.println("THATS INVALID");
+				}
 				event.consume();
 			}
 		});
@@ -183,6 +193,48 @@ public class DesignScene {
 		imageView.setFitWidth(tileSize);
 		imageView.setFitHeight(tileSize);
 		return imageView;
+	}
+	private Entity entityTextToEntity(String name){
+		Map map = designEngine.getMap();
+		Entity entity = null;
+		if (name.equals("Arrow")) {
+			entity = new Arrow(map.genID(),map);
+		} else if (name.equals("Bomb")) {
+			entity = new Bomb(map,map.genID());
+		} else if (name.equals("Boulder")) {
+			entity = new Boulder(map.genID());
+		} else if (name.equals("Coward")) {
+			entity = new Coward(map.genID());
+		} else if (name.equals("Door")) {
+			entity = new Door(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Exit")) {
+			entity = new Exit(map.genID());
+		} else if (name.equals("Floor Switch")) {
+			entity = new FloorSwitch(map.genID());
+		} else if (name.equals("Hound")) {
+			entity = new Hound(map.genID());
+		} else if (name.equals("Hover Potion")) {
+			entity = new HoverPotion(map.genID());
+		} else if (name.equals("Hunter")) {
+			entity = new Hunter(map.genID());
+		} else if (name.equals("Invincibility Potion")) {
+			entity = new InvincibilityPotion(map.genID());
+		} else if (name.equals("Key")) {
+			entity = new Key(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Pit")) {
+			entity = new Pit(map.genID());
+		} else if (name.equals("Player")) {
+			entity = new Player(map.genID());
+		} else if (name.equals("Strategist")) {
+			entity = new Strategist(map.genID());
+		} else if (name.equals("Sword")) {
+			entity = new Sword(map.genID());
+		} else if (name.equals("Treasure")) {
+			entity = new Treasure(map.genID());
+		} else if (name.equals("Wall")) {
+			entity = new Wall(map.genID());
+		}
+		return entity;
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();

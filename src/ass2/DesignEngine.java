@@ -24,12 +24,14 @@ public class DesignEngine {
 	 * @param x
 	 * @param y
 	 */
-	public void placeEntity(Entity entity, int x, int y) {
-		if (validatePlacement(entity, x, y) == true) {
+	public boolean placeEntity(Entity entity, int x, int y) {
+		if (validatePlacement(entity, x, y)) {
 			Tile tile = map.getTile(x, y);
 			entityList.add(entity);
 			tile.addEntity(entity);
+			return true;
 		}
+		return false;
 	}
 
 	/**

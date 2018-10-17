@@ -14,7 +14,7 @@ public class Exit extends Entity{
 
 	@Override
 	public String toString() {
-		return null;
+		return "Exit";
 	}
 	
 }

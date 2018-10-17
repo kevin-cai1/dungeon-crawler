@@ -15,6 +15,6 @@ public class HoverPotion extends Potion{
 
 	@Override
 	public String toString() {
-		return null;
+		return "HoverPotion";
 	}
 }

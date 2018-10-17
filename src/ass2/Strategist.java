@@ -12,7 +12,7 @@ public class Strategist extends Enemy{
 
     @Override
     public String toString() {
-        return null;
+        return "Strategist";
     }
     /**
      * calls getGoodTile to move Strategist towards the players next most likely location, or the next closest tile if there is no good tile

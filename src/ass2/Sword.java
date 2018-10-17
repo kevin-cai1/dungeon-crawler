@@ -29,10 +29,7 @@ public class Sword extends Entity{
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Sword durability: ");
-		sb.append(getDurability());
-		return sb.toString();
+		return "Sword";
 	}
 	
 	

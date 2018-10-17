@@ -76,6 +76,6 @@ public class Arrow extends Entity{
 	}
 	@Override
 	public String toString() {
-		return null;
+		return "Arrow";
 	}
 }
