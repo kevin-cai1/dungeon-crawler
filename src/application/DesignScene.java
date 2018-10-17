@@ -2,7 +2,9 @@ package application;
 
 import java.awt.Event;
 import java.awt.event.MouseAdapter;
+import java.awt.print.Printable;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.xml.transform.Source;
@@ -43,6 +45,9 @@ public class DesignScene {
 	private GridPane gameGrid;
 	private DesignEngine designEngine;
 	private final ObjectProperty<ListCell<String>> dragSource = new SimpleObjectProperty<>();
+	private int colIndex = -1;
+	private int rowIndex = -1;
+	
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -65,8 +70,8 @@ public class DesignScene {
 		s.show();
 		gameGrid.setOnDragDetected(Event -> {
 			Node node = Event.getPickResult().getIntersectedNode();
-			int colIndex = GridPane.getColumnIndex(node);
-			int rowIndex = GridPane.getRowIndex(node);
+			colIndex = GridPane.getColumnIndex(node);
+			rowIndex = GridPane.getRowIndex(node);
 			ArrayList<Entity> entities = designEngine.getMap().getTile(colIndex, rowIndex).getEntities();
 			if(!entities.isEmpty()) {
 				Dragboard dragboard = gameGrid.startDragAndDrop(TransferMode.ANY);
@@ -74,6 +79,18 @@ public class DesignScene {
 				clipboardContent.putString(entities.get(entities.size()-1).toString());
 				dragboard.setContent(clipboardContent);
 				System.out.println(entities.get(entities.size()-1).toString());
+			}
+			else {
+				colIndex = -1;
+				rowIndex = -1; //reset it back to not on the grid
+			}
+		});
+		gameGrid.setOnDragDone(Event -> {
+			if(colIndex != -1) {
+				designEngine.removeTopEntity(colIndex, rowIndex);
+				ArrayList<Node> node = getImageNode(gameGrid, colIndex, rowIndex);
+				System.out.println(node.size());
+				gameGrid.getChildren().remove(node.get(0));
 			}
 		});
 		gameGrid.setOnDragOver(event -> {
@@ -88,10 +105,10 @@ public class DesignScene {
 				Dragboard dragboard = event.getDragboard();
 				Node node = event.getPickResult().getIntersectedNode();
 				Map map = designEngine.getMap();
-				int colIndex = GridPane.getColumnIndex(node);
-				int rowIndex = GridPane.getRowIndex(node);
-				if(designEngine.placeEntity(entityTextToEntity(dragboard.getString()),colIndex,rowIndex)){
-					gameGrid.add(entityTextToImage(dragboard.getString()),colIndex,rowIndex);
+				int col = GridPane.getColumnIndex(node);
+				int row = GridPane.getRowIndex(node);
+				if(designEngine.placeEntity(entityTextToEntity(dragboard.getString()),col,row)){
+					gameGrid.add(entityTextToImage(dragboard.getString()),col,row);
 				}
 				else{
 					System.out.println("THATS INVALID");
@@ -102,6 +119,15 @@ public class DesignScene {
 		
 	}
 
+	private ArrayList<Node> getImageNode(GridPane gridPane, int col, int row) {
+		ArrayList<Node> le = new ArrayList<>();
+		for (Node node: gridPane.getChildren()) {
+			if(GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+				le.add(node);
+			}
+		}
+		return le;
+	}
 	public BorderPane generateGrid() {
 		Tile[][] gameMap = designEngine.getMap().getMap();
 		BorderPane gameDisplay = new BorderPane();

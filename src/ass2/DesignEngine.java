@@ -33,7 +33,11 @@ public class DesignEngine {
 		}
 		return false;
 	}
-
+	public void removeTopEntity(int x, int y) {
+		Tile tile = map.getTile(x, y);
+		ArrayList<Entity> entities = tile.getEntities();
+		entities.remove(entities.size()-1);
+	}
 	/**
 	 * validates whether a position is valid on the map. i.e. entities cannot be placed on top of obstacles
 	 * @param entity
