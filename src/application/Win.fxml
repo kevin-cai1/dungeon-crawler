@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="404.0" prefWidth="604.0" stylesheets="@menu.css,@pause.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="400.0" fitWidth="600.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/background.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="quitButton" fitHeight="150.0" fitWidth="200.0" layoutX="202.0" layoutY="285.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="quit" fx:id="quitButton" fitHeight="150.0" fitWidth="200.0" layoutX="202.0" layoutY="285.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_button.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
-      <ImageView fx:id="returnToMenuButton" fitHeight="175.0" fitWidth="205.0" layoutX="200.0" layoutY="216.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="returnMenu" fx:id="returnToMenuButton" fitHeight="175.0" fitWidth="205.0" layoutX="200.0" layoutY="216.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/return_menu.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
       <Label layoutX="225.0" layoutY="97.0" prefHeight="94.0" prefWidth="264.0" text="VICTORY!" textFill="#0dff2deb">
          <font>
