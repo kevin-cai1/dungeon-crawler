@@ -102,12 +102,16 @@ public class DesignScene {
 				Map map = designEngine.getMap();
 				int col = GridPane.getColumnIndex(node);
 				int row = GridPane.getRowIndex(node);
-				if(designEngine.placeEntity((Entity) dragboard.getContent(entityFormat),col,row)){
-					mapObserver.update(gameGrid, tileSize);
+				Entity entity = (Entity) dragboard.getContent(entityFormat);
+				if(designEngine.placeEntity(entity,col,row)){
+					
 				}
 				else{
+					colIndex=-1;
+					rowIndex=-1;
 					System.out.println("THATS INVALID");
 				}
+				mapObserver.update(gameGrid, tileSize);
 				event.consume();
 			}
 		});
