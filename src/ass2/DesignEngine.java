@@ -107,7 +107,7 @@ public class DesignEngine {
  * @param map
  * @param fileName
  */
-	public void save(Map map, String fileName) {
+	public void save(String fileName) {
 		Map savedMap = map;
 		try {
 			FileOutputStream f = new FileOutputStream(new File(fileName+".txt"));

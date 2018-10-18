@@ -42,6 +42,7 @@ public class DesignScene {
 	private int colIndex = -1;
 	private int rowIndex = -1;
 	private Observer mapObserver;
+	private WinObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	public DesignScene(Stage s) {
 		this.s = s;
@@ -52,6 +53,7 @@ public class DesignScene {
 		this.gameGrid = new GridPane();
 		gameGrid.setStyle("-fx-grid-lines-visible: true");
 		mapObserver = new MapObserver(designEngine.getMap());
+		winObserver = new GameWinObserver(designEngine.getMap());
 	}
 
 	public void display() {
@@ -142,6 +144,7 @@ public class DesignScene {
 
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Exit);
 				if(newValue) {
 					checkBox1.setStyle("-fx-opacity: 0");
 					checkBox2.setStyle("-fx-opacity: 0");
@@ -160,6 +163,7 @@ public class DesignScene {
 		checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Boulder);
 				if(newValue || checkBox2.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
 					checkBox0.setStyle("-fx-opacity: 0");
 					checkBox0.setSelected(false);
@@ -172,6 +176,7 @@ public class DesignScene {
 		checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Enemy);
 				if(newValue || checkBox1.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
 					checkBox0.setStyle("-fx-opacity: 0");
 					checkBox0.setSelected(false);
@@ -184,6 +189,7 @@ public class DesignScene {
 		checkBox3.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Treasure);
 				if(newValue || checkBox2.selectedProperty().get() == true || checkBox1.selectedProperty().get() == true) {
 					checkBox0.setStyle("-fx-opacity: 0");
 					checkBox0.setSelected(false);
@@ -239,6 +245,7 @@ public class DesignScene {
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
+		ImageView save = new ImageView(new Image("application/Sprites/temp_save_button.png"));
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -312,8 +319,16 @@ public class DesignScene {
 			});
 			return cell;
 		});
+		save.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				designEngine.save("save1");
+			}
+		});
+		vBox.getChildren().addAll(heading, listView, save);
 		
-		vBox.getChildren().addAll(heading, listView);
 		return vBox;
 	}
 
