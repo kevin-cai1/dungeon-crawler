@@ -92,7 +92,9 @@ public class Map implements Serializable {
 	public void addWinCondition(WinCondition w) {
 		winConditions.add(w);
 	}
-	
+	public void removeWinCondition(WinCondition w) {
+		winConditions.remove(w);
+	}
 	/**
 	 * finds the player on the map and returns it as a Player
 	 * @return
