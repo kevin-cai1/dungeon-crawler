@@ -138,7 +138,7 @@ public class GameScene {
 
 				
 				if (game.getGameStateInterface() instanceof Win) {
-					winMessage();
+					displayWinScreen();
 					return;
 				} else if (game.getGameStateInterface() instanceof Lose) {
 					
@@ -155,18 +155,18 @@ public class GameScene {
 				}*/
 				
 				if (game.checkPlayerStatus() == false) {
-					loseMessage();
+					displayLoseScreen();
 					return;
 				}
 				
 				if (game.tickEffects() instanceof Lose) {
-					loseMessage();
+					displayLoseScreen();
 					return;
 				}
 				
 				if (game.checkGameState() == true) {
 					System.out.println("checked win");
-					winMessage();
+					displayWinScreen();
 					return;
 				}
 				
@@ -489,13 +489,22 @@ public class GameScene {
 		}
 	}
 	
-	private void winMessage() {
-		System.out.println("YOU WIN");
-		goHome();
+	private void displayWinScreen() {
+		try {
+			WinScene winScene = new WinScene(s);
+			winScene.display();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void loseMessage() {
-		System.out.println("YOU LOSE");
-		goHome();
+	private void displayLoseScreen() {
+		try {
+			LoseScene loseScene = new LoseScene(s);
+			loseScene.display();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
  }

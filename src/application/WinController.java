@@ -5,7 +5,7 @@ import java.awt.Button;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
-public class LoseScreenController {
+public class WinController {
 	private Stage stage;
 	
 	@FXML
@@ -21,11 +21,16 @@ public class LoseScreenController {
 	}
 	
 	@FXML
+	public void initialize() {
+		System.out.println("Initialising victory screen");
+	}
+	
+	@FXML
 	public void quitGame() {
 		System.exit(1);
 	}
 	
-	public LoseScreenController(Stage stage) {
+	public WinController(Stage stage) {
 		this.stage = stage;
 	}
 }

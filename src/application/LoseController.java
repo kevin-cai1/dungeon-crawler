@@ -5,7 +5,7 @@ import java.awt.Button;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 
-public class WinScreenController {
+public class LoseController {
 	private Stage stage;
 	
 	@FXML
@@ -14,6 +14,10 @@ public class WinScreenController {
 	@FXML
 	private Button quitButton;
 	
+	@FXML
+	public void initialize() {
+		System.out.println("Initialising defeat screen");
+	}
 	@FXML
 	public void returnToMenu() throws Exception {
 		MenuScene menuScene = new MenuScene(stage);
@@ -25,7 +29,7 @@ public class WinScreenController {
 		System.exit(1);
 	}
 	
-	public WinScreenController(Stage stage) {
+	public LoseController(Stage stage) {
 		this.stage = stage;
 	}
 }
