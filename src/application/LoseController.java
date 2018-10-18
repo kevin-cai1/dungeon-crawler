@@ -1,18 +1,19 @@
 package application;
 
-import java.awt.Button;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class LoseController {
 	private Stage stage;
 	
 	@FXML
-	private Button returnToMenuButton;
+	private ImageView returnToMenuButton;
 	
 	@FXML
-	private Button quitButton;
+	private ImageView quitButton;
 	
 	@FXML
 	public void initialize() {
