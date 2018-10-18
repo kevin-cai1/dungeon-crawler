@@ -1,8 +1,5 @@
 package application;
 
-import java.awt.Event;
-import java.awt.event.MouseAdapter;
-import java.awt.print.Printable;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -47,7 +44,7 @@ public class DesignScene {
 	private final ObjectProperty<ListCell<String>> dragSource = new SimpleObjectProperty<>();
 	private int colIndex = -1;
 	private int rowIndex = -1;
-	
+	private Observer mapObserver;
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -56,6 +53,7 @@ public class DesignScene {
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
 		gameGrid.setStyle("-fx-grid-lines-visible: true");
+		mapObserver = new MapObserver(designEngine.getMap());
 	}
 
 	public void display() {
@@ -78,7 +76,6 @@ public class DesignScene {
 				ClipboardContent clipboardContent = new ClipboardContent();
 				clipboardContent.putString(entities.get(entities.size()-1).toString());
 				dragboard.setContent(clipboardContent);
-				System.out.println(entities.get(entities.size()-1).toString());
 			}
 			else {
 				colIndex = -1;
@@ -88,9 +85,7 @@ public class DesignScene {
 		gameGrid.setOnDragDone(Event -> {
 			if(colIndex != -1) {
 				designEngine.removeTopEntity(colIndex, rowIndex);
-				ArrayList<Node> node = getImageNode(gameGrid, colIndex, rowIndex);
-				System.out.println(node.size());
-				gameGrid.getChildren().remove(node.get(0));
+				mapObserver.update(gameGrid, tileSize);
 			}
 		});
 		gameGrid.setOnDragOver(event -> {
@@ -108,7 +103,7 @@ public class DesignScene {
 				int col = GridPane.getColumnIndex(node);
 				int row = GridPane.getRowIndex(node);
 				if(designEngine.placeEntity(entityTextToEntity(dragboard.getString()),col,row)){
-					gameGrid.add(entityTextToImage(dragboard.getString()),col,row);
+					mapObserver.update(gameGrid, tileSize);
 				}
 				else{
 					System.out.println("THATS INVALID");
@@ -119,41 +114,9 @@ public class DesignScene {
 		
 	}
 
-	private ArrayList<Node> getImageNode(GridPane gridPane, int col, int row) {
-		ArrayList<Node> le = new ArrayList<>();
-		for (Node node: gridPane.getChildren()) {
-			if(GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-				le.add(node);
-			}
-		}
-		return le;
-	}
 	public BorderPane generateGrid() {
-		Tile[][] gameMap = designEngine.getMap().getMap();
 		BorderPane gameDisplay = new BorderPane();
-		// for visualizing the different squares:
-		//gridPane.setHgap(2);
-		//gridPane.setVgap(2);
-		//gridPane.setStyle("-fx-background-color: grey;");
-
-		// loop that fills in the image
-		for (int y = 0; y < gameMap.length; y++) {
-			for (int x = 0; x < gameMap[y].length; x++) {
-				//ImageView imageView = new ImageView(grid[y][x]);
-				// add a floor to every single tile ^^
-				ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
-				floorImage.setFitWidth(tileSize);
-				floorImage.setFitHeight(tileSize);
-				gameGrid.add(floorImage, x, y);
-				// ^^^
-				for (Entity e : gameMap[x][y].getEntities()) {
-					ImageView entityImage = new ImageView(setImage(e));
-					entityImage.setFitWidth(tileSize);
-					entityImage.setFitHeight(tileSize);
-					gameGrid.add(entityImage, x, y);
-				}
-			}
-		}
+		mapObserver.update(gameGrid, tileSize);
 		// ==============================
 		gameDisplay.setCenter(gameGrid);
 		gameDisplay.setRight(setDesignBar());
@@ -341,67 +304,8 @@ public class DesignScene {
 		vBox.getChildren().addAll(heading, listView);
 		return vBox;
 	}
-	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/cobble_blood1.png");
-		if (e instanceof Player) {
-			return new Image("application/Sprites/human_m.png");
-		} else if (e instanceof Bomb) {
-			/*switch (((Bomb) e).getTimer()) {
-			case 4:		// unlit
 
-				break;
-			case 3:
-
-				break;
-			case 2:
-
-				break;
-			case 1:
-
-				break;
-			*/
-
-			return new Image("application/Sprites/bomb_unlit.png");
-		} else if (e instanceof Boulder) {
-			return new Image("application/Sprites/boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image("application/Sprites/pressure_plate.png");
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/emerald.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/brilliant_blue.png");
-		} else if (e instanceof Key) {
-			return new Image("application/Sprites/key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image("application/Sprites/gold_pile.png");
-		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/orcish_great_sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image("application/Sprites/orc_warlord.png");
-			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/deep_elf_conjurer.png");
-			} else if (e instanceof Hound) {
-				return new Image("application/Sprites/hound.png");
-			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/human_slave.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/shaft.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image("application/Sprites/dngn_exit_abyss.png");
-		} else if (e instanceof Door) { // condition when player walks into door
-			Door door = (Door)e;
-			if (door.getStatus() == false) { // closed
-				return new Image("application/Sprites/closed_door.png");
-			} else {
-				return new Image("application/Sprites/open_door.png");
-			}
-		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/brick_brown-vines3.png");
-		}
-		return image;
+	public int getTileSize() {
+		return tileSize;
 	}
 }
