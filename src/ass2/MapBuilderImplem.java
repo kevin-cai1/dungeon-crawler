@@ -10,25 +10,32 @@ public class MapBuilderImplem implements MapBuilder {
 
 	@Override
 	public Map build() {
-		// TODO Auto-generated method stub
-		return null;
+		return map;
 	}
 
 	@Override
-	public MapBuilder addWinConditions(WinCondition winCondition) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MapBuilder setArrayLength(int arrayLength) {
-		map.setArrayLength(arrayLength);
+	public MapBuilder setWinConditions(WinCondition winCondition) {
+		map.addWinCondition(winCondition);
 		return this;
 	}
 
 	@Override
-	public MapBuilder setMap(Tile[][] map) {
-		this.map.setMap(map);
+	public MapBuilder setArrayLengthMap(int arrayLength) {
+		map.setArrayLengthMap(arrayLength);
 		return this;
 	}
+
+	@Override
+	public MapBuilder setMapEntities() {
+		map.setMapTiles();
+		return this;
+	}
+
+	@Override
+	public MapBuilder setIdCounter() {
+		map.setIdCounter();
+		return this;
+	}
+	
+	
 }

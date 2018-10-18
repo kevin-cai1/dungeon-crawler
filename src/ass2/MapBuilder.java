@@ -4,8 +4,9 @@ import java.util.ArrayList;
 
 public interface MapBuilder {
 	Map build();
-	MapBuilder addWinConditions(WinCondition winCondition);
-	MapBuilder setArrayLength(int arrayLength);
-	MapBuilder setMap(Tile[][] map);
+	MapBuilder setWinConditions(WinCondition winCondition);
+	MapBuilder setArrayLengthMap(int arrayLength);
+	MapBuilder setMapEntities();
+	MapBuilder setIdCounter();
 	
 }

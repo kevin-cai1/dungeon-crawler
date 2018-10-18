@@ -203,11 +203,24 @@ public class Map implements Serializable {
 		return idCounter;
 	}
 	
-	public void setArrayLength(int arrayLength) {
+	public void setArrayLengthMap(int arrayLength) {
 		this.arrayLength = arrayLength;
+		this.map = new Tile[arrayLength][arrayLength];
 	}
 	
-	public void setMap(Tile[][] map) {
-		this.map = map;
+	
+	public void setIdCounter() {
+		this.idCounter = 0;
+	}
+	
+	public void setMapTiles() {
+		for(int i = 0; i < arrayLength; i++) {
+			for(int j = 0; j < arrayLength; j++) {
+				//Floor floor = new Floor(genID());//great id
+				ArrayList<Entity> entities = new ArrayList<>();
+				//entities.add(floor);
+				map[i][j] = new Tile(entities, i, j);
+			}
+		}
 	}
 }

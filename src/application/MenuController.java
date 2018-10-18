@@ -68,7 +68,10 @@ public class MenuController {
 	}
 	
 	private Map generateMap() {
-		Map gameMap = new Map(10);
+        MapBuilder mapBuilder = new MapBuilderImplem();
+
+        Map gameMap = mapBuilder.setArrayLengthMap(10).setIdCounter().setMapEntities().build();
+		//Map gameMap = new Map(10);
 		Tile t = gameMap.getTile(4, 4);
 		t.addEntity(new Player(gameMap.genID()));
 		
