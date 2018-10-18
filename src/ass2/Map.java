@@ -198,6 +198,16 @@ public class Map implements Serializable {
 			System.out.println("");
 		}
 	}
+	public ArrayList<Entity> getEntities(){
+		ArrayList<Entity> entities = new ArrayList<>();
+		for(int i = 0; i < arrayLength; i++){
+			for(int j = 0; j < arrayLength; j++){
+				Tile tile = getTile(i,j);
+				entities.addAll(tile.getEntities());
+			}
+		}
+		return entities;
+	}
 	public int genID() {
 		idCounter++;
 		return idCounter;

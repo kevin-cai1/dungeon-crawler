@@ -20,12 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -45,6 +40,7 @@ public class DesignScene {
 	private int colIndex = -1;
 	private int rowIndex = -1;
 	private Observer mapObserver;
+	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -74,7 +70,7 @@ public class DesignScene {
 			if(!entities.isEmpty()) {
 				Dragboard dragboard = gameGrid.startDragAndDrop(TransferMode.ANY);
 				ClipboardContent clipboardContent = new ClipboardContent();
-				clipboardContent.putString(entities.get(entities.size()-1).toString());
+				clipboardContent.put(entityFormat,entities.get(entities.size()-1));
 				dragboard.setContent(clipboardContent);
 			}
 			else {
@@ -90,7 +86,7 @@ public class DesignScene {
 		});
 		gameGrid.setOnDragOver(event -> {
 			Dragboard dragboard = event.getDragboard();
-			if(dragboard.hasString()) {
+			if(dragboard.hasContent(entityFormat)) {
 				event.acceptTransferModes(TransferMode.MOVE);
 			}
 			event.consume();
@@ -102,7 +98,7 @@ public class DesignScene {
 				Map map = designEngine.getMap();
 				int col = GridPane.getColumnIndex(node);
 				int row = GridPane.getRowIndex(node);
-				if(designEngine.placeEntity(entityTextToEntity(dragboard.getString()),col,row)){
+				if(designEngine.placeEntity((Entity) dragboard.getContent(entityFormat),col,row)){
 					mapObserver.update(gameGrid, tileSize);
 				}
 				else{
@@ -140,49 +136,7 @@ public class DesignScene {
 		toolBar.getChildren().addAll(checkBox1, checkBox2, checkBox3);
 		return toolBar;
 	}
-	private ImageView entityTextToImage(String name){
-		ImageView imageView = new ImageView();
-		if (name.equals("Arrow")) {
-			imageView.setImage(new Image("application/Sprites/arrow.png"));
-		} else if (name.equals("Bomb")) {
-			imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
-		} else if (name.equals("Boulder")) {
-			imageView.setImage(new Image("application/Sprites/boulder.png"));
-		} else if (name.equals("Coward")) {
-			imageView.setImage(new Image("application/Sprites/coward.png"));
-		} else if (name.equals("Door")) {
-			imageView.setImage(new Image("application/Sprites/closed_door.png"));
-		} else if (name.equals("Exit")) {
-			imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
-		} else if (name.equals("Floor Switch")) {
-			imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
-		} else if (name.equals("Hound")) {
-			imageView.setImage(new Image("application/Sprites/hound.png"));
-		} else if (name.equals("Hover Potion")) {
-			imageView.setImage(new Image("application/Sprites/hover_potion.png"));
-		} else if (name.equals("Hunter")) {
-			imageView.setImage(new Image("application/Sprites/hunter.png"));
-		} else if (name.equals("Invincibility Potion")) {
-			imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
-		} else if (name.equals("Key")) {
-			imageView.setImage(new Image("application/Sprites/key.png"));
-		} else if (name.equals("Pit")) {
-			imageView.setImage(new Image("application/Sprites/shaft.png"));
-		} else if (name.equals("Player")) {
-			imageView.setImage(new Image("application/Sprites/player.png"));
-		} else if (name.equals("Strategist")) {
-			imageView.setImage(new Image("application/Sprites/strategist.png"));
-		} else if (name.equals("Sword")) {
-			imageView.setImage(new Image("application/Sprites/sword.png"));
-		} else if (name.equals("Treasure")) {
-			imageView.setImage(new Image("application/Sprites/gold_pile.png"));
-		} else if (name.equals("Wall")) {
-			imageView.setImage(new Image("application/Sprites/wall.png"));
-		}
-		imageView.setFitWidth(tileSize);
-		imageView.setFitHeight(tileSize);
-		return imageView;
-	}
+
 	private Entity entityTextToEntity(String name){
 		Map map = designEngine.getMap();
 		Entity entity = null;
@@ -292,10 +246,10 @@ public class DesignScene {
 				if(!cell.isEmpty()) {
 					Dragboard dragboard = cell.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent clipboardContent = new ClipboardContent();
-					clipboardContent.putString(cell.getItem());
+					Entity entity = entityTextToEntity(cell.getItem());
+					clipboardContent.put(entityFormat,entity);
 					dragboard.setContent(clipboardContent);
 					dragSource.set(cell);
-					System.out.println(cell.getItem());
 				}
 			});
 			return cell;

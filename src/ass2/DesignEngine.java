@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DesignEngine {
-	private ArrayList<Entity> entityList;
 	private Map map;
 	private GameState gameState;
 	private boolean enemyWinCondition;
@@ -12,7 +11,6 @@ public class DesignEngine {
 	private boolean treasureWinCondition;
 	
 	public DesignEngine(int arrayLength) {
-		this.entityList = new ArrayList<>();
 		this.map = new Map(arrayLength);
 		this.enemyWinCondition = false; //kill me now
 		this.boulderWinCondition = false;
@@ -27,7 +25,6 @@ public class DesignEngine {
 	public boolean placeEntity(Entity entity, int x, int y) {
 		if (validatePlacement(entity, x, y)) {
 			Tile tile = map.getTile(x, y);
-			entityList.add(entity);
 			tile.addEntity(entity);
 			return true;
 		}
@@ -36,7 +33,6 @@ public class DesignEngine {
 	public void removeTopEntity(int x, int y) {
 		Tile tile = map.getTile(x, y);
 		ArrayList<Entity> entities = tile.getEntities();
-		entityList.remove(entities.size()-1);
 		entities.remove(entities.size()-1);
 
 	}
