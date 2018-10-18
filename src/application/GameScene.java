@@ -79,6 +79,7 @@ public class GameScene {
 								playerMoved = game.swing(Direction.NORTH);
 							} else {
 								//playerMoved = game.movePlayerNorth();
+
 								playerMoved = moveNorth.movePlayer(game);
 							}
 							break;

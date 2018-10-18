@@ -202,4 +202,12 @@ public class Map implements Serializable {
 		idCounter++;
 		return idCounter;
 	}
+	
+	public void setArrayLength(int arrayLength) {
+		this.arrayLength = arrayLength;
+	}
+	
+	public void setMap(Tile[][] map) {
+		this.map = map;
+	}
 }

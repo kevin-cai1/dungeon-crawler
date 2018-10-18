@@ -1,6 +1,6 @@
 package ass2;
 
-public class FloorSwitch extends Entity{
+public class FloorSwitch extends Entity {
 	private static final long serialVersionUID = 6928628401147115408L;
 	private boolean triggered;
 	
