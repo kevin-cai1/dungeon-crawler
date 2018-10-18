@@ -9,6 +9,8 @@ import javax.xml.transform.Source;
 import ass2.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -127,16 +129,72 @@ public class DesignScene {
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
 		toolBar.getChildren().add(heading);
+		CheckBox checkBox0 = new CheckBox("Exit");
+		checkBox0.setTextFill(Color.GREY);
 		CheckBox checkBox1 = new CheckBox("Boulder");
 		checkBox1.setTextFill(Color.GREY);
 		CheckBox checkBox2 = new CheckBox("Enemy");
 		checkBox2.setTextFill(Color.GREY);
 		CheckBox checkBox3 = new CheckBox("Treasure");
 		checkBox3.setTextFill(Color.GREY);
-		toolBar.getChildren().addAll(checkBox1, checkBox2, checkBox3);
+		toolBar.getChildren().addAll(checkBox0,checkBox1, checkBox2, checkBox3);
+		checkBox0.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue) {
+					checkBox1.setStyle("-fx-opacity: 0");
+					checkBox2.setStyle("-fx-opacity: 0");
+					checkBox3.setStyle("-fx-opacity: 0");
+					checkBox1.setSelected(false);
+					checkBox2.setSelected(false);
+					checkBox3.setSelected(false);
+				}
+				else {
+					checkBox1.setStyle("-fx-opacity: 1");
+					checkBox2.setStyle("-fx-opacity: 1");
+					checkBox3.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue || checkBox2.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue || checkBox1.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox3.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if(newValue || checkBox2.selectedProperty().get() == true || checkBox1.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
 		return toolBar;
 	}
-
 	private Entity entityTextToEntity(String name){
 		Map map = designEngine.getMap();
 		Entity entity = null;
