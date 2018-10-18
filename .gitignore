@@ -31,3 +31,111 @@ src/.DS_Store
 src/application/.DS_Store
 build.fxbuild
 bin/testmap.txt
+out/production/XCLLv6/application/Design.fxml
+out/production/XCLLv6/application/Game.fxml
+out/production/XCLLv6/application/menu.css
+out/production/XCLLv6/application/Menu.fxml
+out/production/XCLLv6/application/pause.css
+out/production/XCLLv6/application/Pause.fxml
+out/production/XCLLv6/application/Sprites/arrow.png
+out/production/XCLLv6/application/Sprites/background.jpg
+out/production/XCLLv6/application/Sprites/blank_key.png
+out/production/XCLLv6/application/Sprites/blue_button03.png
+out/production/XCLLv6/application/Sprites/bomb_lit_1.png
+out/production/XCLLv6/application/Sprites/bomb_lit_2.png
+out/production/XCLLv6/application/Sprites/bomb_lit_3.png
+out/production/XCLLv6/application/Sprites/bomb_lit_4.png
+out/production/XCLLv6/application/Sprites/bomb_unlit.png
+out/production/XCLLv6/application/Sprites/boulder.png
+out/production/XCLLv6/application/Sprites/button_template.psd
+out/production/XCLLv6/application/Sprites/closed_door.png
+out/production/XCLLv6/application/Sprites/closed_door1.png
+out/production/XCLLv6/application/Sprites/closed_door2.png
+out/production/XCLLv6/application/Sprites/coward.png
+out/production/XCLLv6/application/Sprites/crystal_floor0.png
+out/production/XCLLv6/application/Sprites/design_button.png
+out/production/XCLLv6/application/Sprites/design_selected.png
+out/production/XCLLv6/application/Sprites/dngn_altar_xom2.png
+out/production/XCLLv6/application/Sprites/dngn_exit_abyss.png
+out/production/XCLLv6/application/Sprites/dngn_stone_arch.png
+out/production/XCLLv6/application/Sprites/Explosion.png
+out/production/XCLLv6/application/Sprites/floor.png
+out/production/XCLLv6/application/Sprites/gold_pile.png
+out/production/XCLLv6/application/Sprites/hound.png
+out/production/XCLLv6/application/Sprites/hover_potion.png
+out/production/XCLLv6/application/Sprites/hunter.png
+out/production/XCLLv6/application/Sprites/invincibility_potion.png
+out/production/XCLLv6/application/Sprites/key.png
+out/production/XCLLv6/application/Sprites/key1.png
+out/production/XCLLv6/application/Sprites/key2.png
+out/production/XCLLv6/application/Sprites/longbow.png
+out/production/XCLLv6/application/Sprites/new ps sprites/background.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/brick_brown-vines3.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/cobble_blood1.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/deep_elf_conjurer.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/dngn_exit_abyss.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/gold_pile.psd
+out/production/XCLLv6/application/Sprites/new ps sprites/hound.psd
+out/production/XCLLv6/application/Sprites/newboulder.png
+out/production/XCLLv6/application/Sprites/old sprites/arrow.png
+out/production/XCLLv6/application/Sprites/old sprites/background.jpg
+out/production/XCLLv6/application/Sprites/old sprites/background.psd
+out/production/XCLLv6/application/Sprites/old sprites/blue_button03.png
+out/production/XCLLv6/application/Sprites/old sprites/bomb_lit_1.png
+out/production/XCLLv6/application/Sprites/old sprites/bomb_lit_2.png
+out/production/XCLLv6/application/Sprites/old sprites/bomb_lit_3.png
+out/production/XCLLv6/application/Sprites/old sprites/bomb_lit_4.png
+out/production/XCLLv6/application/Sprites/old sprites/bomb_unlit.png
+out/production/XCLLv6/application/Sprites/old sprites/boulder.png
+out/production/XCLLv6/application/Sprites/old sprites/brick_brown-vines3.png
+out/production/XCLLv6/application/Sprites/old sprites/brilliant_blue.png
+out/production/XCLLv6/application/Sprites/old sprites/closed_door.png
+out/production/XCLLv6/application/Sprites/old sprites/cobble_blood1.png
+out/production/XCLLv6/application/Sprites/old sprites/crystal_floor0.png
+out/production/XCLLv6/application/Sprites/old sprites/deep_elf_conjurer.png
+out/production/XCLLv6/application/Sprites/old sprites/design_button.png
+out/production/XCLLv6/application/Sprites/old sprites/design_selected.png
+out/production/XCLLv6/application/Sprites/old sprites/dngn_altar_xom2.png
+out/production/XCLLv6/application/Sprites/old sprites/dngn_exit_abyss.png
+out/production/XCLLv6/application/Sprites/old sprites/dngn_stone_arch.png
+out/production/XCLLv6/application/Sprites/old sprites/emerald.png
+out/production/XCLLv6/application/Sprites/old sprites/Explosion.png
+out/production/XCLLv6/application/Sprites/old sprites/gold_pile.png
+out/production/XCLLv6/application/Sprites/old sprites/grate.png
+out/production/XCLLv6/application/Sprites/old sprites/hound.png
+out/production/XCLLv6/application/Sprites/old sprites/human_m.png
+out/production/XCLLv6/application/Sprites/old sprites/human_slave.png
+out/production/XCLLv6/application/Sprites/old sprites/key.png
+out/production/XCLLv6/application/Sprites/old sprites/longbow.png
+out/production/XCLLv6/application/Sprites/old sprites/open_door.png
+out/production/XCLLv6/application/Sprites/old sprites/options_button.png
+out/production/XCLLv6/application/Sprites/old sprites/options_selected.png
+out/production/XCLLv6/application/Sprites/old sprites/orc_warlord.png
+out/production/XCLLv6/application/Sprites/old sprites/orcish_great_sword.png
+out/production/XCLLv6/application/Sprites/old sprites/play_button.png
+out/production/XCLLv6/application/Sprites/old sprites/play_selected.png
+out/production/XCLLv6/application/Sprites/old sprites/pressure_plate.png
+out/production/XCLLv6/application/Sprites/old sprites/quit_button.png
+out/production/XCLLv6/application/Sprites/old sprites/quit_selected.png
+out/production/XCLLv6/application/Sprites/old sprites/shaft.png
+out/production/XCLLv6/application/Sprites/old sprites/staff02.png
+out/production/XCLLv6/application/Sprites/open_door.png
+out/production/XCLLv6/application/Sprites/options_button.png
+out/production/XCLLv6/application/Sprites/options_selected.png
+out/production/XCLLv6/application/Sprites/play_button.png
+out/production/XCLLv6/application/Sprites/play_selected.png
+out/production/XCLLv6/application/Sprites/player.png
+out/production/XCLLv6/application/Sprites/pressure_plate.png
+out/production/XCLLv6/application/Sprites/quit_button.png
+out/production/XCLLv6/application/Sprites/quit_selected.png
+out/production/XCLLv6/application/Sprites/return_menu.png
+out/production/XCLLv6/application/Sprites/return_menu_selected.png
+out/production/XCLLv6/application/Sprites/selected_button_template.psd
+out/production/XCLLv6/application/Sprites/shaft.png
+out/production/XCLLv6/application/Sprites/staff02.png
+out/production/XCLLv6/application/Sprites/strategist.png
+out/production/XCLLv6/application/Sprites/sword.png
+out/production/XCLLv6/application/Sprites/temp_resume_button.png
+out/production/XCLLv6/application/Sprites/temp_resume_button_selected.png
+out/production/XCLLv6/application/Sprites/wall.png
+out/production/XCLLv6/testmap.txt
