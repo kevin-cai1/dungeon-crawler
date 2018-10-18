@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="413.0" fitWidth="611.0" layoutX="-5.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/background.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="quitButton" fitHeight="150.0" fitWidth="200.0" layoutX="200.0" layoutY="282.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/quit_button.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="returnToMenuButton" fitHeight="150.0" fitWidth="200.0" layoutX="201.0" layoutY="211.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/return_menu.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="209.0" layoutY="103.0" prefHeight="83.0" prefWidth="253.0" text="DEFEAT" textFill="#ed1818fc">
+         <font>
+            <Font size="48.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>
