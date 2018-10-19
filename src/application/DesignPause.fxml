@@ -12,9 +12,9 @@
             <Image url="@Sprites/pause.png" />
          </image>
       </ImageView>
-      <ImageView id="resume" fx:id="resumeButton" fitHeight="37.0" fitWidth="170.0" layoutX="363.0" layoutY="117.0" onMouseClicked="#returnToDesign" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="resumeDesign" fx:id="resumeButton" fitHeight="37.0" fitWidth="170.0" layoutX="363.0" layoutY="117.0" onMouseClicked="#returnToDesign" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Sprites/play_button.png" />
+            <Image url="@Sprites/resume_design_button.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
