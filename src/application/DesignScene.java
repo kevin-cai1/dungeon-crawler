@@ -285,6 +285,13 @@ public class DesignScene {
 		save.setOnMouseExited(Event -> {
 			save.setImage(new Image(imgPath + "save_button.png"));
 		});
+		ImageView clear = new ImageView(new Image(imgPath + "clear_button.png"));
+		clear.setOnMouseEntered(Event -> {
+			clear.setImage(new Image(imgPath + "clear_selected.png"));
+		});
+		clear.setOnMouseExited(Event -> {
+			clear.setImage(new Image(imgPath + "clear_button.png"));
+		});
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -344,7 +351,11 @@ public class DesignScene {
 
 			}
 		});
-		vBox.getChildren().addAll(heading, listView, save);
+		clear.setOnMouseClicked(Event -> {
+			designEngine.getMap().setMapTiles(); //clears the map?
+			mapObserver.update(gameGrid, tileSize);
+		});
+		vBox.getChildren().addAll(heading, listView, save, clear);
 		
 		return vBox;
 	}
