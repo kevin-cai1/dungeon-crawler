@@ -34,3 +34,9 @@
 #quit:hover {
     -fx-image: url('./Sprites/quit_selected.png');
 }
+#load {
+    -fx-image: url('./Sprites/load_button.png');
+}
+#load:hover {
+    -fx-image: url('./Sprites/load_selected.png');
+}
