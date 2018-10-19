@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class DesignEngine {
-	private ArrayList<Entity> entityList;
 	private Map map;
 	private GameState gameState;
 	private boolean enemyWinCondition;
@@ -12,7 +11,6 @@ public class DesignEngine {
 	private boolean treasureWinCondition;
 	
 	public DesignEngine(int arrayLength) {
-		this.entityList = new ArrayList<>();
 		this.map = new Map(arrayLength);
 		this.enemyWinCondition = false; //kill me now
 		this.boulderWinCondition = false;
@@ -24,14 +22,20 @@ public class DesignEngine {
 	 * @param x
 	 * @param y
 	 */
-	public void placeEntity(Entity entity, int x, int y) {
-		if (validatePlacement(entity, x, y) == true) {
+	public boolean placeEntity(Entity entity, int x, int y) {
+		if (validatePlacement(entity, x, y)) {
 			Tile tile = map.getTile(x, y);
-			entityList.add(entity);
 			tile.addEntity(entity);
+			return true;
 		}
+		return false;
 	}
+	public void removeTopEntity(int x, int y) {
+		Tile tile = map.getTile(x, y);
+		ArrayList<Entity> entities = tile.getEntities();
+		entities.remove(entities.size()-1);
 
+	}
 	/**
 	 * validates whether a position is valid on the map. i.e. entities cannot be placed on top of obstacles
 	 * @param entity
@@ -103,7 +107,7 @@ public class DesignEngine {
  * @param map
  * @param fileName
  */
-	public void save(Map map, String fileName) {
+	public void save(String fileName) {
 		Map savedMap = map;
 		try {
 			FileOutputStream f = new FileOutputStream(new File(fileName+".txt"));

@@ -15,6 +15,6 @@ public class Pit extends Entity{
 
 	@Override
 	public String toString() {
-		return null;
+		return "Pit";
 	}
 }

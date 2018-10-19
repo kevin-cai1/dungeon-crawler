@@ -470,7 +470,7 @@ public class GameScene {
 	private void pauseGame() {
 		try {
 			DesignEngine designEngine = new DesignEngine(10);
-			designEngine.save(game.getGameMap(), "temp");
+			designEngine.save("temp");
 			PauseScene pauseScene = new PauseScene(s);
 			pauseScene.display();
 		} catch (Exception e) {

@@ -186,12 +186,7 @@ public class GameEngine {
 					}
 				}
 			}
-			
-			if (invincibility == true) {
-				if (player.invincibleTick() == false) { //invincibility tick, false when doesn't tick (no more invincibility)
-					invincibility = false;
-				}
-			}
+
 			
 			if (gameStateInterface.checkState(this) == true) {
 				gameStateInterface = new Win();

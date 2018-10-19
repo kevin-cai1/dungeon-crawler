@@ -11,7 +11,7 @@ public class Boulder extends Obstacle{
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Boulder";
 	}
 	
 }

@@ -1,27 +1,30 @@
 package application;
 
-import java.awt.event.MouseAdapter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import javax.xml.transform.Source;
 
+import org.junit.experimental.theories.Theories;
+
 import ass2.*;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -37,7 +40,12 @@ public class DesignScene {
 	private ListView<String> listView;
 	private GridPane gameGrid;
 	private DesignEngine designEngine;
-
+	private final ObjectProperty<ListCell<String>> dragSource = new SimpleObjectProperty<>();
+	private int colIndex = -1;
+	private int rowIndex = -1;
+	private Observer mapObserver;
+	private WinObserver winObserver;
+	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -45,11 +53,84 @@ public class DesignScene {
 		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
+		gameGrid.setStyle("-fx-grid-lines-visible: true");
+		mapObserver = new MapObserver(designEngine.getMap());
+		winObserver = new GameWinObserver(designEngine.getMap());
 	}
+	/**
+	 * drag handles the drag and drop in the scene
+	 */
+	private void initEventHandlers() {
+		s.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 
+			@Override
+			public void handle(KeyEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getCode() == KeyCode.ESCAPE) {
+					try {
+						designEngine.save("temp_design");
+						PauseScene pauseScene = new PauseScene(s);
+						pauseScene.display();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		});
+		gameGrid.setOnDragDetected(Event -> {
+			Node node = Event.getPickResult().getIntersectedNode();
+			colIndex = GridPane.getColumnIndex(node);
+			rowIndex = GridPane.getRowIndex(node);
+			ArrayList<Entity> entities = designEngine.getMap().getTile(colIndex, rowIndex).getEntities();
+			if(!entities.isEmpty()) {
+				Dragboard dragboard = gameGrid.startDragAndDrop(TransferMode.ANY);
+				ClipboardContent clipboardContent = new ClipboardContent();
+				clipboardContent.put(entityFormat,entities.get(entities.size()-1));
+				dragboard.setContent(clipboardContent);
+			}
+			else {
+				colIndex = -1;
+				rowIndex = -1; //reset it back to not on the grid
+			}
+		});
+		gameGrid.setOnDragDone(Event -> {
+			if(colIndex != -1) {
+				designEngine.removeTopEntity(colIndex, rowIndex);
+				mapObserver.update(gameGrid, tileSize);
+			}
+		});
+		gameGrid.setOnDragOver(event -> {
+			Dragboard dragboard = event.getDragboard();
+			if(dragboard.hasContent(entityFormat)) {
+				event.acceptTransferModes(TransferMode.MOVE);
+			}
+			event.consume();
+		});
+		gameGrid.setOnDragDropped(new EventHandler<DragEvent>() {
+			public void handle(DragEvent event) {
+				Dragboard dragboard = event.getDragboard();
+				Node node = event.getPickResult().getIntersectedNode();
+				Map map = designEngine.getMap();
+				int col = GridPane.getColumnIndex(node);
+				int row = GridPane.getRowIndex(node);
+				Entity entity = (Entity) dragboard.getContent(entityFormat);
+				if(designEngine.placeEntity(entity,col,row)){
+					
+				}
+				else{
+					colIndex=-1;
+					rowIndex=-1;
+				}
+				mapObserver.update(gameGrid, tileSize);
+				event.consume();
+			}
+		});
+	}
 	public void display() {
 		s.setTitle(title);
-		s.setScene(new Scene(generateGrid()));
+		s.setScene(new Scene(generateSpace()));
 		s.setResizable(false);
 		s.sizeToScene();
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -57,52 +138,11 @@ public class DesignScene {
 		s.setX((bounds.getWidth() - s.getWidth()) / 2);
 		s.setY((bounds.getHeight() - s.getHeight()) / 2);
 		s.show();
-		listView.setOnDragDetected(new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				System.out.println(listView.getSelectionModel().getSelectedItem());
-				Dragboard dragboard = listView.startDragAndDrop(TransferMode.ANY);
-				ClipboardContent content = new ClipboardContent();
-				content.putString(listView.getAccessibleText());
-				dragboard.setContent(content);
-				event.consume();
-			}
-		});
-		gameGrid.setOnDragEntered(new EventHandler<DragEvent>() {
-			public void handle(DragEvent event) {
-				if(event.getGestureSource() != gameGrid && event.getDragboard().hasString()) {
-				}
-			}
-		});
-		
+		initEventHandlers();
 	}
-
-	public BorderPane generateGrid() {
-		Tile[][] gameMap = designEngine.getMap().getMap();
+	public BorderPane generateSpace() {
 		BorderPane gameDisplay = new BorderPane();
-		// for visualizing the different squares:
-		//gridPane.setHgap(2);
-		//gridPane.setVgap(2);
-		//gridPane.setStyle("-fx-background-color: grey;");
-
-		// loop that fills in the image
-		for (int y = 0; y < gameMap.length; y++) {
-			for (int x = 0; x < gameMap[y].length; x++) {
-				//ImageView imageView = new ImageView(grid[y][x]);
-				// add a floor to every single tile ^^
-				ImageView floorImage = new ImageView(new Image("application/Sprites/cobble_blood1.png"));
-				floorImage.setFitWidth(tileSize);
-				floorImage.setFitHeight(tileSize);
-				gameGrid.add(floorImage, x, y);
-				// ^^^
-				for (Entity e : gameMap[x][y].getEntities()) {
-					ImageView entityImage = new ImageView(setImage(e));
-					entityImage.setFitWidth(tileSize);
-					entityImage.setFitHeight(tileSize);
-					gameGrid.add(entityImage, x, y);
-				}
-			}
-		}
-		// ==============================
+		mapObserver.update(gameGrid, tileSize);
 		gameDisplay.setCenter(gameGrid);
 		gameDisplay.setRight(setDesignBar());
 		gameDisplay.setBottom(setWinConditions());
@@ -116,18 +156,121 @@ public class DesignScene {
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
 		toolBar.getChildren().add(heading);
+		CheckBox checkBox0 = new CheckBox("Exit");
+		checkBox0.setTextFill(Color.GREY);
 		CheckBox checkBox1 = new CheckBox("Boulder");
 		checkBox1.setTextFill(Color.GREY);
 		CheckBox checkBox2 = new CheckBox("Enemy");
 		checkBox2.setTextFill(Color.GREY);
 		CheckBox checkBox3 = new CheckBox("Treasure");
 		checkBox3.setTextFill(Color.GREY);
-		toolBar.getChildren().addAll(checkBox1, checkBox2, checkBox3);
+		toolBar.getChildren().addAll(checkBox0,checkBox1, checkBox2, checkBox3);
+		checkBox0.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Exit);
+				if(newValue) {
+					checkBox1.setStyle("-fx-opacity: 0");
+					checkBox2.setStyle("-fx-opacity: 0");
+					checkBox3.setStyle("-fx-opacity: 0");
+					checkBox1.setSelected(false);
+					checkBox2.setSelected(false);
+					checkBox3.setSelected(false);
+				}
+				else {
+					checkBox1.setStyle("-fx-opacity: 1");
+					checkBox2.setStyle("-fx-opacity: 1");
+					checkBox3.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Boulder);
+				if(newValue || checkBox2.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Enemy);
+				if(newValue || checkBox1.selectedProperty().get() == true || checkBox3.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
+		checkBox3.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				winObserver.update(WinCondition.Treasure);
+				if(newValue || checkBox2.selectedProperty().get() == true || checkBox1.selectedProperty().get() == true) {
+					checkBox0.setStyle("-fx-opacity: 0");
+					checkBox0.setSelected(false);
+				}
+				else {
+					checkBox0.setStyle("-fx-opacity: 1");
+				}
+			}
+		});
 		return toolBar;
 	}
-
+	private Entity entityTextToEntity(String name){
+		Map map = designEngine.getMap();
+		Entity entity = null;
+		if (name.equals("Arrow")) {
+			entity = new Arrow(map.genID(),map);
+		} else if (name.equals("Bomb")) {
+			entity = new Bomb(map,map.genID());
+		} else if (name.equals("Boulder")) {
+			entity = new Boulder(map.genID());
+		} else if (name.equals("Coward")) {
+			entity = new Coward(map.genID());
+		} else if (name.equals("Door")) {
+			entity = new Door(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Exit")) {
+			entity = new Exit(map.genID());
+		} else if (name.equals("Floor Switch")) {
+			entity = new FloorSwitch(map.genID());
+		} else if (name.equals("Hound")) {
+			entity = new Hound(map.genID());
+		} else if (name.equals("Hover Potion")) {
+			entity = new HoverPotion(map.genID());
+		} else if (name.equals("Hunter")) {
+			entity = new Hunter(map.genID());
+		} else if (name.equals("Invincibility Potion")) {
+			entity = new InvincibilityPotion(map.genID());
+		} else if (name.equals("Key")) {
+			entity = new Key(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Pit")) {
+			entity = new Pit(map.genID());
+		} else if (name.equals("Player")) {
+			entity = new Player(map.genID());
+		} else if (name.equals("Strategist")) {
+			entity = new Strategist(map.genID());
+		} else if (name.equals("Sword")) {
+			entity = new Sword(map.genID());
+		} else if (name.equals("Treasure")) {
+			entity = new Treasure(map.genID());
+		} else if (name.equals("Wall")) {
+			entity = new Wall(map.genID());
+		}
+		return entity;
+	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
+		ImageView save = new ImageView(new Image("application/Sprites/temp_save_button.png"));
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -135,123 +278,89 @@ public class DesignScene {
 		ObservableList<String> items = FXCollections.observableArrayList(
 				"Arrow", "Bomb", "Boulder", "Coward", "Door", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
 		listView.setItems(items);
-		listView.setCellFactory(param -> new ListCell<String>() {
-			private ImageView imageView = new ImageView();
+		listView.setCellFactory(param -> {
+			ListCell<String> cell = new ListCell<String>() {
+				private ImageView imageView = new ImageView();
+	
+				@Override
+				public void updateItem(String name, boolean empty) {
+					super.updateItem(name, empty);
+					if (empty) {
+						setText(null);
+						setGraphic(null);
+					} else {
+						if (name.equals("Arrow")) {
+							imageView.setImage(new Image("application/Sprites/arrow.png"));
+						} else if (name.equals("Bomb")) {
+							imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
+						} else if (name.equals("Boulder")) {
+							imageView.setImage(new Image("application/Sprites/boulder.png"));
+						} else if (name.equals("Coward")) {
+							imageView.setImage(new Image("application/Sprites/coward.png"));
+						} else if (name.equals("Door")) {
+							imageView.setImage(new Image("application/Sprites/closed_door.png"));
+						} else if (name.equals("Exit")) {
+							imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
+						} else if (name.equals("Floor Switch")) {
+							imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
+						} else if (name.equals("Hound")) {
+							imageView.setImage(new Image("application/Sprites/hound.png"));
+						} else if (name.equals("Hover Potion")) {
+							imageView.setImage(new Image("application/Sprites/hover_potion.png"));
+						} else if (name.equals("Hunter")) {
+							imageView.setImage(new Image("application/Sprites/hunter.png"));
+						} else if (name.equals("Invincibility Potion")) {
+							imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
+						} else if (name.equals("Key")) {
+							imageView.setImage(new Image("application/Sprites/key.png"));
+						} else if (name.equals("Pit")) {
+							imageView.setImage(new Image("application/Sprites/shaft.png"));
+						} else if (name.equals("Player")) {
+							imageView.setImage(new Image("application/Sprites/player.png"));
+						} else if (name.equals("Strategist")) {
+							imageView.setImage(new Image("application/Sprites/strategist.png"));
+						} else if (name.equals("Sword")) {
+							imageView.setImage(new Image("application/Sprites/sword.png"));
+						} else if (name.equals("Treasure")) {
+							imageView.setImage(new Image("application/Sprites/gold_pile.png"));
+						} else if (name.equals("Wall")) {
+							imageView.setImage(new Image("application/Sprites/wall.png"));
+						}
+	
+						setText(name);
+						setGraphic(imageView);
+					}
+				}
+			};
+			cell.setOnDragDetected(Event -> {
+				if(!cell.isEmpty()) {
+					Dragboard dragboard = cell.startDragAndDrop(TransferMode.ANY);
+					ClipboardContent clipboardContent = new ClipboardContent();
+					Entity entity = entityTextToEntity(cell.getItem());
+					clipboardContent.put(entityFormat,entity);
+					dragboard.setContent(clipboardContent);
+					dragSource.set(cell);
+				}
+			});
+			return cell;
+		});
+		/**
+		 * temporary saving
+		 */
+		save.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
-			public void updateItem(String name, boolean empty) {
-				super.updateItem(name, empty);
-				if (empty) {
-					setText(null);
-					setGraphic(null);
-				} else {
-					if (name.equals("Arrow")) {
-						imageView.setImage(new Image("application/Sprites/arrow.png"));
-					} else if (name.equals("Bomb")) {
-						imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
-					} else if (name.equals("Boulder")) {
-						imageView.setImage(new Image("application/Sprites/boulder.png"));
-					} else if (name.equals("Coward")) {
-						imageView.setImage(new Image("application/Sprites/human_slave.png"));
-					} else if (name.equals("Door")) {
-						imageView.setImage(new Image("application/Sprites/closed_door.png"));
-					} else if (name.equals("Exit")) {
-						imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
-					} else if (name.equals("Floor Switch")) {
-						imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
-					} else if (name.equals("Hound")) {
-						imageView.setImage(new Image("application/Sprites/hound.png"));
-					} else if (name.equals("Hover Potion")) {
-						imageView.setImage(new Image("application/Sprites/brilliant_blue.png"));
-					} else if (name.equals("Hunter")) {
-						imageView.setImage(new Image("application/Sprites/orc_warlord.png"));
-					} else if (name.equals("Invincibility Potion")) {
-						imageView.setImage(new Image("application/Sprites/emerald.png"));
-					} else if (name.equals("Key")) {
-						imageView.setImage(new Image("application/Sprites/key.png"));
-					} else if (name.equals("Pit")) {
-						imageView.setImage(new Image("application/Sprites/shaft.png"));
-					} else if (name.equals("Player")) {
-						imageView.setImage(new Image("application/Sprites/human_m.png"));
-					} else if (name.equals("Strategist")) {
-						imageView.setImage(new Image("application/Sprites/deep_elf_conjurer.png"));
-					} else if (name.equals("Sword")) {
-						imageView.setImage(new Image("application/Sprites/orcish_great_sword.png"));
-					} else if (name.equals("Treasure")) {
-						imageView.setImage(new Image("application/Sprites/gold_pile.png"));
-					} else if (name.equals("Wall")) {
-						imageView.setImage(new Image("application/Sprites/brick_brown-vines3.png"));
-					}
-
-					setText(name);
-					setGraphic(imageView);
-				}
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				designEngine.save("save1");
 			}
 		});
-		vBox.getChildren().addAll(heading, listView);
+		vBox.getChildren().addAll(heading, listView, save);
+		
 		return vBox;
 	}
-	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/cobble_blood1.png");
-		if (e instanceof Player) {
-			return new Image("application/Sprites/human_m.png");
-		} else if (e instanceof Bomb) {
-			/*switch (((Bomb) e).getTimer()) {
-			case 4:		// unlit
 
-				break;
-			case 3:
-
-				break;
-			case 2:
-
-				break;
-			case 1:
-
-				break;
-			*/
-
-			return new Image("application/Sprites/bomb_unlit.png");
-		} else if (e instanceof Boulder) {
-			return new Image("application/Sprites/boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image("application/Sprites/pressure_plate.png");
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/emerald.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/brilliant_blue.png");
-		} else if (e instanceof Key) {
-			return new Image("application/Sprites/key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image("application/Sprites/gold_pile.png");
-		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/orcish_great_sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image("application/Sprites/orc_warlord.png");
-			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/deep_elf_conjurer.png");
-			} else if (e instanceof Hound) {
-				return new Image("application/Sprites/hound.png");
-			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/human_slave.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/shaft.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image("application/Sprites/dngn_exit_abyss.png");
-		} else if (e instanceof Door) { // condition when player walks into door
-			Door door = (Door)e;
-			if (door.getStatus() == false) { // closed
-				return new Image("application/Sprites/closed_door.png");
-			} else {
-				return new Image("application/Sprites/open_door.png");
-			}
-		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/brick_brown-vines3.png");
-		}
-		return image;
+	public int getTileSize() {
+		return tileSize;
 	}
 }

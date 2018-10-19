@@ -19,4 +19,9 @@ public class Hunter extends HunterGroup{
 		Hunter hunter = this;
 		tile.addEntity(hunter); //puts it into where it should be
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Hunter";
+	}
 }

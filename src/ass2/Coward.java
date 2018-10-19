@@ -15,7 +15,7 @@ public class Coward extends Enemy{
     }
     @Override
     public String toString() {
-        return "coward";
+        return "Coward";
     }
     
     /**

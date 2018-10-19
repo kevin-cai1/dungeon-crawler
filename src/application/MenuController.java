@@ -33,6 +33,7 @@ public class MenuController {
 	@FXML
 	public void playGame() {
 		// load scene for game
+		DesignEngine designEngine = new DesignEngine(10);//temp code
 		GameEngine gameEngine = new GameEngine(generateMap());
 		GameScene game = new GameScene(s, gameEngine);
 		try {

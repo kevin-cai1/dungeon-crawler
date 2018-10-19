@@ -17,6 +17,6 @@ public class Key extends Entity{
 
 	@Override
 	public String toString() {
-		return null;
+		return "Key";
 	}
 }

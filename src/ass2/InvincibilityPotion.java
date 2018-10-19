@@ -13,6 +13,6 @@ public class InvincibilityPotion extends Potion {
 	}
 	@Override
 	public String toString() {
-		return null;
+		return "InvincibilityPotion";
 	}
 }

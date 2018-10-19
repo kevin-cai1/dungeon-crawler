@@ -33,6 +33,6 @@ public class FloorSwitch extends Entity {
 
 	@Override
 	public String toString() {
-		return null;
+		return "FloorSwitch";
 	}
 }
