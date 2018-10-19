@@ -31,6 +31,20 @@ public class MenuController {
 			
 	}
 	@FXML
+	public void loadGame() {
+		// load scene for game
+		LoadScene load = new LoadScene(s);
+		try {
+			load.display();
+			System.out.println("Is this being run constantly");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	/*
+	@FXML
 	public void playGame() {
 		// load scene for game
 		GameEngine gameEngine = new GameEngine(generateMap());
@@ -43,7 +57,7 @@ public class MenuController {
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	
 	@FXML
 	public void designMap() {
