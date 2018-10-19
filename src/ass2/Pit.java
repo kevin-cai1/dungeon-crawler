@@ -17,4 +17,7 @@ public class Pit extends Entity{
 	public String toString() {
 		return "Pit";
 	}
+	public String imgName() {
+		return "pit";
+	}
 }

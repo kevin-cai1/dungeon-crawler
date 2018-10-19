@@ -16,4 +16,7 @@ public class Treasure extends Entity{
 	public String toString() {
 		return "Treasure";
 	}
+	public String imgName() {
+		return "treasure";
+	}
 }

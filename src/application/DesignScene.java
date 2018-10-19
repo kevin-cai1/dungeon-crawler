@@ -46,6 +46,7 @@ public class DesignScene {
 	private Observer mapObserver;
 	private WinObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
+	private String imgPath = "application/Sprites/";
 	public DesignScene(Stage s) {
 		this.s = s;
 		this.title = "Design";
@@ -270,7 +271,7 @@ public class DesignScene {
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
-		ImageView save = new ImageView(new Image("application/Sprites/temp_save_button.png"));
+		ImageView save = new ImageView(new Image(imgPath + "temp_save_button.png"));
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -289,44 +290,9 @@ public class DesignScene {
 						setText(null);
 						setGraphic(null);
 					} else {
-						if (name.equals("Arrow")) {
-							imageView.setImage(new Image("application/Sprites/arrow.png"));
-						} else if (name.equals("Bomb")) {
-							imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
-						} else if (name.equals("Boulder")) {
-							imageView.setImage(new Image("application/Sprites/boulder.png"));
-						} else if (name.equals("Coward")) {
-							imageView.setImage(new Image("application/Sprites/coward.png"));
-						} else if (name.equals("Door")) {
-							imageView.setImage(new Image("application/Sprites/closed_door.png"));
-						} else if (name.equals("Exit")) {
-							imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
-						} else if (name.equals("Floor Switch")) {
-							imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
-						} else if (name.equals("Hound")) {
-							imageView.setImage(new Image("application/Sprites/hound.png"));
-						} else if (name.equals("Hover Potion")) {
-							imageView.setImage(new Image("application/Sprites/hover_potion.png"));
-						} else if (name.equals("Hunter")) {
-							imageView.setImage(new Image("application/Sprites/hunter.png"));
-						} else if (name.equals("Invincibility Potion")) {
-							imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
-						} else if (name.equals("Key")) {
-							imageView.setImage(new Image("application/Sprites/key.png"));
-						} else if (name.equals("Pit")) {
-							imageView.setImage(new Image("application/Sprites/shaft.png"));
-						} else if (name.equals("Player")) {
-							imageView.setImage(new Image("application/Sprites/player.png"));
-						} else if (name.equals("Strategist")) {
-							imageView.setImage(new Image("application/Sprites/strategist.png"));
-						} else if (name.equals("Sword")) {
-							imageView.setImage(new Image("application/Sprites/sword.png"));
-						} else if (name.equals("Treasure")) {
-							imageView.setImage(new Image("application/Sprites/gold_pile.png"));
-						} else if (name.equals("Wall")) {
-							imageView.setImage(new Image("application/Sprites/wall.png"));
-						}
-	
+						//changes name to lowercase, replaces spaces with underscore to match filename
+						String imgName = name.replaceAll(" ", "_").toLowerCase();
+						imageView.setImage(new Image(imgPath + imgName + ".png"));
 						setText(name);
 						setGraphic(imageView);
 					}

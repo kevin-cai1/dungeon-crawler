@@ -24,4 +24,7 @@ public class Hunter extends HunterGroup{
 		// TODO Auto-generated method stub
 		return "Hunter";
 	}
+	public String imgName() {
+		return "hunter";
+	}
 }

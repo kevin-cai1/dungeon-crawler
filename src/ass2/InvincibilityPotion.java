@@ -15,4 +15,7 @@ public class InvincibilityPotion extends Potion {
 	public String toString() {
 		return "InvincibilityPotion";
 	}
+	public String imgName() {
+		return "invincibility_potion";
+	}
 }

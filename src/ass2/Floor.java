@@ -17,4 +17,7 @@ public class Floor extends Entity {
 		// TODO Auto-generated method stub
 		return "Floor";
 	}
+	public String imgName() {
+		return "floor";
+	}
 }

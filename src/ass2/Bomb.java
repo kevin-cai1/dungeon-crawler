@@ -102,4 +102,7 @@ public class Bomb extends Entity{
 	public String toString() {
 		return "Bomb";
 	}
+	public String imgName() {
+		return "bomb";
+	}
 }

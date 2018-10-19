@@ -105,4 +105,7 @@ public class Strategist extends Enemy{
 		Strategist strategist = this;
 		tile.addEntity(strategist); //puts it into where it should be
 	}
+	public String imgName() {
+		return "strategist";
+	}
 }

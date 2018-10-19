@@ -57,5 +57,8 @@ public class Coward extends Enemy{
 		Coward coward = this;
 		tile.addEntity(coward); //puts it into where it should be
 	}
-
+	public String imgName() {
+		return "coward";
+	}
+	
 }

@@ -248,4 +248,7 @@ public class Player extends Entity{
     public String toString() {
     	return "Player";
     }
+	public String imgName() {
+		return "player";
+	}
 }

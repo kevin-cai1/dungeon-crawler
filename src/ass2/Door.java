@@ -33,4 +33,7 @@ public class Door extends Obstacle{
 	public String toString() {
 		return "Door";
 	}
+	public String imgName() {
+		return "door";
+	}
 }
