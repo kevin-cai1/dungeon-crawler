@@ -23,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -345,15 +346,21 @@ public class DesignScene {
 				if(result.isPresent()) {
 					MapSave mapSave = new MapSave();
 					// TODO Auto-generated method stub
-					System.out.println(result.get());
 					mapSave.save(result.get(),designEngine.getMap());
 				}
 
 			}
 		});
 		clear.setOnMouseClicked(Event -> {
-			designEngine.getMap().setMapTiles(); //clears the map?
-			mapObserver.update(gameGrid, tileSize);
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirm clear");
+			alert.setHeaderText("Clear the map");
+			alert.setContentText("Are you sure you want to continue?");
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				designEngine.getMap().setMapTiles(); //clears the map?
+				mapObserver.update(gameGrid, tileSize);
+			}
 		});
 		vBox.getChildren().addAll(heading, listView, save, clear);
 		
