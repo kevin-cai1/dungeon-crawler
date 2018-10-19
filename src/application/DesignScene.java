@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javax.xml.transform.Source;
 
+import org.junit.experimental.theories.Theories;
+
 import ass2.*;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -55,17 +57,28 @@ public class DesignScene {
 		mapObserver = new MapObserver(designEngine.getMap());
 		winObserver = new GameWinObserver(designEngine.getMap());
 	}
+	/**
+	 * drag handles the drag and drop in the scene
+	 */
+	private void initEventHandlers() {
+		s.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 
-	public void display() {
-		s.setTitle(title);
-		s.setScene(new Scene(generateGrid()));
-		s.setResizable(false);
-		s.sizeToScene();
-		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
-		s.setX((bounds.getWidth() - s.getWidth()) / 2);
-		s.setY((bounds.getHeight() - s.getHeight()) / 2);
-		s.show();
+			@Override
+			public void handle(KeyEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getCode() == KeyCode.ESCAPE) {
+					try {
+						designEngine.save("temp_design");
+						PauseScene pauseScene = new PauseScene(s);
+						pauseScene.display();
+					}
+					catch(Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		});
 		gameGrid.setOnDragDetected(Event -> {
 			Node node = Event.getPickResult().getIntersectedNode();
 			colIndex = GridPane.getColumnIndex(node);
@@ -109,19 +122,27 @@ public class DesignScene {
 				else{
 					colIndex=-1;
 					rowIndex=-1;
-					System.out.println("THATS INVALID");
 				}
 				mapObserver.update(gameGrid, tileSize);
 				event.consume();
 			}
 		});
-		
 	}
+	public void display() {
+		s.setTitle(title);
+		s.setScene(new Scene(generateSpace()));
+		s.setResizable(false);
+		s.sizeToScene();
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 
-	public BorderPane generateGrid() {
+		s.setX((bounds.getWidth() - s.getWidth()) / 2);
+		s.setY((bounds.getHeight() - s.getHeight()) / 2);
+		s.show();
+		initEventHandlers();
+	}
+	public BorderPane generateSpace() {
 		BorderPane gameDisplay = new BorderPane();
 		mapObserver.update(gameGrid, tileSize);
-		// ==============================
 		gameDisplay.setCenter(gameGrid);
 		gameDisplay.setRight(setDesignBar());
 		gameDisplay.setBottom(setWinConditions());
@@ -323,6 +344,9 @@ public class DesignScene {
 			});
 			return cell;
 		});
+		/**
+		 * temporary saving
+		 */
 		save.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override

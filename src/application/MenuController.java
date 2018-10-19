@@ -34,7 +34,7 @@ public class MenuController {
 	public void playGame() {
 		// load scene for game
 		DesignEngine designEngine = new DesignEngine(10);//temp code
-		GameEngine gameEngine = new GameEngine(designEngine.load("save1.txt"));
+		GameEngine gameEngine = new GameEngine(generateMap());
 		GameScene game = new GameScene(s, gameEngine);
 		try {
 			game.display();
