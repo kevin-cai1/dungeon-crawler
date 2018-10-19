@@ -85,7 +85,7 @@ public class MenuController {
 		t.addEntity(new Wall(gameMap.genID()));
 		
 		t = gameMap.getTile(4, 2);
-		t.addEntity(new Boulder(gameMap.genID()));
+		t.addEntity(new Hunter(gameMap.genID()));
 		
 		t = gameMap.getTile(4, 6);
 		t.addEntity(new Wall(gameMap.genID()));
@@ -118,7 +118,7 @@ public class MenuController {
 		t.addEntity(new Door(KeyEnum.MEDIUM, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 3);
-		t.addEntity(new Key(KeyEnum.MEDIUM, gameMap.genID()));
+		t.addEntity(new Bomb(gameMap, gameMap.genID()));
 		
 		t = gameMap.getTile(8, 2);
 		t.addEntity(new Door(KeyEnum.LARGE, gameMap.genID()));
@@ -127,7 +127,7 @@ public class MenuController {
 		t.addEntity(new Key(KeyEnum.LARGE, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 4);
-		t.addEntity(new Bomb(gameMap,gameMap.genID()));
+		t.addEntity(new Arrow(gameMap.genID(),gameMap));
 		
 		t = gameMap.getTile(6, 6);
 		t.addEntity(new Pit(gameMap.genID()));
