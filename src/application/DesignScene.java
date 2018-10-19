@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.xml.transform.Source;
 
@@ -35,7 +36,7 @@ public class DesignScene {
 	private Stage s;
 	private String title;
 	private FXMLLoader fxmlLoader;
-	private int mapSize = 10;
+	private Scene scene;
 	private int tileSize;
 	private ListView<String> listView;
 	private GridPane gameGrid;
@@ -47,11 +48,11 @@ public class DesignScene {
 	private WinObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	private String imgPath = "application/Sprites/";
-	public DesignScene(Stage s) {
+	public DesignScene(Stage s, DesignEngine designEngine) {
 		this.s = s;
 		this.title = "Design";
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Design.fxml"));
-		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
+		this.designEngine = designEngine;
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
 		gameGrid.setStyle("-fx-grid-lines-visible: true");
@@ -62,23 +63,20 @@ public class DesignScene {
 	 * drag handles the drag and drop in the scene
 	 */
 	private void initEventHandlers() {
-		s.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getCode() == KeyCode.ESCAPE) {
-					try {
-						designEngine.save("temp_design");
-						PauseScene pauseScene = new PauseScene(s);
-						pauseScene.display();
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
+		scene.addEventFilter(KeyEvent.KEY_PRESSED,Event -> {
+			System.out.println(Event.getCode());
+			// TODO Auto-generated method stub
+			if(Event.getCode() == KeyCode.ESCAPE) {
+				try {
+					MapSave mapSave = new MapSave();
+					mapSave.save("temp_design",designEngine.getMap());
+					DesignPauseScene pauseScene = new DesignPauseScene(s);
+					pauseScene.display();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
-			
 		});
 		gameGrid.setOnDragDetected(Event -> {
 			Node node = Event.getPickResult().getIntersectedNode();
@@ -131,7 +129,8 @@ public class DesignScene {
 	}
 	public void display() {
 		s.setTitle(title);
-		s.setScene(new Scene(generateSpace()));
+		this.scene = new Scene(generateSpace());
+		s.setScene(scene);
 		s.setResizable(false);
 		s.sizeToScene();
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -317,8 +316,18 @@ public class DesignScene {
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				designEngine.save("save1");
+				TextInputDialog dialog = new TextInputDialog("Map Name");
+				dialog.setTitle("Map Name Save");
+				dialog.setHeaderText("Test");
+				dialog.setContentText("Please enter the map name:");
+				Optional<String> result = dialog.showAndWait();
+				if(result.isPresent()) {
+					MapSave mapSave = new MapSave();
+					// TODO Auto-generated method stub
+					System.out.println(result.get());
+					mapSave.save(result.get(),designEngine.getMap());
+				}
+
 			}
 		});
 		vBox.getChildren().addAll(heading, listView, save);

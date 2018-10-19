@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@menu.css,@pause.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/background.jpg" />
+         </image>
+      </ImageView>
+      <ImageView id="resume" fx:id="resumeButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="109.0" onMouseClicked="#returnToDesign" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/play_button.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView id="options" fx:id="optionsButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/options_button.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView id = "returnMenu" fx:id="returnToMenuButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="236.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/quit_selected.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <ImageView id="quit" fx:id="quitGameButton" fitHeight="45.0" fitWidth="324.0" layoutX="205.0" layoutY="297.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Sprites/quit_button.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+   </children>
+</Pane>
