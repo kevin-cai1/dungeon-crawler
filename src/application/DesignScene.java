@@ -36,7 +36,6 @@ public class DesignScene {
 	private String title;
 	private FXMLLoader fxmlLoader;
 	private Scene scene;
-	private int mapSize = 10;
 	private int tileSize;
 	private ListView<String> listView;
 	private GridPane gameGrid;
@@ -48,11 +47,11 @@ public class DesignScene {
 	private WinObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	private String imgPath = "application/Sprites/";
-	public DesignScene(Stage s) {
+	public DesignScene(Stage s, DesignEngine designEngine) {
 		this.s = s;
 		this.title = "Design";
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Design.fxml"));
-		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
+		this.designEngine = designEngine;
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
 		gameGrid.setStyle("-fx-grid-lines-visible: true");

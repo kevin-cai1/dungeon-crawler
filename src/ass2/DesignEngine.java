@@ -76,6 +76,9 @@ public class DesignEngine {
 	public Map getMap() {
 		return this.map;
 	}
+	public void setMap(Map map) {
+		this.map = map;
+	}
 	/**
 	 * checks what win conditions there are for the map
 	 */

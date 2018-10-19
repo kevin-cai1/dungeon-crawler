@@ -1,5 +1,6 @@
 package application;
 
+import ass2.Design;
 import ass2.DesignEngine;
 import ass2.GameEngine;
 import ass2.Map;
@@ -41,9 +42,11 @@ public class DesignPauseController {
 	private void returnToDesign() throws Exception{
 		// TODO Auto-generated method stub
 		MapSave mapSave = new MapSave();
-		Map map = mapSave.load("temp");
-		GameScene gameScene = new GameScene(stage, new GameEngine(map));
-		gameScene.display();
+		Map map = mapSave.load("temp_design");
+		DesignEngine designEngine = new DesignEngine(10);
+		designEngine.setMap(map);
+		DesignScene designScene = new DesignScene(stage, designEngine);
+		designScene.display();
 	}
 	@FXML
 	public void openOptions() {

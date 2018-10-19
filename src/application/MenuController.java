@@ -49,7 +49,7 @@ public class MenuController {
 	@FXML
 	public void designMap() {
 		// load scene for design`
-		DesignScene design = new DesignScene(s);
+		DesignScene design = new DesignScene(s, new DesignEngine(10)); //arbitrary value
 		try {
 			design.display();
 		} catch (Exception e) {
