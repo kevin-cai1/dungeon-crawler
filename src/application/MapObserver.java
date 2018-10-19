@@ -62,53 +62,16 @@ public class MapObserver implements Observer {
 	}
 	private Image setImage(Entity e) {
 		
-		
-		
-		
 		Image image = new Image(imgPath + "floor.png");
-		if (e instanceof Player) {
-			return new Image(imgPath + "player.png");
-		} else if (e instanceof Bomb) {
-			return new Image(imgPath + "bomb.png");
-		} else if (e instanceof Boulder) {
-			return new Image(imgPath + "boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image(imgPath + "floor_switch.png");
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image(imgPath + "invincibility_potion.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image(imgPath + "hover_potion.png");
-		} else if (e instanceof Key) {
-			return new Image(imgPath + "key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image(imgPath + "treasure.png");
-		} else if (e instanceof Arrow) {
-			return new Image(imgPath + "arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image(imgPath + "sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image(imgPath + "hunter.png");
-			} else if (e instanceof Strategist) {
-				return new Image(imgPath + "strategist.png");
-			} else if (e instanceof Hound) {
-				return new Image(imgPath + "hound.png");
-			} else if (e instanceof Coward) {
-				return new Image(imgPath + "coward.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image(imgPath + "pit.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image(imgPath + "exit.png");
-		} else if (e instanceof Door) { // condition when player walks into door
+		if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
-				return new Image(imgPath + "closed_door.png");
-			} else {
 				return new Image(imgPath + "door.png");
+			} else {
+				return new Image(imgPath + "open_door.png");
 			}
-		} else if (e instanceof Wall) {
-			return new Image(imgPath + "wall.png");
+		} else if (e instanceof Floor == false){
+			return new Image(imgPath + e.imgName() + ".png");
 		}
 		return image;
 	}
