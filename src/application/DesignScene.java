@@ -270,7 +270,13 @@ public class DesignScene {
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
-		ImageView save = new ImageView(new Image(imgPath + "preview_button.png"));
+		ImageView save = new ImageView(new Image(imgPath + "save_button.png"));
+		save.setOnMouseEntered(Event -> {
+			save.setImage(new Image(imgPath + "save_selected.png"));
+		});
+		save.setOnMouseExited(Event -> {
+			save.setImage(new Image(imgPath + "save_button.png"));
+		});
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -317,8 +323,8 @@ public class DesignScene {
 			@Override
 			public void handle(MouseEvent event) {
 				TextInputDialog dialog = new TextInputDialog("Map Name");
-				dialog.setTitle("Map Name Save");
-				dialog.setHeaderText("Test");
+				dialog.setTitle("Map Save");
+				dialog.setHeaderText("Save Your Map");
 				dialog.setContentText("Please enter the map name:");
 				Optional<String> result = dialog.showAndWait();
 				if(result.isPresent()) {
