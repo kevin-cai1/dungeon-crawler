@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.xml.transform.Source;
 
@@ -315,9 +316,18 @@ public class DesignScene {
 
 			@Override
 			public void handle(MouseEvent event) {
-				MapSave mapSave = new MapSave();
-				// TODO Auto-generated method stub
-				mapSave.save("save1",designEngine.getMap());
+				TextInputDialog dialog = new TextInputDialog("Map Name");
+				dialog.setTitle("Map Name Save");
+				dialog.setHeaderText("Test");
+				dialog.setContentText("Please enter the map name:");
+				Optional<String> result = dialog.showAndWait();
+				if(result.isPresent()) {
+					MapSave mapSave = new MapSave();
+					// TODO Auto-generated method stub
+					System.out.println(result.get());
+					mapSave.save(result.get(),designEngine.getMap());
+				}
+
 			}
 		});
 		vBox.getChildren().addAll(heading, listView, save);
