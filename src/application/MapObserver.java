@@ -8,6 +8,7 @@ import ass2.Door;
 import ass2.Enemy;
 import ass2.Entity;
 import ass2.Exit;
+import ass2.Floor;
 import ass2.FloorSwitch;
 import ass2.Hound;
 import ass2.HoverPotion;
@@ -29,6 +30,8 @@ import javafx.scene.layout.GridPane;
 
 public class MapObserver implements Observer {
 	private Map map;
+	private String imgPath = "application/Sprites/";
+	
 	public  MapObserver(Map map) {
 		this.map = map;
 		// TODO Auto-generated constructor stub
@@ -41,7 +44,7 @@ public class MapObserver implements Observer {
 			for (int x = 0; x < gameMap[y].length; x++) {
 				//ImageView imageView = new ImageView(grid[y][x]);
 				// add a floor to every single tile ^^
-				ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
+				ImageView floorImage = new ImageView(new Image(imgPath + "floor.png"));
 				floorImage.setFitWidth(tileSize);
 				floorImage.setFitHeight(tileSize);
 				gameGrid.add(floorImage, x, y);
@@ -58,50 +61,54 @@ public class MapObserver implements Observer {
 
 	}
 	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/floor.png");
+		
+		
+		
+		
+		Image image = new Image(imgPath + "floor.png");
 		if (e instanceof Player) {
-			return new Image("application/Sprites/player.png");
+			return new Image(imgPath + "player.png");
 		} else if (e instanceof Bomb) {
-			return new Image("application/Sprites/bomb_unlit.png");
+			return new Image(imgPath + "bomb.png");
 		} else if (e instanceof Boulder) {
-			return new Image("application/Sprites/boulder.png");
+			return new Image(imgPath + "boulder.png");
 		} else if (e instanceof FloorSwitch) {
-			return new Image("application/Sprites/pressure_plate.png");
+			return new Image(imgPath + "floor_switch.png");
 		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/invincibility_potion.png");
+			return new Image(imgPath + "invincibility_potion.png");
 		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/hover_potion.png");
+			return new Image(imgPath + "hover_potion.png");
 		} else if (e instanceof Key) {
-			return new Image("application/Sprites/key.png");
+			return new Image(imgPath + "key.png");
 		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image("application/Sprites/gold_pile.png");
+			return new Image(imgPath + "treasure.png");
 		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/arrow.png");
+			return new Image(imgPath + "arrow.png");
 		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/sword.png");
+			return new Image(imgPath + "sword.png");
 		} else if (e instanceof Enemy) {	// lose if you walk into enemy
 			if (e instanceof Hunter) {
-				return new Image("application/Sprites/hunter.png");
+				return new Image(imgPath + "hunter.png");
 			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/strategist.png");
+				return new Image(imgPath + "strategist.png");
 			} else if (e instanceof Hound) {
-				return new Image("application/Sprites/hound.png");
+				return new Image(imgPath + "hound.png");
 			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/coward.png");
+				return new Image(imgPath + "coward.png");
 			}
 		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/shaft.png");
+			return new Image(imgPath + "pit.png");
 		} else if (e instanceof Exit) {	// win on exit
-			return new Image("application/Sprites/dngn_exit_abyss.png");
+			return new Image(imgPath + "exit.png");
 		} else if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
-				return new Image("application/Sprites/closed_door.png");
+				return new Image(imgPath + "closed_door.png");
 			} else {
-				return new Image("application/Sprites/open_door.png");
+				return new Image(imgPath + "door.png");
 			}
 		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/wall.png");
+			return new Image(imgPath + "wall.png");
 		}
 		return image;
 	}
