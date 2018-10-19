@@ -11,9 +11,16 @@ public class TestMapBuilder {
 	
     public static void main(final String[] arguments) {
         MapBuilder builder = new MapBuilderImplem();
-
-        TestMapBuilder mapBuildDirector = new TestMapBuilder(builder);
-
-        System.out.println(mapBuildDirector.Construct());
+        DesignEngine designEngine = new DesignEngine(20);
+        Map designMap = designEngine.getMap();
+        Player player = new Player(1);
+        designMap = builder.setWinConditions(WinCondition.Treasure).setArrayLengthMap(20).setIdCounter().setMapEntities().build();
+        if(designEngine.validateMap(designMap)) System.out.println("success");
+        else { System.out.println("u suck"); }
+        
+        
+        /*TestMapBuilder mapBuildDirector = new TestMapBuilder(builder);
+        Map newmap = mapBuildDirector.Construct();*/
+        
     }
 }
