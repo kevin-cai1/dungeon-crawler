@@ -69,11 +69,14 @@ public class GameScene {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				playerMoved = false;
 				if(!(prevKeyPress.contains(event.getCode()))) {
 					switch (event.getCode()) {
 						case W:
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.NORTH);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								playerMoved = game.shootBow(Direction.NORTH);
 							} else {
 								playerMoved = game.movePlayerNorth();
 
@@ -82,6 +85,8 @@ public class GameScene {
 						case S:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.SOUTH);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
 							} else {
 								playerMoved = game.movePlayerSouth();
 							}
@@ -89,20 +94,23 @@ public class GameScene {
 						case D:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.EAST);
-							}
-							else {
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
+							} else {
 								playerMoved = game.movePlayerEast();
 							}							
 							break;
 						case A:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.WEST);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
 							} else {
 								playerMoved = game.movePlayerWest();
 							}						
 							break;
 						case B:		
-							//playerMoved = game.placeBomb();
+							playerMoved = game.placeBomb();
 							System.out.println("DROP BOMB");
 							break;
 						case UP:		
@@ -122,6 +130,7 @@ public class GameScene {
 							
 							break;
 						case L:
+							playerMoved = false;
 							break;
 						case ESCAPE:	
 							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
@@ -159,10 +168,11 @@ public class GameScene {
 					displayLoseScreen();
 					return;
 				}
-				
-				if (game.tickEffects() instanceof Lose) {
-					displayLoseScreen();
-					return;
+				if (playerMoved) {
+					if (game.tickEffects() instanceof Lose) {
+						displayLoseScreen();
+						return;
+					}
 				}
 				
 				if (game.checkGameState() == true) {
@@ -415,6 +425,21 @@ public class GameScene {
 			} else {
 				return new Image(imgPath + "open_door.png");
 			}
+		} else if (e instanceof Bomb) { 
+			Bomb bomb = (Bomb)e;
+			int bombStatus = bomb.getTimer();
+			switch (bombStatus) {
+			case 3:
+				return new Image(imgPath + "bomb_lit_1.png");
+			case 2:
+				return new Image(imgPath + "bomb_lit_2.png");
+			case 1:
+				return new Image(imgPath + "bomb_lit_3.png");
+			case 0:
+				return new Image(imgPath + "bomb_lit_4.png");
+			default:
+				return new Image(imgPath + "bomb.png");
+			}
 		} else if (e instanceof Floor == false) {
 			return new Image(imgPath + e.imgName() + ".png");
 		}
@@ -430,16 +455,6 @@ public class GameScene {
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
-		}
-	}
-	
-	private void goHome() {
-		try {
-			MenuScene menuScene = new MenuScene(s);
-			menuScene.display();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
