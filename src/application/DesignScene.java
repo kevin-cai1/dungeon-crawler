@@ -271,7 +271,7 @@ public class DesignScene {
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
-		ImageView save = new ImageView(new Image(imgPath + "temp_save_button.png"));
+		ImageView save = new ImageView(new Image(imgPath + "preview_button.png"));
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
