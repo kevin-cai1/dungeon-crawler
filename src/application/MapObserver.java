@@ -15,6 +15,7 @@ import ass2.HoverPotion;
 import ass2.Hunter;
 import ass2.InvincibilityPotion;
 import ass2.Key;
+import ass2.KeyEnum;
 import ass2.Map;
 import ass2.Observer;
 import ass2.Pit;
@@ -66,9 +67,27 @@ public class MapObserver implements Observer {
 		if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
-				return new Image(imgPath + "door.png");
-			} else {
+				switch (door.getUnique()) {
+					case SMALL:
+						return new Image(imgPath + "door.png");
+					case MEDIUM:
+						return new Image(imgPath + "door1.png");
+					case LARGE:
+						return new Image(imgPath + "door2.png");
+				}
+			} 
+			else {
 				return new Image(imgPath + "open_door.png");
+			}
+		} else if (e instanceof Key) {
+			Key key = (Key)e;
+			switch (key.getUnique()) {
+				case SMALL:
+					return new Image(imgPath + "key.png");
+				case MEDIUM:
+					return new Image(imgPath + "key1.png");
+				case LARGE:
+					return new Image(imgPath + "key2.png");
 			}
 		} else if (e instanceof Floor == false){
 			return new Image(imgPath + e.imgName() + ".png");

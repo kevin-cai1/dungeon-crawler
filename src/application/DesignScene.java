@@ -239,6 +239,10 @@ public class DesignScene {
 			entity = new Coward(map.genID());
 		} else if (name.equals("Door")) {
 			entity = new Door(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Door1")) {
+			entity = new Door(KeyEnum.MEDIUM, map.genID());
+		} else if(name.equals("Door2")) {
+			entity = new Door(KeyEnum.LARGE, map.genID());
 		} else if (name.equals("Exit")) {
 			entity = new Exit(map.genID());
 		} else if (name.equals("Floor Switch")) {
@@ -253,6 +257,10 @@ public class DesignScene {
 			entity = new InvincibilityPotion(map.genID());
 		} else if (name.equals("Key")) {
 			entity = new Key(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Key1")) {
+			entity = new Key(KeyEnum.MEDIUM, map.genID());
+		} else if (name.equals("Key2")) {
+			entity = new Key(KeyEnum.LARGE, map.genID());
 		} else if (name.equals("Pit")) {
 			entity = new Pit(map.genID());
 		} else if (name.equals("Player")) {
@@ -282,7 +290,7 @@ public class DesignScene {
 		heading.setTextFill(Color.GREY);
 		listView = new ListView<String>();
 		ObservableList<String> items = FXCollections.observableArrayList(
-				"Arrow", "Bomb", "Boulder", "Coward", "Door", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
+				"Arrow", "Bomb", "Boulder", "Coward", "Door","Door1","Door2", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key","Key1","Key2", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
 		listView.setItems(items);
 		listView.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {
