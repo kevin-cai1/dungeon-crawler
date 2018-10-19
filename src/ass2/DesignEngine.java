@@ -102,47 +102,5 @@ public class DesignEngine {
 			}
 		}
 	}
-/**
- * saves the map into a text file with the input.txt
- * @param map
- * @param fileName
- */
-	public void save(String fileName) {
-		Map savedMap = map;
-		try {
-			FileOutputStream f = new FileOutputStream(new File(fileName+".txt"));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-			o.writeObject(savedMap);
-			o.close();
-			f.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Error initializing stream");
-		}
 
-	}
-	
-	/**
-	 * 
-	 * @param fileName
-	 * @return map read from file
-	 */
-	public Map load(String fileName) {
-		Map loadedMap = new Map(20);
-		try {
-			FileInputStream fi = new FileInputStream(new File(fileName));
-			ObjectInputStream oi = new ObjectInputStream(fi);
-			loadedMap = (Map) oi.readObject();
-			oi.close();
-			fi.close();
-			return loadedMap;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Class not found");
-		} catch (IOException e) {
-			System.out.println("Error initializing stream");
-		}	
-		return loadedMap;
-	}
 }

@@ -15,12 +15,12 @@ public class DesignPauseScene {
 	public DesignPauseScene(Stage stage) {
 		this.stage = stage;
 		this.title = "Pause Menu";
-		this.fxmlLoader = new FXMLLoader(getClass().getResource("Pause.fxml"));
+		this.fxmlLoader = new FXMLLoader(getClass().getResource("DesignPause.fxml"));
 	}
 	
 	public void display() throws Exception {
 		stage.setTitle(title);
-		fxmlLoader.setController(new PauseController(stage));
+		fxmlLoader.setController(new DesignPauseController(stage));
 		try {
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);

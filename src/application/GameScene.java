@@ -419,93 +419,12 @@ public class GameScene {
 			return new Image(imgPath + e.imgName() + ".png");
 		}
 		return image;
-		
-		
-		
-		
-		
-		/*if (e instanceof Player) {
-			return new Image(imgPath + "player.png");
-		} else if (e instanceof Bomb) {
-			switch (((Bomb) e).getTimer()) {
-			case 4:		// unlit
-				
-				break;
-			case 3:
-				
-				break;
-			case 2:
-				
-				break;
-			case 1:
-				
-				break;
-			*/
-			
-		/*	return new Image(imgPath + "bomb.png");
-		} else if (e instanceof Boulder) { 
-			return new Image(imgPath + "boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image(imgPath + "floor_switch.png");		
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image(imgPath + "invincibility_potion.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image(imgPath + "hover_potion.png");
-		} else if (e instanceof Key) {
-			KeyEnum keyID = ((Key) e).getUnique();
-			if (keyID == KeyEnum.SMALL) {
-				return new Image(imgPath + "key.png");
-			} else if (keyID == KeyEnum.MEDIUM) {
-				return new Image(imgPath + "key1.png");
-			} else if (keyID == KeyEnum.LARGE) {
-				return new Image(imgPath + "key2.png");
-			}
-			return new Image(imgPath + "key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image(imgPath + "treasure.png");
-		} else if (e instanceof Arrow) {
-			return new Image(imgPath + "arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image(imgPath + "sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image(imgPath + "hunter.png");
-			} else if (e instanceof Strategist) {
-				return new Image(imgPath + "strategist.png");
-			} else if (e instanceof Hound) {
-				return new Image(imgPath + "hound.png");
-			} else if (e instanceof Coward) {
-				return new Image(imgPath + "coward.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image(imgPath + "pit.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image(imgPath + "exit.png");
-		} else if (e instanceof Door) { // condition when player walks into door
-			Door door = (Door)e;
-			if (door.getStatus() == false) { // closed
-				KeyEnum doorID = ((Door) e).getUnique();
-				if (doorID == KeyEnum.SMALL) {
-					return new Image(imgPath + "door.png");
-				} else if (doorID == KeyEnum.MEDIUM) {
-					return new Image(imgPath + "door1.png");
-				} else if (doorID == KeyEnum.LARGE) {
-					return new Image(imgPath + "door2.png");
-				}
-				return new Image(imgPath + "door.png");
-			} else {
-				return new Image(imgPath + "open_door.png");
-			}
-		} else if (e instanceof Wall) {
-			return new Image(imgPath + "wall.png");
-		}
-		return image;*/
 	}
 	
 	private void pauseGame() {
 		try {
-			DesignEngine designEngine = new DesignEngine(10);
-			designEngine.save("temp");
+			MapSave mapSave = new MapSave();
+			mapSave.save("temp",game.getGameMap());
 			PauseScene pauseScene = new PauseScene(s);
 			pauseScene.display();
 		} catch (Exception e) {

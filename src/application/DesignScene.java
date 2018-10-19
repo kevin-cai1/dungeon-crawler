@@ -35,6 +35,7 @@ public class DesignScene {
 	private Stage s;
 	private String title;
 	private FXMLLoader fxmlLoader;
+	private Scene scene;
 	private int mapSize = 10;
 	private int tileSize;
 	private ListView<String> listView;
@@ -62,23 +63,20 @@ public class DesignScene {
 	 * drag handles the drag and drop in the scene
 	 */
 	private void initEventHandlers() {
-		s.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getCode() == KeyCode.ESCAPE) {
-					try {
-						designEngine.save("temp_design");
-						PauseScene pauseScene = new PauseScene(s);
-						pauseScene.display();
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
+		scene.addEventFilter(KeyEvent.KEY_PRESSED,Event -> {
+			System.out.println(Event.getCode());
+			// TODO Auto-generated method stub
+			if(Event.getCode() == KeyCode.ESCAPE) {
+				try {
+					MapSave mapSave = new MapSave();
+					mapSave.save("temp_design",designEngine.getMap());
+					DesignPauseScene pauseScene = new DesignPauseScene(s);
+					pauseScene.display();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
-			
 		});
 		gameGrid.setOnDragDetected(Event -> {
 			Node node = Event.getPickResult().getIntersectedNode();
@@ -131,7 +129,8 @@ public class DesignScene {
 	}
 	public void display() {
 		s.setTitle(title);
-		s.setScene(new Scene(generateSpace()));
+		this.scene = new Scene(generateSpace());
+		s.setScene(scene);
 		s.setResizable(false);
 		s.sizeToScene();
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -317,8 +316,9 @@ public class DesignScene {
 
 			@Override
 			public void handle(MouseEvent event) {
+				MapSave mapSave = new MapSave();
 				// TODO Auto-generated method stub
-				designEngine.save("save1");
+				mapSave.save("save1",designEngine.getMap());
 			}
 		});
 		vBox.getChildren().addAll(heading, listView, save);
