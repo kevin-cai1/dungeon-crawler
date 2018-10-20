@@ -34,7 +34,7 @@ public abstract class GameSceneAbstract {
 	private boolean playerMoved = false;
 	private String imgPath = "application/Sprites/";
 	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
-
+	private Controls controlScheme;
 	
 	public GameSceneAbstract(Stage s, GameEngine game) {
 		this.s = s;
@@ -43,6 +43,7 @@ public abstract class GameSceneAbstract {
 		this.tileSize = 85 - 3*game.getGameMap().getArrayLength();	// variable tileSize
 		this.scene = new Scene(generateGrid());
 		this.prevKeyPress = new ArrayList<>();
+		this.controlScheme = Controls.getInstance();
 	}
 	
 	public void display() {
@@ -71,78 +72,46 @@ public abstract class GameSceneAbstract {
 			public void handle(KeyEvent event) {
 				playerMoved = false;
 				if(!(prevKeyPress.contains(event.getCode()))) {
-					switch (event.getCode()) {
-						case W:
-							if(prevKeyPress.contains(KeyCode.L)) {
-								playerMoved = game.swing(Direction.NORTH);
-							} else if (prevKeyPress.contains(KeyCode.K)) {
-								playerMoved = game.shootBow(Direction.NORTH);
-							} else {
-								playerMoved = game.movePlayerNorth();
-
-							}
-							break;
-						case S:		
-							if(prevKeyPress.contains(KeyCode.L)) {
-								playerMoved = game.swing(Direction.SOUTH);
-							} else if (prevKeyPress.contains(KeyCode.K)) {
-								playerMoved = game.shootBow(Direction.SOUTH);
-							} else {
-								playerMoved = game.movePlayerSouth();
-							}
-							break;
-						case D:		
-							if(prevKeyPress.contains(KeyCode.L)) {
-								playerMoved = game.swing(Direction.EAST);
-							} else if (prevKeyPress.contains(KeyCode.K)) {
-								playerMoved = game.shootBow(Direction.EAST);
-							} else {
-								playerMoved = game.movePlayerEast();
-							}							
-							break;
-						case A:		
-							if(prevKeyPress.contains(KeyCode.L)) {
-								playerMoved = game.swing(Direction.WEST);
-							} else if (prevKeyPress.contains(KeyCode.K)) {
-								playerMoved = game.shootBow(Direction.WEST);
-							} else {
-								playerMoved = game.movePlayerWest();
-							}						
-							break;
-						case B:		
-							playerMoved = game.placeBomb();
-							System.out.println("DROP BOMB");
-							break;
-						case UP:		
+					if (event.getCode() == controlScheme.getUpButton()) {
+						if(prevKeyPress.contains(controlScheme.getSwordButton())) {
 							playerMoved = game.swing(Direction.NORTH);
-							
-							break;
-						case DOWN:		
+						} else if (prevKeyPress.contains(controlScheme.getArrowButton())) {
+							playerMoved = game.shootBow(Direction.NORTH);
+						} else {
+							playerMoved = game.movePlayerNorth();
+
+						}
+					} else if (event.getCode() == controlScheme.getDownButton()) {
+						if(prevKeyPress.contains(controlScheme.getSwordButton())) {
 							playerMoved = game.swing(Direction.SOUTH);
-							
-							break;
-						case LEFT:		
+						} else if (prevKeyPress.contains(controlScheme.getArrowButton())) {
+							playerMoved = game.shootBow(Direction.SOUTH);
+						} else {
+							playerMoved = game.movePlayerSouth();
+						}
+					} else if (event.getCode() == controlScheme.getLeftButton()) {
+						if(prevKeyPress.contains(controlScheme.getSwordButton())) {
 							playerMoved = game.swing(Direction.WEST);
-							
-							break;
-						case RIGHT:		
+						} else if (prevKeyPress.contains(controlScheme.getArrowButton())) {
+							playerMoved = game.shootBow(Direction.WEST);
+						} else {
+							playerMoved = game.movePlayerWest();
+						}
+					} else if (event.getCode() == controlScheme.getRightButton()) {
+						if(prevKeyPress.contains(controlScheme.getSwordButton())) {
 							playerMoved = game.swing(Direction.EAST);
-							
-							break;
-						case L:
-							playerMoved = false;
-							break;
-						case ESCAPE:	
-							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
-								game.setGameState(GameState.Paused);
-							} else {	// player is resuming
-								game.setGameState(GameState.Play);
-							}*/
-							pauseGame();
-							return;
-						default:
-							break;
+						} else if (prevKeyPress.contains(controlScheme.getArrowButton())) {
+							playerMoved = game.shootBow(Direction.EAST);
+						} else {
+							playerMoved = game.movePlayerEast();
+						}		
+					} else if (event.getCode() == controlScheme.getBombButton()) {
+						playerMoved = game.placeBomb();
+					} else if (event.getCode() == KeyCode.ESCAPE) {
+						pauseGame();
+						return;
 					}
+					
 					prevKeyPress.add(event.getCode());
 				}
 

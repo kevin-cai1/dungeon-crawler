@@ -74,6 +74,14 @@ public class MenuController {
 	@FXML
 	public void openOptions() {
 		// load scene for design
+		ControlsScene controls = new ControlsScene(s);
+		try {
+			controls.display();
+			System.out.println("Is this being run constantly");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
