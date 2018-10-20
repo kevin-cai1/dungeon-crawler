@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public abstract class HunterGroup extends Enemy{
+public abstract class HunterGroup extends Enemy implements GetAction{
 
 	private static final long serialVersionUID = -7535511482858588253L;
 

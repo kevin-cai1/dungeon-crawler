@@ -1,11 +1,6 @@
 package ass2;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Enemy extends Entity{
 	private static final long serialVersionUID = -6012493085994945056L;
@@ -35,14 +30,10 @@ public abstract class Enemy extends Entity{
 	 * @param queuePop
 	 */
 	public void visitCheck(Tile adjacent, Tile queuePop) {
-		boolean obstacle = false;
+		boolean obstacle;
 		if(!visited.contains(adjacent)) {
 			visited.add(adjacent);
-			for(Entity entity: adjacent.getEntities()) {
-				if((entity instanceof Obstacle)) {
-					obstacle = true;
-				}
-			}
+			obstacle = obstacleCheck(adjacent);
 			if(!obstacle){
 				if(!queue.contains(adjacent)){
 					queue.offer(adjacent);
@@ -66,16 +57,12 @@ public abstract class Enemy extends Entity{
 		
 		Tile tile = map.getEntityLocation(this.getId());//the closest reachable tile initially set to the hunter
 		Tile tempTile;
-		boolean obstacle = false;
+		boolean obstacle;
 		for(int i = 0; i < length; i++) { //20 being map size
 			for(int j = 0; j < length; j++) {
 				tempTile = tileMap[i][j];
 				temp = distCalc(tempTile.getX(),tempTile.getY(),dest.getX(), dest.getY());
-				for(Entity e: tempTile.getEntities()) {
-					if(e instanceof Obstacle) {
-						obstacle = true;
-					}
-				}
+				obstacle = obstacleCheck(tempTile);
 				if(!obstacle && access(map, tempTile) && temp <= dist) {
 					dist = temp;
 					tile = tempTile;
@@ -216,6 +203,9 @@ public abstract class Enemy extends Entity{
 		double[] dist = new double[4];
 		if(curY-1 >= 0) {
 			tile0 = map.getTile(curX, curY-1);//North
+			for(Entity entity: tile0.getEntities()){
+
+			}
 			dist[0] = distCalc(playerX, playerY,tile0.getX(),tile0.getY());
 		}
 		if(curY+1 < length) {
@@ -251,6 +241,16 @@ public abstract class Enemy extends Entity{
 				shift(map, tile3);
 			}
 		}
+	}
+	public boolean obstacleCheck(Tile tile){
+		ArrayList<Entity> entityArrayList = tile.getEntities();
+		boolean obstacle = false;
+		for(Entity entity: entityArrayList){
+			if(entity instanceof  Obstacle){
+				obstacle = true;
+			}
+		}
+		return obstacle;
 	}
 	public abstract void shift(Map map, Tile tile);
 }
