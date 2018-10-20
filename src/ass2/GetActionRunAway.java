@@ -1,17 +1,15 @@
 package ass2;
 
-public abstract class GetActionRunAway extends Enemy implements GetAction {
-	private static final long serialVersionUID = -2616411096900925988L;
-	public GetActionRunAway(int id) {
-		super(id);
+public abstract class GetActionRunAway implements GetAction {
+	public GetActionRunAway() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void getAction(Map map) {
+	public void getAction(Map map, Enemy enemy) {
 		// TODO Auto-generated method stub
 		Tile playerPos = map.getPlayerLocation();
-		Tile curPos = map.getEntityLocation(this.getId());
+		Tile curPos = map.getEntityLocation(enemy.getId());
     	int curX = curPos.getX();
     	int curY = curPos.getY();
     	int playerX = playerPos.getX();
@@ -26,31 +24,31 @@ public abstract class GetActionRunAway extends Enemy implements GetAction {
 		int obstacleCount = 0;
 		if(curY-1 >= 0) {
 			tile0 = map.getTile(curX, curY-1);//North
-			if(obstacleCheck(tile0)) {
+			if(enemy.obstacleCheck(tile0)) {
 				obstacleCount++;
 			}
-			dist[0] = distCalc(playerX, playerY,tile0.getX(),tile0.getY());
+			dist[0] = enemy.distCalc(playerX, playerY,tile0.getX(),tile0.getY());
 		}
 		if(curY+1 < length) {
 			tile1 = map.getTile(curX, curY+1);//South
-			if(obstacleCheck(tile1)) {
+			if(enemy.obstacleCheck(tile1)) {
 				obstacleCount++;
 			}
-			dist[1] = distCalc(playerX, playerY,tile1.getX(),tile1.getY());
+			dist[1] = enemy.distCalc(playerX, playerY,tile1.getX(),tile1.getY());
 		}
 		if(curX+1 < length) {
 			tile2 = map.getTile(curX+1, curY);//East
-			if(obstacleCheck(tile2)) {
+			if(enemy.obstacleCheck(tile2)) {
 				obstacleCount++;
 			}
-			dist[2] = distCalc(playerX, playerY,tile2.getX(),tile2.getY());
+			dist[2] = enemy.distCalc(playerX, playerY,tile2.getX(),tile2.getY());
 		}
 		if(curX-1 >= 0) {
 			tile3 = map.getTile(curX-1, curY);//West
-			if(obstacleCheck(tile3)) {
+			if(enemy.obstacleCheck(tile3)) {
 				obstacleCount++;
 			}
-			dist[3] = distCalc(playerX, playerY,tile3.getX(),tile3.getY());
+			dist[3] = enemy.distCalc(playerX, playerY,tile3.getX(),tile3.getY());
 		}
 		
 		//if all 4 tiles contain obstacles
@@ -66,16 +64,16 @@ public abstract class GetActionRunAway extends Enemy implements GetAction {
 		}
 		for(int i = 0; i < 4; i++) {
 			if(largest == dist[0]) {
-				shift(map, tile0);
+				enemy.shift(map, tile0);
 			}
 			else if (largest == dist[1]) {
-				shift(map, tile1);
+				enemy.shift(map, tile1);
 			}
 			else if (largest == dist[2]) {
-				shift(map, tile2);
+				enemy.shift(map, tile2);
 			}
 			else if (largest == dist[3]) {
-				shift(map, tile3);
+				enemy.shift(map, tile3);
 			}
 		}
 	}
