@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -34,5 +35,7 @@ public class LoseScene {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+        AudioClip audio = new AudioClip(getClass().getResource("/application/sound/lose.wav").toExternalForm());
+        audio.play();
 	}
 }
