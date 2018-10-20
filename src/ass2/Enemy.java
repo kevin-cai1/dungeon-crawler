@@ -205,5 +205,6 @@ public abstract class Enemy extends Entity{
 	public void setAction(GetAction getAction) {
 		this.getAction = getAction;
 	}
+	public abstract void setOgAction();
 }
 

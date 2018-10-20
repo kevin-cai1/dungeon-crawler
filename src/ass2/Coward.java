@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class Coward extends Enemy{
 	private static final long serialVersionUID = 4394549041466275612L;
-	private GetAction getAction;
+
 	public Coward(int id){
         super(id);
         getAction = new GetActionCoward();
@@ -18,12 +18,7 @@ public class Coward extends Enemy{
     public String toString() {
         return "Coward";
     }
-    public void getAction(Map map) {
-    	getAction.getAction(map, this);
-    }
-    public void setAction(GetAction getAction) {
-    	this.getAction = getAction;
-    }
+
 /**
  * Moves the coward to a certain tile
  * @param map
@@ -37,6 +32,11 @@ public class Coward extends Enemy{
 	}
 	public String imgName() {
 		return "coward";
+	}
+	@Override
+	public void setOgAction() {
+		// TODO Auto-generated method stub
+		getAction = new GetActionCoward();
 	}
 	
 }

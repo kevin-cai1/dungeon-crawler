@@ -83,4 +83,11 @@ public class Strategist extends Enemy{
 	public String imgName() {
 		return "strategist";
 	}
+
+	@Override
+	public void setOgAction() {
+		getAction = new GetActionStrategist();
+		// TODO Auto-generated method stub
+		
+	}
 }

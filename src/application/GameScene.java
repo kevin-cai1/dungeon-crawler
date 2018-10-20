@@ -156,12 +156,7 @@ public class GameScene {
 				
 				if (playerMoved) {
 					// move enemies (run or move depending on invincibility)
-					if(game.getGameMap().getPlayer().getInvincibility()) {
-						game.runEnemies();
-					}
-					else {
-						game.moveEnemies();
-					}
+					game.moveEnemies();
 				}
 				
 				if (game.checkPlayerStatus() == false) {
