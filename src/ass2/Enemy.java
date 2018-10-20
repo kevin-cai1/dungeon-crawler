@@ -87,7 +87,7 @@ public abstract class Enemy extends Entity{
 	}
 	// TODO Auto-generated method stub
 	/**
-	 * returns true if the map is accessible
+	 * returns true if the position is accessible
 	 * @param map
 	 * @return
 	 */

@@ -62,42 +62,51 @@ public class Strategist extends Enemy{
 		int x = playerPos.getX();
 		int y = playerPos.getY();
 		//North
-		for(Entity e: map.getTile(x, y-1).getEntities()) {
-			if(!(e instanceof Obstacle)) {
-				tile = map.getTile(x, y-1);
-				if(access(map,tile)) {
-					return tile;
-				}	
+		if(y > 0){
+			for(Entity e: map.getTile(x, y-1).getEntities()) {
+				if(!(e instanceof Obstacle)) {
+					tile = map.getTile(x, y-1);
+					if(access(map,tile)) {
+						return tile;
+					}
+				}
 			}
 		}
 		//South
-		for(Entity e: map.getTile(x, y+1).getEntities()) {
-			if(!(e instanceof Obstacle)) {
-				tile = map.getTile(x, y+1);
-				if(access(map,tile)) {
-					return tile;
+		if(y < map.getArrayLength()-1){
+			for(Entity e: map.getTile(x, y+1).getEntities()) {
+				if(!(e instanceof Obstacle)) {
+					tile = map.getTile(x, y+1);
+					if(access(map,tile)) {
+						return tile;
+					}
 				}
 			}
 		}
 		//East
-		for(Entity e: map.getTile(x+1, y).getEntities()) {
-			if(!(e instanceof Obstacle)) {
-				tile = map.getTile(x+1, y);
-				if(access(map,tile)) {
-					return tile;
+		if(x < map.getArrayLength()-1){
+			for(Entity e: map.getTile(x+1, y).getEntities()) {
+				if(!(e instanceof Obstacle)) {
+					tile = map.getTile(x+1, y);
+					if(access(map,tile)) {
+						return tile;
+					}
 				}
 			}
 		}
+
 		//West
-		for(Entity e: map.getTile(x-1, y).getEntities()) {
-			if(!(e instanceof Obstacle)) {
-				tile = map.getTile(x-1, y);
-				if(access(map,tile)) {
-					return tile;
+		if( x > 0){
+			for(Entity e: map.getTile(x-1, y).getEntities()) {
+				if(!(e instanceof Obstacle)) {
+					tile = map.getTile(x-1, y);
+					if(access(map,tile)) {
+						return tile;
+					}
 				}
 			}
 		}
-		return tile;
+		return null;
 	}
 	public void shift(Map map, Tile tile) {
 		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
