@@ -11,8 +11,9 @@ public class Controls {
 	private KeyCode swordToggle;
 	private KeyCode arrowToggle;
 	
+	private static Controls single_instance = null;
 	
-	public Controls() {
+	private Controls() {
 		// TODO Auto-generated constructor stub
 		this.upButton = KeyCode.W;
 		this.downButton = KeyCode.S;
@@ -22,6 +23,14 @@ public class Controls {
 		this.swordToggle = KeyCode.L;
 		this.arrowToggle = KeyCode.K;
 	}
+	
+	public static Controls getInstance() {
+		if (single_instance == null) {
+			single_instance = new Controls();
+		}
+		return single_instance;
+	}
+	
 	
 	public void setUpButton(KeyCode button) {
 		this.upButton = button;

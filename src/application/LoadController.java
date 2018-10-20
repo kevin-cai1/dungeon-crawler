@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class LoadController {
 	private Stage stage;
-	
+		
 	@FXML
 	private ImageView resumeButton;
 	
