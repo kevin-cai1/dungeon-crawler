@@ -338,17 +338,25 @@ public class DesignScene {
 
 			@Override
 			public void handle(MouseEvent event) {
-				TextInputDialog dialog = new TextInputDialog("Map Name");
-				dialog.setTitle("Map Save");
-				dialog.setHeaderText("Save Your Map");
-				dialog.setContentText("Please enter the map name:");
-				Optional<String> result = dialog.showAndWait();
-				if(result.isPresent()) {
-					MapSave mapSave = new MapSave();
-					// TODO Auto-generated method stub
-					mapSave.save(result.get(),designEngine.getMap());
+				if(!designEngine.validateMap(designEngine.getMap())) {
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.setTitle("Warning");
+					alert.setHeaderText("Your map isn't valid. This could be because that you haven't added in a player or that you haven't added in your win conditions yet");
+					alert.setContentText("Please fix this before trying to save again.");
+					alert.showAndWait();
 				}
-
+				else {
+					TextInputDialog dialog = new TextInputDialog("Map Name");
+					dialog.setTitle("Map Save");
+					dialog.setHeaderText("Save Your Map");
+					dialog.setContentText("Please enter the map name:");
+					Optional<String> result = dialog.showAndWait();
+					if(result.isPresent()) {
+						MapSave mapSave = new MapSave();
+						// TODO Auto-generated method stub
+						mapSave.save(result.get(),designEngine.getMap());
+					}
+				}
 			}
 		});
 		clear.setOnMouseClicked(Event -> {

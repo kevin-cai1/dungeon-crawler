@@ -80,34 +80,6 @@ public class DesignEngine {
 		this.map = map;
 	}
 	/**
-	 * checks what win conditions there are for the map
-	 */
-	private void setWinConditions() {
-		if (exitWinCondition()) {
-			this.enemyWinCondition = false;
-			this.boulderWinCondition = false;
-			this.treasureWinCondition = false;
-		} else {
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 20; j++) {
-					for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
-						if (e instanceof Treasure) { // count all the exits
-							treasureWinCondition = true;
-						}
-						if (e instanceof Enemy) {
-							enemyWinCondition = true;
-						}
-						if (e instanceof FloorSwitch) {
-							boulderWinCondition = true;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	
-	/**
 	 * 
 	 * @param fileName
 	 * @return map read from file
@@ -128,93 +100,102 @@ public class DesignEngine {
 		}	
 		return loadedMap;
 	}
-	
+	/**
+	 * 
+	 * @param map
+	 * @return returns true if map is valid
+	 */
 	public boolean validateMap(Map map) {
 		
-		int flag = 0; // used to check player exists;
+		boolean player = false; // used to check player exists;
 		
 		// Iterate through the map, check for exit first
 		ArrayList<WinCondition> winConditions = map.getWinConditions();
-		
+		int size = map.getArrayLength();
 		for (WinCondition winCondition: winConditions) {
 			if (winCondition.equals(WinCondition.Exit)) {			// if exit win condition exists
-				int exit = 0;
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
-						for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
+				boolean exit = false;
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < size; j++) {
+						for (Entity e : map.getTile(i, j).getEntities()) { // look through every single entity
 							if (e instanceof Exit) { // if exit exists
-								exit = 1;
+								exit = true;
 							}
 							if (e instanceof Player) {
-								flag = 1;
+								player = true;
 							}
 						}
 					}
 				}
-				if (exit == 0) {
+				if (!exit) {
 					return false;
 				}
 			}
 			
 			if (winCondition.equals(WinCondition.Enemy)) {			// if enemy win condition exists
-				int enemy = 0;
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
-						for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
+				boolean enemy = false;
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < size; j++) {
+						for (Entity e : map.getTile(i,j).getEntities()) { // look through every single entity
 							if (e instanceof Enemy) { // if enemy exists
-								enemy = 1;
+								enemy = true;
 							}
 							if (e instanceof Player) {
-								flag = 1;
+								player = true;
 							}
 						}
 					}
 				}
-				if (enemy == 0) {
+				if (!enemy) {
 					return false;
 				}
 				
 			}
-			if (winCondition.equals(winCondition.Boulder)) {			// if boulder win condition exists
-				int boulder = 0;
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
+			//this needs both boulder and switch
+			if (winCondition.equals(WinCondition.Boulder)) {			// if boulder win condition exists
+				boolean boulder = false;
+				boolean switche = false;
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < size; j++) {
 						for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
 							if (e instanceof FloorSwitch) { // if floorswitch exists
-								boulder = 1;
+								switche = true;
+							}
+							if (e instanceof Boulder) {
+								boulder = true;
 							}
 							if (e instanceof Player) {
-								flag = 1;
+								player = true;
 							}
 						}
 					}
 				}
-				if (boulder == 0) {
+				if (!(boulder & switche)) {
 					return false;
 				}
 				
 			}
-			if (winCondition.equals(winCondition.Treasure)) {		// if treasure win condition exists
-				int treasure = 0;
-				for (int i = 0; i < 20; i++) {
-					for (int j = 0; j < 20; j++) {
+			if (winCondition.equals(WinCondition.Treasure)) {		// if treasure win condition exists
+				boolean treasure = false;
+				for (int i = 0; i < size; i++) {
+					for (int j = 0; j < size; j++) {
 						for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
 							if (e instanceof Treasure) { // if treasure exists
-								treasure = 1;
+								treasure = true;
 							}
 							if (e instanceof Player) {
-								flag = 1;
+								player = true;
 							}
 						}
 					}
 				}
-				if (treasure == 0) {
+				if (!treasure) {
 					return false;
 				}
 			}
 		}
 
-		if (flag == 1) {
+		if (player) {
 			return true;
 		}
 		System.out.println("somehow it got past all the conditions, map might or might not be valid.");
