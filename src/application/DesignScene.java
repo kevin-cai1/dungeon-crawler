@@ -324,9 +324,54 @@ public class DesignScene {
 					Dragboard dragboard = cell.startDragAndDrop(TransferMode.ANY);
 					ClipboardContent clipboardContent = new ClipboardContent();
 					Entity entity = entityTextToEntity(cell.getItem());
-					clipboardContent.put(entityFormat,entity);
-					dragboard.setContent(clipboardContent);
-					dragSource.set(cell);
+					boolean valid = true;
+					if(entity instanceof Door) {
+						Door door = (Door)entity;
+						Map map = designEngine.getMap();
+						for(int i = 0; i < map.getArrayLength(); i++) {
+							for(int j = 0; j < map.getArrayLength(); j++) {
+								for(Entity entity1: map.getTile(i, j).getEntities()) {
+									if(entity1 instanceof Door) {
+										Door door1 = (Door)entity1;
+										if(door1.getUnique() == door.getUnique()) {
+											Alert alert = new Alert(AlertType.WARNING);
+											alert.setTitle("Warning");
+											alert.setHeaderText("Door is invalid");
+											alert.setContentText("You have already placed a door of this type on the map.");
+											alert.showAndWait();
+											valid = false;
+										}
+									}
+								}
+							}
+						}
+					}
+					if(entity instanceof Key) {
+						Key key = (Key)entity;
+						Map map = designEngine.getMap();
+						for(int i = 0; i < map.getArrayLength(); i++) {
+							for(int j = 0; j < map.getArrayLength(); j++) {
+								for(Entity entity1: map.getTile(i, j).getEntities()) {
+									if(entity1 instanceof Key) {
+										Key key1 = (Key)entity1;
+										if(key1.getUnique() == key.getUnique()) {
+											Alert alert = new Alert(AlertType.WARNING);
+											alert.setTitle("Warning");
+											alert.setHeaderText("Key is invalid");
+											alert.setContentText("You have already placed a key of this type on the map.");
+											alert.showAndWait();
+											valid = false;
+										}
+									}
+								}
+							}
+						}
+					}
+					if(valid) {
+						clipboardContent.put(entityFormat,entity);
+						dragboard.setContent(clipboardContent);
+						dragSource.set(cell);
+					}
 				}
 			});
 			return cell;
@@ -341,7 +386,7 @@ public class DesignScene {
 				if(!designEngine.validateMap(designEngine.getMap())) {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.setTitle("Warning");
-					alert.setHeaderText("Your map isn't valid. This could be because that you haven't added in a player or that you haven't added in your win conditions yet");
+					alert.setHeaderText("Your map isn't valid. This could be because that you haven't added in a player or that you haven't added in your win conditions yet or maybe your doors don't have keys");
 					alert.setContentText("Please fix this before trying to save again.");
 					alert.showAndWait();
 				}

@@ -49,14 +49,20 @@ public class DesignEngine {
 			return false;			// cannot place out of bounds
 		}
 		Tile tile = map.getTile(x, y);
-		if(tile.getEntities().isEmpty()) {
-			return true;
+		//if entity is obstacle or exit can only place on empty things
+		if(entity instanceof Obstacle || entity instanceof Exit) {
+			if(tile.getEntities().isEmpty()) {
+				return true;
+			}
+			return false;
 		}
+
 		for (Entity e : tile.getEntities()) {
 			if (e instanceof Obstacle) {
 				return false; 		// cannot place entities on top of boulders or walls
 			}
 			if (e instanceof Exit) {
+				//cannot palce entities onto exits
 				return false;
 			}
 		}
@@ -126,9 +132,6 @@ public class DesignEngine {
 							if (e instanceof Exit) { // if exit exists
 								exit = true;
 							}
-							if (e instanceof Player) {
-								player = true;
-							}
 						}
 					}
 				}
@@ -144,9 +147,6 @@ public class DesignEngine {
 						for (Entity e : map.getTile(i,j).getEntities()) { // look through every single entity
 							if (e instanceof Enemy) { // if enemy exists
 								enemy = true;
-							}
-							if (e instanceof Player) {
-								player = true;
 							}
 						}
 					}
@@ -169,9 +169,6 @@ public class DesignEngine {
 							if (e instanceof Boulder) {
 								boulder = true;
 							}
-							if (e instanceof Player) {
-								player = true;
-							}
 						}
 					}
 				}
@@ -188,9 +185,6 @@ public class DesignEngine {
 							if (e instanceof Treasure) { // if treasure exists
 								treasure = true;
 							}
-							if (e instanceof Player) {
-								player = true;
-							}
 						}
 					}
 				}
@@ -199,7 +193,38 @@ public class DesignEngine {
 				}
 			}
 		}
-
+		boolean door = false;
+		boolean key = false;
+		ArrayList<Door> doors = new ArrayList<>();
+		ArrayList<Key> keys = new ArrayList<>();
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
+					if (e instanceof Door) { // if treasure exists
+						doors.add((Door) e);
+					}
+					if(e instanceof Key) {
+						keys.add((Key) e);
+					}
+					if (e instanceof Player) {
+						player = true;
+					}
+				}
+			}
+		}
+		for(Door door2: doors) {
+			KeyEnum keyEnum = door2.getUnique();
+			for(Key key2: keys) {
+				if(key2.getUnique() == keyEnum) {
+					door = true;
+				}
+			}
+			if(!door) {
+				return false;
+			}
+			door = false;
+		}
+		//Validate that doors match key
 		if (player) {
 			return true;
 		}
