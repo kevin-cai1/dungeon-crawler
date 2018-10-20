@@ -46,7 +46,7 @@ public class DesignScene {
 	private int colIndex = -1;
 	private int rowIndex = -1;
 	private Observer mapObserver;
-	private WinObserver winObserver;
+	private WinStateObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
 	private String imgPath = "application/Sprites/";
 	public DesignScene(Stage s, DesignEngine designEngine) {

@@ -32,7 +32,6 @@ public class GameScene {
 	private GameEngine game;
 	private boolean playerMoved = false;
 	private String imgPath = "application/Sprites/";
-	
 	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
 
 	
@@ -44,7 +43,7 @@ public class GameScene {
 		this.scene = new Scene(generateGrid());
 		this.prevKeyPress = new ArrayList<>();
 	}
-		
+	
 	public void display() {
 		try {
 			handleMove();
@@ -86,7 +85,7 @@ public class GameScene {
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.SOUTH);
 							} else if (prevKeyPress.contains(KeyCode.K)) {
-								
+								playerMoved = game.shootBow(Direction.SOUTH);
 							} else {
 								playerMoved = game.movePlayerSouth();
 							}
@@ -95,7 +94,7 @@ public class GameScene {
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.EAST);
 							} else if (prevKeyPress.contains(KeyCode.K)) {
-								
+								playerMoved = game.shootBow(Direction.EAST);
 							} else {
 								playerMoved = game.movePlayerEast();
 							}							
@@ -104,7 +103,7 @@ public class GameScene {
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.WEST);
 							} else if (prevKeyPress.contains(KeyCode.K)) {
-								
+								playerMoved = game.shootBow(Direction.WEST);
 							} else {
 								playerMoved = game.movePlayerWest();
 							}						
@@ -146,7 +145,6 @@ public class GameScene {
 					prevKeyPress.add(event.getCode());
 				}
 
-				
 				if (game.getGameStateInterface() instanceof Win) {
 					displayWinScreen();
 					return;
@@ -154,7 +152,7 @@ public class GameScene {
 					
 				}
 				
-				/*if (playerMoved) {
+				if (playerMoved) {
 					// move enemies (run or move depending on invincibility)
 					if(game.getGameMap().getPlayer().getInvincibility()) {
 						game.runEnemies();
@@ -162,7 +160,7 @@ public class GameScene {
 					else {
 						game.moveEnemies();
 					}
-				}*/
+				}
 				
 				if (game.checkPlayerStatus() == false) {
 					displayLoseScreen();
@@ -358,7 +356,7 @@ public class GameScene {
 		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, Invincibility, Hover, WinConditionLabel);
 
 		
-		if (game.checkBoulderCondition()) {
+		if (game.getBoulderWinCondition()) {
 			HBox boulderWin = new HBox();
 			boulderWin.setStyle("-fx-background-color: #272727;");
 			boulderWin.setSpacing(10);
@@ -370,7 +368,7 @@ public class GameScene {
 			sidebar.getChildren().add(boulderWin);
 		}
 		
-		if (game.checkEnemyConditon()) {
+		if (game.getEnemyWinCondition()) {
 			HBox enemyWin = new HBox();
 			enemyWin.setStyle("-fx-background-color: #272727;");
 			enemyWin.setSpacing(10);
@@ -382,12 +380,12 @@ public class GameScene {
 			sidebar.getChildren().add(enemyWin);
 		}
 		
-		if (game.checkTreasureCondition()) {
+		if (game.getTreasureWinCondition()) {
 			HBox treasureWin = new HBox();
 			treasureWin.setStyle("-fx-background-color: #272727;");
 			treasureWin.setSpacing(10);
 			Label treasures = new Label();
-			treasures.setText("Treasures: " + player.getTreasure() + "/" + game.getNumTreasures());
+			treasures.setText("Treasures: " + player.getTreasure() + "/" + game.getNumberTreasures());
 			treasures.setFont(textFont);
 			treasures.setTextFill(Color.GREY);
 			treasureWin.getChildren().add(treasures);

@@ -2,13 +2,8 @@ package ass2;
 
 import java.util.ArrayList;
 
-import org.hamcrest.core.IsInstanceOf;
-
-import javafx.scene.layout.TilePane;
-
 public class GameEngine {
 	private Map gameMap;
-	//private GameState gameState;
 	private boolean enemyWinCondition;
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
@@ -18,16 +13,13 @@ public class GameEngine {
 	private GameStateInterface gameStateInterface;
 	private int totalEnemies;
 	private int numSwitches;
-	private boolean invincibility;
 	
 	public GameEngine(Map map) {
 		this.gameMap = map;
-		//this.gameState = GameState.Play;
 		this.enemyWinCondition = false;
 		this.boulderWinCondition = false;
 		this.treasureWinCondition = false;
 		this.arrayLength = gameMap.getArrayLength();
-		this.numTreasures = getNumTreasures();
 		this.gameStateInterface = new Play();
 		this.numTreasures = getNumItems()[0];
 		this.totalEnemies = getNumItems()[2];
@@ -36,42 +28,61 @@ public class GameEngine {
 		System.out.println(this.boulderWinCondition + "enemy" + this.enemyWinCondition + "treasure" + this.treasureWinCondition);
 	}
 	
-	/**
-	 * returns the gamestate
-	 * @return gameState (can be Paused, Win, Play, Quit, Menu, Lose, Design)
-	 */
-	/*public GameState getGameState() {
-		return gameState;
+	public GameStateInterface getGameStateInterface() {
+		return this.gameStateInterface;
 	}
 	
-	public void setGameState(GameState state) {
-		gameState = state;
-	}*/
-	
-	public boolean checkBoulderCondition() {
+	/**
+	 * returns if the boulder win condition is set
+	 * @return true if boulder win condition is set
+	 */
+	public boolean getBoulderWinCondition() {
 		return this.boulderWinCondition;
 	}
 	
-	public boolean checkTreasureCondition() {
-		return this.treasureWinCondition;
-	}
-	
-	public boolean checkEnemyConditon() {
+	/**
+	 * returns if the enemy win condition is set
+	 * @return true if enemy win condition is set
+	 */
+	public boolean getEnemyWinCondition() {
 		return this.enemyWinCondition;
 	}
 	
-	public int getNumTreasures() {
+	/**
+	 * returns if the treasure win condition is set
+	 * @return true if treasure win condition is set
+	 */
+	public boolean getTreasureWinCondition() {
+		return this.treasureWinCondition;
+	}
+	
+	/**
+	 * @return total number of treasure on the map
+	 */
+	public int getNumberTreasures() {
 		return this.numTreasures;
 	}
 	
+	/**
+	 * @return total number of enemies on the map
+	 */
 	public int getNumEnemies() {
 		return this.totalEnemies;
 	}
 	
+	/**
+	 * @return total number of switches on the map
+	 */
 	public int getNumSwitches() {
 		return this.numSwitches;
 	}
 	
+	/**
+	 * counts the number of specific entities that exist within the map
+	 * iterates through the map making note of each treasure, switch or enemy
+	 * used for win condition testing
+	 * @return array with count of various items: array[0] for treasure, array[1] for switches, array[2] for enemies
+	 */
 	private int[] getNumItems() {
 		int[] numItems = {0,0,0};	//numItems[0] for treasure, numItems[1] for switches, numItems[2] for enemies
 		for (int i = 0; i < arrayLength; i++) {
@@ -90,6 +101,9 @@ public class GameEngine {
 		return numItems;
 	}
 	
+	/**
+	 * @return Map object associated with this game
+	 */
 	public Map getGameMap() {
 		return gameMap;
 	}
@@ -98,7 +112,7 @@ public class GameEngine {
 	 * runs the game in 'play' mode (game mode 1)
 	 * @return the gameState (can be win, lose, play depending on how the player moved)
 	 */
-	public GameStateInterface runGame() {
+	/*public GameStateInterface runGame() {
 		gameStateInterface = new Play();
 		//gameState = GameState.Play;
 		setWinConditions();
@@ -193,8 +207,14 @@ public class GameEngine {
 				return gameStateInterface;
 			}
 		}
-	}
+	}*/
 	
+	/**
+	 * handles the ticking effect of bombs and invincibility
+	 * iterates through the list of active bombs, calling its tick() function
+	 * existence of bombs is handled independently by each bomb
+	 * @return gameState interface representing the updated state of the current game
+	 */
 	public GameStateInterface tickEffects() {
 		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>(); 
 		if (tickingBombs != null) {
@@ -221,9 +241,6 @@ public class GameEngine {
 	 * moves the player up one tile
 	 * calls validateMove and moveConsequences to ensure the move is valid
 	 * and the rest of the map and entities perform actions based on the players move
-	 * @param map
-	 * @param playerLocation initial location of the player
-	 * @param player
 	 * @return true if the player has been successfully moved up one tile
 	 */
 	public boolean movePlayerNorth() {
@@ -258,9 +275,6 @@ public class GameEngine {
 	 * moves the player down one tile
 	 * calls validateMove and moveConsequences to ensure the move is valid
 	 * and the rest of the map and entities perform actions based on the players move
-	 * @param map
-	 * @param playerLocation initial location of the player
-	 * @param player
 	 * @return true if the player has been successfully moved down one tile
 	 */
 	public boolean movePlayerSouth() {
@@ -292,9 +306,6 @@ public class GameEngine {
 	 * moves the player right one tile
 	 * calls validateMove and moveConsequences to ensure the move is valid
 	 * and the rest of the map and entities perform actions based on the players move
-	 * @param map
-	 * @param playerLocation initial location of the player
-	 * @param player
 	 * @return true if the player has been successfully moved right one tile
 	 */
 	public boolean movePlayerEast() {
@@ -326,9 +337,6 @@ public class GameEngine {
 	 * moves the player left one tile
 	 * calls validateMove and moveConsequences to ensure the move is valid
 	 * and the rest of the map and entities perform actions based on the players move
-	 * @param map
-	 * @param playerLocation initial location of the player
-	 * @param player
 	 * @return true if the player has been successfully moved left one tile
 	 */
 	public boolean movePlayerWest() {
@@ -357,6 +365,10 @@ public class GameEngine {
 		
 	}
 	
+	/**
+	 * calculates the number of switches on the map triggered at the time of call
+	 * @return integer count of number of switches triggered
+	 */
 	public int switchesTriggered() {
 		int switchesTriggered = 0;
 		Tile[][] map = gameMap.getMap();
@@ -376,6 +388,10 @@ public class GameEngine {
 		return switchesTriggered;
 	}
 	
+	/**
+	 * calculates the number of enemies killed by the player at time of call
+	 * @return integer count of number of enemies killed
+	 */
 	public int enemiesKilled() {
 		int enemies = 0;
 		Tile[][] map = gameMap.getMap();
@@ -383,13 +399,13 @@ public class GameEngine {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
 				for (Entity e : tile.getEntities()) { // look through every single entity
-					if (e instanceof Enemy) { // every floor switch
+					if (e instanceof Enemy) { // every enemy
 						enemies++;
 					}
 				}
 			}
 		}
-		return enemies;
+		return getNumEnemies() - enemies;
 	}
 	
 	/**
@@ -942,23 +958,5 @@ public class GameEngine {
 		return gameStateInterface.checkState(this);
 	}
 	
-	public GameStateInterface getGameStateInterface() {
-		return this.gameStateInterface;
-	}
 	
-	public boolean getBoulderWinCondition() {
-		return this.boulderWinCondition;
-	}
-	
-	public boolean getEnemyWinCondition() {
-		return this.enemyWinCondition;
-	}
-	
-	public boolean getTreasureWinCondition() {
-		return this.treasureWinCondition;
-	}
-	
-	public int getNumberTreasures() {
-		return this.numTreasures;
-	}
 }
