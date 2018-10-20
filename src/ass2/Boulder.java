@@ -13,5 +13,8 @@ public class Boulder extends Obstacle{
 		// TODO Auto-generated method stub
 		return "Boulder";
 	}
+	public String imgName() {
+		return "boulder";
+	}
 	
 }

@@ -34,3 +34,15 @@
 #quit:hover {
     -fx-image: url('./Sprites/quit_selected.png');
 }
+#load {
+    -fx-image: url('./Sprites/load_button.png');
+}
+#load:hover {
+    -fx-image: url('./Sprites/load_selected.png');
+}
+#resumeDesign {
+    -fx-image: url('./Sprites/resume_design_button.png');
+}
+#resumeDesign:hover {
+    -fx-image: url('./Sprites/resume_design_selected.png');
+}

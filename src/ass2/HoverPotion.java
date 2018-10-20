@@ -17,4 +17,7 @@ public class HoverPotion extends Potion{
 	public String toString() {
 		return "HoverPotion";
 	}
+	public String imgName() {
+		return "hover_potion";
+	}
 }

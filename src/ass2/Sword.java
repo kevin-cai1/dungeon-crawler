@@ -31,7 +31,9 @@ public class Sword extends Entity{
 	public String toString() {
 		return "Sword";
 	}
-	
+	public String imgName() {
+		return "sword";
+	}
 	
 	
 	

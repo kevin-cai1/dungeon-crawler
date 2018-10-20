@@ -76,6 +76,9 @@ public class DesignEngine {
 	public Map getMap() {
 		return this.map;
 	}
+	public void setMap(Map map) {
+		this.map = map;
+	}
 	/**
 	 * checks what win conditions there are for the map
 	 */
@@ -102,27 +105,7 @@ public class DesignEngine {
 			}
 		}
 	}
-/**
- * saves the map into a text file with the input.txt
- * @param map
- * @param fileName
- */
-	public void save(String fileName) {
-		Map savedMap = map;
-		try {
-			FileOutputStream f = new FileOutputStream(new File(fileName+".txt"));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-			o.writeObject(savedMap);
-			o.close();
-			f.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Error initializing stream");
-		}
 
-	}
 	
 	/**
 	 * 

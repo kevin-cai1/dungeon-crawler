@@ -1,14 +1,10 @@
 package ass2;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Enemy extends Entity{
 	private static final long serialVersionUID = -6012493085994945056L;
+	protected GetAction getAction;
 	protected LinkedList<Tile> queue;
 	protected Set<Tile> visited;
 	protected HashMap<Tile, Tile> parent; //child on the left, parent on the right
@@ -20,7 +16,6 @@ public abstract class Enemy extends Entity{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public abstract void getAction(Map map);
 	/**
 	 * clears the map searching
 	 */
@@ -35,14 +30,10 @@ public abstract class Enemy extends Entity{
 	 * @param queuePop
 	 */
 	public void visitCheck(Tile adjacent, Tile queuePop) {
-		boolean obstacle = false;
+		boolean obstacle;
 		if(!visited.contains(adjacent)) {
 			visited.add(adjacent);
-			for(Entity entity: adjacent.getEntities()) {
-				if((entity instanceof Obstacle)) {
-					obstacle = true;
-				}
-			}
+			obstacle = obstacleCheck(adjacent);
 			if(!obstacle){
 				if(!queue.contains(adjacent)){
 					queue.offer(adjacent);
@@ -66,16 +57,12 @@ public abstract class Enemy extends Entity{
 		
 		Tile tile = map.getEntityLocation(this.getId());//the closest reachable tile initially set to the hunter
 		Tile tempTile;
-		boolean obstacle = false;
+		boolean obstacle;
 		for(int i = 0; i < length; i++) { //20 being map size
 			for(int j = 0; j < length; j++) {
 				tempTile = tileMap[i][j];
 				temp = distCalc(tempTile.getX(),tempTile.getY(),dest.getX(), dest.getY());
-				for(Entity e: tempTile.getEntities()) {
-					if(e instanceof Obstacle) {
-						obstacle = true;
-					}
-				}
+				obstacle = obstacleCheck(tempTile);
 				if(!obstacle && access(map, tempTile) && temp <= dist) {
 					dist = temp;
 					tile = tempTile;
@@ -87,7 +74,7 @@ public abstract class Enemy extends Entity{
 	}
 	// TODO Auto-generated method stub
 	/**
-	 * returns true if the map is accessible
+	 * returns true if the position is accessible
 	 * @param map
 	 * @return
 	 */
@@ -201,57 +188,23 @@ public abstract class Enemy extends Entity{
 			makePath(closest, shortest);
 		}
 	}
-	public void runAway(Map map) {
-		Tile playerPos = map.getPlayerLocation();
-		Tile curPos = map.getEntityLocation(this.getId());
-    	int curX = curPos.getX();
-    	int curY = curPos.getY();
-    	int playerX = playerPos.getX();
-    	int playerY = playerPos.getY();
-    	int length = map.getArrayLength();
-		Tile tile0 = null;
-		Tile tile1 = null;
-		Tile tile2 = null;
-		Tile tile3 = null;
-		double[] dist = new double[4];
-		if(curY-1 >= 0) {
-			tile0 = map.getTile(curX, curY-1);//North
-			dist[0] = distCalc(playerX, playerY,tile0.getX(),tile0.getY());
-		}
-		if(curY+1 < length) {
-			tile1 = map.getTile(curX, curY+1);//South
-			dist[1] = distCalc(playerX, playerY,tile1.getX(),tile1.getY());
-		}
-		if(curX+1 < length) {
-			tile2 = map.getTile(curX+1, curY);//East
-			dist[2] = distCalc(playerX, playerY,tile2.getX(),tile2.getY());
-		}
-		if(curX-1 >= 0) {
-			tile3 = map.getTile(curX-1, curY);//West
-			dist[3] = distCalc(playerX, playerY,tile3.getX(),tile3.getY());
-		}
-		//now find the largest out of the 4
-		double largest = dist[0];
-		for(double e: dist) {
-			if(largest < e){
-				largest = e;
+	public boolean obstacleCheck(Tile tile){
+		ArrayList<Entity> entityArrayList = tile.getEntities();
+		boolean obstacle = false;
+		for(Entity entity: entityArrayList){
+			if(entity instanceof  Obstacle){
+				obstacle = true;
 			}
 		}
-		for(int i = 0; i < 4; i++) {
-			if(largest == dist[0]) {
-				shift(map, tile0);
-			}
-			else if (largest == dist[1]) {
-				shift(map, tile1);
-			}
-			else if (largest == dist[2]) {
-				shift(map, tile2);
-			}
-			else if (largest == dist[3]) {
-				shift(map, tile3);
-			}
-		}
+		return obstacle;
 	}
 	public abstract void shift(Map map, Tile tile);
+	public void getAction(Map map) {
+		getAction.getAction(map, this);
+	}
+	public void setAction(GetAction getAction) {
+		this.getAction = getAction;
+	}
+	public abstract void setOgAction();
 }
 

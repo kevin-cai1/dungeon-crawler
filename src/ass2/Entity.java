@@ -18,4 +18,6 @@ public abstract class Entity implements Serializable {
 	}
 
 	public abstract String toString();
+
+	public abstract String imgName();
 }

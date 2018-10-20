@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javax.xml.transform.Source;
 
@@ -22,6 +23,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -35,7 +37,7 @@ public class DesignScene {
 	private Stage s;
 	private String title;
 	private FXMLLoader fxmlLoader;
-	private int mapSize = 10;
+	private Scene scene;
 	private int tileSize;
 	private ListView<String> listView;
 	private GridPane gameGrid;
@@ -46,11 +48,12 @@ public class DesignScene {
 	private Observer mapObserver;
 	private WinObserver winObserver;
 	private static final DataFormat entityFormat = new DataFormat("ass2.Entity.java");
-	public DesignScene(Stage s) {
+	private String imgPath = "application/Sprites/";
+	public DesignScene(Stage s, DesignEngine designEngine) {
 		this.s = s;
 		this.title = "Design";
 		this.fxmlLoader = new FXMLLoader(getClass().getResource("Design.fxml"));
-		this.designEngine = new DesignEngine(mapSize); //TODO TEMPORARY SET VALUE
+		this.designEngine = designEngine;
 		this.tileSize = 85 - 3 * designEngine.getMap().getArrayLength();
 		this.gameGrid = new GridPane();
 		gameGrid.setStyle("-fx-grid-lines-visible: true");
@@ -61,23 +64,20 @@ public class DesignScene {
 	 * drag handles the drag and drop in the scene
 	 */
 	private void initEventHandlers() {
-		s.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				// TODO Auto-generated method stub
-				if(event.getCode() == KeyCode.ESCAPE) {
-					try {
-						designEngine.save("temp_design");
-						PauseScene pauseScene = new PauseScene(s);
-						pauseScene.display();
-					}
-					catch(Exception e) {
-						e.printStackTrace();
-					}
+		scene.addEventFilter(KeyEvent.KEY_PRESSED,Event -> {
+			System.out.println(Event.getCode());
+			// TODO Auto-generated method stub
+			if(Event.getCode() == KeyCode.ESCAPE) {
+				try {
+					MapSave mapSave = new MapSave();
+					mapSave.save("temp_design",designEngine.getMap());
+					DesignPauseScene pauseScene = new DesignPauseScene(s);
+					pauseScene.display();
+				}
+				catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
-			
 		});
 		gameGrid.setOnDragDetected(Event -> {
 			Node node = Event.getPickResult().getIntersectedNode();
@@ -130,7 +130,8 @@ public class DesignScene {
 	}
 	public void display() {
 		s.setTitle(title);
-		s.setScene(new Scene(generateSpace()));
+		this.scene = new Scene(generateSpace());
+		s.setScene(scene);
 		s.setResizable(false);
 		s.sizeToScene();
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
@@ -239,6 +240,10 @@ public class DesignScene {
 			entity = new Coward(map.genID());
 		} else if (name.equals("Door")) {
 			entity = new Door(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Door1")) {
+			entity = new Door(KeyEnum.MEDIUM, map.genID());
+		} else if(name.equals("Door2")) {
+			entity = new Door(KeyEnum.LARGE, map.genID());
 		} else if (name.equals("Exit")) {
 			entity = new Exit(map.genID());
 		} else if (name.equals("Floor Switch")) {
@@ -253,6 +258,10 @@ public class DesignScene {
 			entity = new InvincibilityPotion(map.genID());
 		} else if (name.equals("Key")) {
 			entity = new Key(KeyEnum.SMALL,map.genID());
+		} else if (name.equals("Key1")) {
+			entity = new Key(KeyEnum.MEDIUM, map.genID());
+		} else if (name.equals("Key2")) {
+			entity = new Key(KeyEnum.LARGE, map.genID());
 		} else if (name.equals("Pit")) {
 			entity = new Pit(map.genID());
 		} else if (name.equals("Player")) {
@@ -270,13 +279,26 @@ public class DesignScene {
 	}
 	private VBox setDesignBar() {
 		VBox vBox = new VBox();
-		ImageView save = new ImageView(new Image("application/Sprites/temp_save_button.png"));
+		ImageView save = new ImageView(new Image(imgPath + "save_button.png"));
+		save.setOnMouseEntered(Event -> {
+			save.setImage(new Image(imgPath + "save_selected.png"));
+		});
+		save.setOnMouseExited(Event -> {
+			save.setImage(new Image(imgPath + "save_button.png"));
+		});
+		ImageView clear = new ImageView(new Image(imgPath + "clear_button.png"));
+		clear.setOnMouseEntered(Event -> {
+			clear.setImage(new Image(imgPath + "clear_selected.png"));
+		});
+		clear.setOnMouseExited(Event -> {
+			clear.setImage(new Image(imgPath + "clear_button.png"));
+		});
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
 		listView = new ListView<String>();
 		ObservableList<String> items = FXCollections.observableArrayList(
-				"Arrow", "Bomb", "Boulder", "Coward", "Door", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
+				"Arrow", "Bomb", "Boulder", "Coward", "Door","Door1","Door2", "Exit", "Floor Switch", "Hound", "Hover Potion", "Hunter", "Invincibility Potion", "Key","Key1","Key2", "Pit", "Player", "Strategist", "Sword", "Treasure", "Wall");
 		listView.setItems(items);
 		listView.setCellFactory(param -> {
 			ListCell<String> cell = new ListCell<String>() {
@@ -289,44 +311,9 @@ public class DesignScene {
 						setText(null);
 						setGraphic(null);
 					} else {
-						if (name.equals("Arrow")) {
-							imageView.setImage(new Image("application/Sprites/arrow.png"));
-						} else if (name.equals("Bomb")) {
-							imageView.setImage(new Image("application/Sprites/bomb_unlit.png"));
-						} else if (name.equals("Boulder")) {
-							imageView.setImage(new Image("application/Sprites/boulder.png"));
-						} else if (name.equals("Coward")) {
-							imageView.setImage(new Image("application/Sprites/coward.png"));
-						} else if (name.equals("Door")) {
-							imageView.setImage(new Image("application/Sprites/closed_door.png"));
-						} else if (name.equals("Exit")) {
-							imageView.setImage(new Image("application/Sprites/dngn_exit_abyss.png"));
-						} else if (name.equals("Floor Switch")) {
-							imageView.setImage(new Image("application/Sprites/pressure_plate.png"));
-						} else if (name.equals("Hound")) {
-							imageView.setImage(new Image("application/Sprites/hound.png"));
-						} else if (name.equals("Hover Potion")) {
-							imageView.setImage(new Image("application/Sprites/hover_potion.png"));
-						} else if (name.equals("Hunter")) {
-							imageView.setImage(new Image("application/Sprites/hunter.png"));
-						} else if (name.equals("Invincibility Potion")) {
-							imageView.setImage(new Image("application/Sprites/invincibility_potion.png"));
-						} else if (name.equals("Key")) {
-							imageView.setImage(new Image("application/Sprites/key.png"));
-						} else if (name.equals("Pit")) {
-							imageView.setImage(new Image("application/Sprites/shaft.png"));
-						} else if (name.equals("Player")) {
-							imageView.setImage(new Image("application/Sprites/player.png"));
-						} else if (name.equals("Strategist")) {
-							imageView.setImage(new Image("application/Sprites/strategist.png"));
-						} else if (name.equals("Sword")) {
-							imageView.setImage(new Image("application/Sprites/sword.png"));
-						} else if (name.equals("Treasure")) {
-							imageView.setImage(new Image("application/Sprites/gold_pile.png"));
-						} else if (name.equals("Wall")) {
-							imageView.setImage(new Image("application/Sprites/wall.png"));
-						}
-	
+						//changes name to lowercase, replaces spaces with underscore to match filename
+						String imgName = name.replaceAll(" ", "_").toLowerCase();
+						imageView.setImage(new Image(imgPath + imgName + ".png"));
 						setText(name);
 						setGraphic(imageView);
 					}
@@ -351,11 +338,31 @@ public class DesignScene {
 
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				designEngine.save("save1");
+				TextInputDialog dialog = new TextInputDialog("Map Name");
+				dialog.setTitle("Map Save");
+				dialog.setHeaderText("Save Your Map");
+				dialog.setContentText("Please enter the map name:");
+				Optional<String> result = dialog.showAndWait();
+				if(result.isPresent()) {
+					MapSave mapSave = new MapSave();
+					// TODO Auto-generated method stub
+					mapSave.save(result.get(),designEngine.getMap());
+				}
+
 			}
 		});
-		vBox.getChildren().addAll(heading, listView, save);
+		clear.setOnMouseClicked(Event -> {
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Confirm clear");
+			alert.setHeaderText("Clear the map");
+			alert.setContentText("Are you sure you want to continue?");
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				designEngine.getMap().setMapTiles(); //clears the map?
+				mapObserver.update(gameGrid, tileSize);
+			}
+		});
+		vBox.getChildren().addAll(heading, listView, save, clear);
 		
 		return vBox;
 	}

@@ -31,6 +31,7 @@ public class GameScene {
 	private int mapSize = 10;
 	private GameEngine game;
 	private boolean playerMoved = false;
+	private String imgPath = "application/Sprites/";
 	
 	private ArrayList<KeyCode> prevKeyPress; //stores all the previously pressed keys which have not been unpressed
 
@@ -68,11 +69,14 @@ public class GameScene {
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
+				playerMoved = false;
 				if(!(prevKeyPress.contains(event.getCode()))) {
 					switch (event.getCode()) {
 						case W:
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.NORTH);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								playerMoved = game.shootBow(Direction.NORTH);
 							} else {
 								playerMoved = game.movePlayerNorth();
 
@@ -81,6 +85,8 @@ public class GameScene {
 						case S:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.SOUTH);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
 							} else {
 								playerMoved = game.movePlayerSouth();
 							}
@@ -88,20 +94,23 @@ public class GameScene {
 						case D:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.EAST);
-							}
-							else {
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
+							} else {
 								playerMoved = game.movePlayerEast();
 							}							
 							break;
 						case A:		
 							if(prevKeyPress.contains(KeyCode.L)) {
 								playerMoved = game.swing(Direction.WEST);
+							} else if (prevKeyPress.contains(KeyCode.K)) {
+								
 							} else {
 								playerMoved = game.movePlayerWest();
 							}						
 							break;
 						case B:		
-							//playerMoved = game.placeBomb();
+							playerMoved = game.placeBomb();
 							System.out.println("DROP BOMB");
 							break;
 						case UP:		
@@ -121,6 +130,7 @@ public class GameScene {
 							
 							break;
 						case L:
+							playerMoved = false;
 							break;
 						case ESCAPE:	
 							/*if (game.getGameState() == GameState.Play) {	// player is pausing menu
@@ -144,24 +154,20 @@ public class GameScene {
 					
 				}
 				
-				/*if (playerMoved) {
+				if (playerMoved) {
 					// move enemies (run or move depending on invincibility)
-					if(game.getGameMap().getPlayer().getInvincibility()) {
-						game.runEnemies();
-					}
-					else {
-						game.moveEnemies();
-					}
-				}*/
+					game.moveEnemies();
+				}
 				
 				if (game.checkPlayerStatus() == false) {
 					displayLoseScreen();
 					return;
 				}
-				
-				if (game.tickEffects() instanceof Lose) {
-					displayLoseScreen();
-					return;
+				if (playerMoved) {
+					if (game.tickEffects() instanceof Lose) {
+						displayLoseScreen();
+						return;
+					}
 				}
 				
 				if (game.checkGameState() == true) {
@@ -200,7 +206,7 @@ public class GameScene {
             for (int x = 0 ; x < gameMap[y].length ; x++) {
                 //ImageView imageView = new ImageView(grid[y][x]);
             	// add a floor to every single tile ^^
-            	ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
+            	ImageView floorImage = new ImageView(new Image(imgPath + "floor.png"));
                 floorImage.setFitWidth(tileSize);
                 floorImage.setFitHeight(tileSize);
                 gameGrid.add(floorImage, x, y);
@@ -235,7 +241,7 @@ public class GameScene {
 		HBox Sword = new HBox();
 		Sword.setStyle("-fx-background-color: #272727;");
 		Sword.setSpacing(10);
-		ImageView sword = new ImageView(new Image("application/Sprites/sword.png"));
+		ImageView sword = new ImageView(new Image(imgPath + "sword.png"));
 		sword.setFitHeight(40);
 		sword.setFitWidth(40);
 		Label swordCount = new Label();
@@ -247,7 +253,7 @@ public class GameScene {
 		HBox Bomb = new HBox();
 		Bomb.setStyle("-fx-background-color: #272727;");
 		Bomb.setSpacing(10);
-		ImageView bomb = new ImageView(new Image("application/Sprites/bomb_unlit.png"));
+		ImageView bomb = new ImageView(new Image(imgPath + "bomb.png"));
 		bomb.setFitHeight(40);
 		bomb.setFitWidth(40);
 		Label bombCount = new Label();
@@ -259,7 +265,7 @@ public class GameScene {
 		HBox Arrow = new HBox();
 		Arrow.setStyle("-fx-background-color: #272727;");
 		Arrow.setSpacing(10);
-		ImageView arrow = new ImageView(new Image("application/Sprites/arrow.png"));
+		ImageView arrow = new ImageView(new Image(imgPath + "arrow.png"));
 		arrow.setFitHeight(40);
 		arrow.setFitWidth(40);
 		Label arrowCount = new Label();
@@ -271,7 +277,7 @@ public class GameScene {
 		HBox Treasure = new HBox();
 		Treasure.setStyle("-fx-background-color: #272727;");
 		Treasure.setSpacing(10);
-		ImageView treasure = new ImageView(new Image("application/Sprites/gold_pile.png"));
+		ImageView treasure = new ImageView(new Image(imgPath + "treasure.png"));
 		treasure.setFitHeight(40);
 		treasure.setFitWidth(40);
 		Label treasureCount = new Label();
@@ -285,27 +291,27 @@ public class GameScene {
 		Keys.setSpacing(10);
 		ImageView key1;
 		if (player.hasKey(KeyEnum.SMALL) == true) {
-			key1 = new ImageView(new Image("application/Sprites/key.png"));
+			key1 = new ImageView(new Image(imgPath + "key.png"));
 		} else {
-			key1 = new ImageView(new Image("application/Sprites/blank_key.png"));
+			key1 = new ImageView(new Image(imgPath + "blank_key.png"));
 		}
 		key1.setFitHeight(40);
 		key1.setFitWidth(40);
 		
 		ImageView key2;
 		if (player.hasKey(KeyEnum.MEDIUM) == true) {
-			key2 = new ImageView(new Image("application/Sprites/key1.png"));
+			key2 = new ImageView(new Image(imgPath + "key1.png"));
 		} else {
-			key2 = new ImageView(new Image("application/Sprites/blank_key.png"));
+			key2 = new ImageView(new Image(imgPath + "blank_key.png"));
 		}
 		key2.setFitHeight(40);
 		key2.setFitWidth(40);
 		
 		ImageView key3;
 		if (player.hasKey(KeyEnum.LARGE) == true) {
-			key3 = new ImageView(new Image("application/Sprites/key2.png"));
+			key3 = new ImageView(new Image(imgPath + "key2.png"));
 		} else {
-			key3 = new ImageView(new Image("application/Sprites/blank_key.png"));
+			key3 = new ImageView(new Image(imgPath + "blank_key.png"));
 		}
 		key3.setFitHeight(40);
 		key3.setFitWidth(40);
@@ -315,7 +321,7 @@ public class GameScene {
 		HBox Invincibility = new HBox();
 		Invincibility.setStyle("-fx-background-color: #272727;");
 		Invincibility.setSpacing(10);
-		ImageView invincibility = new ImageView(new Image("application/Sprites/invincibility_potion.png"));
+		ImageView invincibility = new ImageView(new Image(imgPath + "invincibility_potion.png"));
 		invincibility.setFitHeight(40);
 		invincibility.setFitWidth(40);
 		Label invincibilityCount = new Label();
@@ -327,7 +333,7 @@ public class GameScene {
 		HBox Hover = new HBox();
 		Hover.setStyle("-fx-background-color: #272727;");
 		Hover.setSpacing(10);
-		ImageView hover = new ImageView(new Image("application/Sprites/hover_potion.png"));
+		ImageView hover = new ImageView(new Image(imgPath + "hover_potion.png"));
 		hover.setFitHeight(40);
 		hover.setFitWidth(40);
 		Label hoverSet = new Label();
@@ -388,104 +394,62 @@ public class GameScene {
 	}
 	
 	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/floor.png");
-		if (e instanceof Player) {
-			return new Image("application/Sprites/player.png");
-		} else if (e instanceof Bomb) {
-			/*switch (((Bomb) e).getTimer()) {
-			case 4:		// unlit
-				
-				break;
-			case 3:
-				
-				break;
-			case 2:
-				
-				break;
-			case 1:
-				
-				break;
-			*/
-			
-			return new Image("application/Sprites/bomb_unlit.png");
-		} else if (e instanceof Boulder) { 
-			return new Image("application/Sprites/boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image("application/Sprites/pressure_plate.png");		
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/invincibility_potion.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/hover_potion.png");
-		} else if (e instanceof Key) {
+		Image image = new Image(imgPath + "floor.png");
+		
+		if (e instanceof Key) {
 			KeyEnum keyID = ((Key) e).getUnique();
 			if (keyID == KeyEnum.SMALL) {
-				return new Image("application/Sprites/key.png");
+				return new Image(imgPath + "key.png");
 			} else if (keyID == KeyEnum.MEDIUM) {
-				return new Image("application/Sprites/key1.png");
+				return new Image(imgPath + "key1.png");
 			} else if (keyID == KeyEnum.LARGE) {
-				return new Image("application/Sprites/key2.png");
+				return new Image(imgPath + "key2.png");
 			}
-			return new Image("application/Sprites/key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image("application/Sprites/gold_pile.png");
-		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image("application/Sprites/hunter.png");
-			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/strategist.png");
-			} else if (e instanceof Hound) {
-				return new Image("application/Sprites/hound.png");
-			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/coward.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/shaft.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image("application/Sprites/dngn_exit_abyss.png");
 		} else if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
 				KeyEnum doorID = ((Door) e).getUnique();
 				if (doorID == KeyEnum.SMALL) {
-					return new Image("application/Sprites/closed_door.png");
+					return new Image(imgPath + "door.png");
 				} else if (doorID == KeyEnum.MEDIUM) {
-					return new Image("application/Sprites/closed_door1.png");
+					return new Image(imgPath + "door1.png");
 				} else if (doorID == KeyEnum.LARGE) {
-					return new Image("application/Sprites/closed_door2.png");
+					return new Image(imgPath + "door2.png");
 				}
-				return new Image("application/Sprites/closed_door.png");
+				return new Image(imgPath + "door.png");
 			} else {
-				return new Image("application/Sprites/open_door.png");
+				return new Image(imgPath + "open_door.png");
 			}
-		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/wall.png");
+		} else if (e instanceof Bomb) { 
+			Bomb bomb = (Bomb)e;
+			int bombStatus = bomb.getTimer();
+			switch (bombStatus) {
+			case 3:
+				return new Image(imgPath + "bomb_lit_1.png");
+			case 2:
+				return new Image(imgPath + "bomb_lit_2.png");
+			case 1:
+				return new Image(imgPath + "bomb_lit_3.png");
+			case 0:
+				return new Image(imgPath + "bomb_lit_4.png");
+			default:
+				return new Image(imgPath + "bomb.png");
+			}
+		} else if (e instanceof Floor == false) {
+			return new Image(imgPath + e.imgName() + ".png");
 		}
 		return image;
 	}
 	
 	private void pauseGame() {
 		try {
-			DesignEngine designEngine = new DesignEngine(10);
-			designEngine.save("temp");
+			MapSave mapSave = new MapSave();
+			mapSave.save("temp",game.getGameMap());
 			PauseScene pauseScene = new PauseScene(s);
 			pauseScene.display();
 		} catch (Exception e) {
 			e.printStackTrace();
 			// TODO: handle exception
-		}
-	}
-	
-	private void goHome() {
-		try {
-			MenuScene menuScene = new MenuScene(s);
-			menuScene.display();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	

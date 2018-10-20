@@ -19,4 +19,7 @@ public class Key extends Entity{
 	public String toString() {
 		return "Key";
 	}
+	public String imgName() {
+		return "key";
+	}
 }

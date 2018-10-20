@@ -31,9 +31,22 @@ public class MenuController {
 			
 	}
 	@FXML
+	public void loadGame() {
+		// load scene for game
+		LoadScene load = new LoadScene(s);
+		try {
+			load.display();
+			System.out.println("Is this being run constantly");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	/*
+	@FXML
 	public void playGame() {
 		// load scene for game
-		DesignEngine designEngine = new DesignEngine(10);//temp code
 		GameEngine gameEngine = new GameEngine(generateMap());
 		GameScene game = new GameScene(s, gameEngine);
 		try {
@@ -44,12 +57,12 @@ public class MenuController {
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	
 	@FXML
 	public void designMap() {
 		// load scene for design`
-		DesignScene design = new DesignScene(s);
+		DesignScene design = new DesignScene(s, new DesignEngine(10)); //arbitrary value
 		try {
 			design.display();
 		} catch (Exception e) {
@@ -86,7 +99,7 @@ public class MenuController {
 		t.addEntity(new Wall(gameMap.genID()));
 		
 		t = gameMap.getTile(4, 2);
-		t.addEntity(new Boulder(gameMap.genID()));
+		t.addEntity(new Hunter(gameMap.genID()));
 		
 		t = gameMap.getTile(4, 6);
 		t.addEntity(new Wall(gameMap.genID()));
@@ -119,7 +132,7 @@ public class MenuController {
 		t.addEntity(new Door(KeyEnum.MEDIUM, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 3);
-		t.addEntity(new Key(KeyEnum.MEDIUM, gameMap.genID()));
+		t.addEntity(new Bomb(gameMap, gameMap.genID()));
 		
 		t = gameMap.getTile(8, 2);
 		t.addEntity(new Door(KeyEnum.LARGE, gameMap.genID()));
@@ -128,7 +141,7 @@ public class MenuController {
 		t.addEntity(new Key(KeyEnum.LARGE, gameMap.genID()));
 		
 		t = gameMap.getTile(6, 4);
-		t.addEntity(new Bomb(gameMap,gameMap.genID()));
+		t.addEntity(new Arrow(gameMap.genID(),gameMap));
 		
 		t = gameMap.getTile(6, 6);
 		t.addEntity(new Pit(gameMap.genID()));

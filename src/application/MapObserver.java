@@ -8,12 +8,14 @@ import ass2.Door;
 import ass2.Enemy;
 import ass2.Entity;
 import ass2.Exit;
+import ass2.Floor;
 import ass2.FloorSwitch;
 import ass2.Hound;
 import ass2.HoverPotion;
 import ass2.Hunter;
 import ass2.InvincibilityPotion;
 import ass2.Key;
+import ass2.KeyEnum;
 import ass2.Map;
 import ass2.Observer;
 import ass2.Pit;
@@ -29,6 +31,8 @@ import javafx.scene.layout.GridPane;
 
 public class MapObserver implements Observer {
 	private Map map;
+	private String imgPath = "application/Sprites/";
+	
 	public  MapObserver(Map map) {
 		this.map = map;
 		// TODO Auto-generated constructor stub
@@ -41,7 +45,7 @@ public class MapObserver implements Observer {
 			for (int x = 0; x < gameMap[y].length; x++) {
 				//ImageView imageView = new ImageView(grid[y][x]);
 				// add a floor to every single tile ^^
-				ImageView floorImage = new ImageView(new Image("application/Sprites/floor.png"));
+				ImageView floorImage = new ImageView(new Image(imgPath + "floor.png"));
 				floorImage.setFitWidth(tileSize);
 				floorImage.setFitHeight(tileSize);
 				gameGrid.add(floorImage, x, y);
@@ -58,50 +62,35 @@ public class MapObserver implements Observer {
 
 	}
 	private Image setImage(Entity e) {
-		Image image = new Image("application/Sprites/floor.png");
-		if (e instanceof Player) {
-			return new Image("application/Sprites/player.png");
-		} else if (e instanceof Bomb) {
-			return new Image("application/Sprites/bomb_unlit.png");
-		} else if (e instanceof Boulder) {
-			return new Image("application/Sprites/boulder.png");
-		} else if (e instanceof FloorSwitch) {
-			return new Image("application/Sprites/pressure_plate.png");
-		} else if (e instanceof InvincibilityPotion) {
-			return new Image("application/Sprites/invincibility_potion.png");
-		} else if (e instanceof HoverPotion) {
-			return new Image("application/Sprites/hover_potion.png");
-		} else if (e instanceof Key) {
-			return new Image("application/Sprites/key.png");
-		} else if (e instanceof Treasure) { // add treasure, win if all collected
-			return new Image("application/Sprites/gold_pile.png");
-		} else if (e instanceof Arrow) {
-			return new Image("application/Sprites/arrow.png");
-		} else if (e instanceof Sword) {
-			return new Image("application/Sprites/sword.png");
-		} else if (e instanceof Enemy) {	// lose if you walk into enemy
-			if (e instanceof Hunter) {
-				return new Image("application/Sprites/hunter.png");
-			} else if (e instanceof Strategist) {
-				return new Image("application/Sprites/strategist.png");
-			} else if (e instanceof Hound) {
-				return new Image("application/Sprites/hound.png");
-			} else if (e instanceof Coward) {
-				return new Image("application/Sprites/coward.png");
-			}
-		} else if (e instanceof Pit) {	// lose if you walk into pit
-			return new Image("application/Sprites/shaft.png");
-		} else if (e instanceof Exit) {	// win on exit
-			return new Image("application/Sprites/dngn_exit_abyss.png");
-		} else if (e instanceof Door) { // condition when player walks into door
+		
+		Image image = new Image(imgPath + "floor.png");
+		if (e instanceof Door) { // condition when player walks into door
 			Door door = (Door)e;
 			if (door.getStatus() == false) { // closed
-				return new Image("application/Sprites/closed_door.png");
-			} else {
-				return new Image("application/Sprites/open_door.png");
+				switch (door.getUnique()) {
+					case SMALL:
+						return new Image(imgPath + "door.png");
+					case MEDIUM:
+						return new Image(imgPath + "door1.png");
+					case LARGE:
+						return new Image(imgPath + "door2.png");
+				}
+			} 
+			else {
+				return new Image(imgPath + "open_door.png");
 			}
-		} else if (e instanceof Wall) {
-			return new Image("application/Sprites/wall.png");
+		} else if (e instanceof Key) {
+			Key key = (Key)e;
+			switch (key.getUnique()) {
+				case SMALL:
+					return new Image(imgPath + "key.png");
+				case MEDIUM:
+					return new Image(imgPath + "key1.png");
+				case LARGE:
+					return new Image(imgPath + "key2.png");
+			}
+		} else if (e instanceof Floor == false){
+			return new Image(imgPath + e.imgName() + ".png");
 		}
 		return image;
 	}

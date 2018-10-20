@@ -35,4 +35,7 @@ public class FloorSwitch extends Entity {
 	public String toString() {
 		return "FloorSwitch";
 	}
+	public String imgName() {
+		return "floor_switch";
+	}
 }

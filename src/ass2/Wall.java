@@ -16,4 +16,7 @@ public class Wall extends Obstacle{
 	public String toString() {
 		return "Wall";
 	}
+	public String imgName() {
+		return "wall";
+	}
 }

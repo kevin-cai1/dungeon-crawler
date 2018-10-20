@@ -3,6 +3,7 @@ package application;
 import ass2.DesignEngine;
 import ass2.GameEngine;
 import ass2.Map;
+import ass2.MapSave;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -39,8 +40,8 @@ public class PauseController {
 	@FXML
 	private void returnToGame() throws Exception{
 		// TODO Auto-generated method stub
-		DesignEngine designEngine = new DesignEngine(10);
-		Map map = designEngine.load("temp.txt");
+		MapSave mapSave = new MapSave();
+		Map map = mapSave.load("temp");
 		GameScene gameScene = new GameScene(stage, new GameEngine(map));
 		gameScene.display();
 	}

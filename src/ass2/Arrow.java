@@ -78,4 +78,8 @@ public class Arrow extends Entity{
 	public String toString() {
 		return "Arrow";
 	}
+	
+	public String imgName() {
+		return "arrow";
+	}
 }

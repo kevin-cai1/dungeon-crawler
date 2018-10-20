@@ -16,5 +16,7 @@ public class Exit extends Entity{
 	public String toString() {
 		return "Exit";
 	}
-	
+	public String imgName() {
+		return "exit";
+	}
 }

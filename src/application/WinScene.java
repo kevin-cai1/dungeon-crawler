@@ -4,8 +4,10 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class WinScene {
@@ -27,6 +29,9 @@ public class WinScene {
 			Parent root = fxmlLoader.load();
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
+			Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+			stage.setX((bounds.getWidth() - stage.getWidth())/2);
+			stage.setY((bounds.getHeight() - stage.getHeight())/2);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

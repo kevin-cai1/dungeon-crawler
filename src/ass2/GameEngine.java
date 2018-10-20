@@ -13,7 +13,7 @@ public class GameEngine {
 	private boolean boulderWinCondition;
 	private boolean treasureWinCondition;
 	private int arrayLength;
-	private ArrayList<Bomb> tickingBombs;
+	private ArrayList<Bomb> tickingBombs = new ArrayList<Bomb>();
 	private int numTreasures;
 	private GameStateInterface gameStateInterface;
 	private int totalEnemies;
@@ -167,7 +167,6 @@ public class GameEngine {
 			// calculate enemy movements
 			if (playerMoved) {
 				if(player.getInvincibility()) {
-					runEnemies();
 				}
 				else {
 					moveEnemies();
@@ -196,15 +195,19 @@ public class GameEngine {
 	}
 	
 	public GameStateInterface tickEffects() {
+		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>(); 
 		if (tickingBombs != null) {
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
 				if (bomb.tick() == false) {
-					tickingBombs.remove(bomb);
-					if(gameMap.getPlayer() == null) {
-						gameStateInterface = new Lose();
-						return gameStateInterface;
-					}
+					removedBombs.add(bomb);
 				}
+			}
+			for (Bomb b: removedBombs) {
+				tickingBombs.remove(b);
+			}
+			if (gameMap.getPlayer() == null) {
+				gameStateInterface = new Lose();
+				return gameStateInterface;
 			}
 		}
 		
@@ -468,21 +471,18 @@ public class GameEngine {
 				}
 			}
 		}
+		if(gameMap.getPlayer().getInvincibility()) {
+			for(Enemy enemy: enemies) {
+				enemy.setAction(new GetActionRunAway());
+			}
+		}
+		else {
+			for(Enemy enemy: enemies) {
+				enemy.setOgAction();
+			}
+		}
 		for (Enemy enemy: enemies) {
 			enemy.getAction(gameMap);
-		}
-	}
-	public void runEnemies() {
-		Tile[][] map = gameMap.getMap();
-		for (int i = 0; i < arrayLength; i++) {
-			for (int j = 0; j < arrayLength; j++) {
-				Tile tile = map[i][j];
-				for (Entity e : tile.getEntities()) { // look through every single entity
-					if (e instanceof Enemy) { // every enemy that needs to move
-						((Enemy) e).runAway(gameMap); // validation on enemy side
-					}
-				}
-			}
 		}
 	}
 
@@ -721,13 +721,22 @@ public class GameEngine {
 
 	}
 	
+	public boolean shootBow(Direction direction) {
+		if (gameMap.getPlayer().checkArrow()) {
+			Arrow arrow = new Arrow(gameMap.genID(), gameMap);
+			arrow.shootArrow(direction);
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean placeBomb() {
 		if (gameMap.getPlayer().checkBomb()) {
 			Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
 			System.out.println(placedBomb.getClass());
 			placedBomb.placeBomb();
 			System.out.println(placedBomb.getClass());
-
+			System.out.println();
 			tickingBombs.add(placedBomb);
 			return true;
 		}
