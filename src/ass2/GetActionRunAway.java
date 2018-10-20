@@ -1,5 +1,6 @@
 package ass2;
 
+import java.io.Serializable;
 import java.nio.channels.NonWritableChannelException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,7 +12,11 @@ import java.util.Map.Entry;
 
 import javax.naming.spi.DirStateFactory.Result;
 
-public class GetActionRunAway implements GetAction {
+public class GetActionRunAway implements GetAction, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1778473720791496096L;
 	public GetActionRunAway() {
 		// TODO Auto-generated constructor stub
 	}

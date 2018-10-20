@@ -1,11 +1,16 @@
 package ass2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GetActionStrategist implements GetAction {
+public class GetActionStrategist implements GetAction, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6526515678838325778L;
 	public GetActionStrategist() {
 		// TODO Auto-generated constructor stub
 	}

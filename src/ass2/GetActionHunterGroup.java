@@ -1,9 +1,14 @@
 package ass2;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetActionHunterGroup implements GetAction {
+public class GetActionHunterGroup implements GetAction, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7774341602137163146L;
 	public GetActionHunterGroup() {
 		// TODO Auto-generated constructor stub
 	}
