@@ -48,11 +48,16 @@ public class DesignEngine {
 		if (x > map.getArrayLength()-1 || x < 0 || y > map.getArrayLength()-1 || y < 0) {
 			return false;			// cannot place out of bounds
 		}
-		
 		Tile tile = map.getTile(x, y);
+		if(tile.getEntities().isEmpty()) {
+			return true;
+		}
 		for (Entity e : tile.getEntities()) {
 			if (e instanceof Obstacle) {
 				return false; 		// cannot place entities on top of boulders or walls
+			}
+			if (e instanceof Exit) {
+				return false;
 			}
 		}
 		return true;

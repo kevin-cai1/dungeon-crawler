@@ -3,6 +3,7 @@ package ass2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Map.Entry;
 
 public class Player extends Entity{
 	private static final long serialVersionUID = -509942623542938978L;
@@ -94,25 +95,25 @@ public class Player extends Entity{
 	}
 	
 	public int getBombsLeft() {
-		int bombCount = 0;
-		Set<Entity> set = inventory.keySet();
-		for(Entity e: set) {
-			if(e instanceof Bomb) {
-				bombCount++;
+		Set<Entry<Entity, Integer>> set = inventory.entrySet();
+		int bombs = 0;
+		for (Entry<Entity, Integer> entry: set) {
+			if(entry.getKey() instanceof Bomb) {
+				bombs += entry.getValue(); 
 			}
 		}
-		return bombCount;
+		return bombs;
 	}
 	
 	public int getArrowsLeft() {
-		int arrowCount = 0;
-		Set<Entity> set = inventory.keySet();
-		for(Entity e: set) {
-			if(e instanceof Arrow) {
-				arrowCount++;
+		Set<Entry<Entity, Integer>> set = inventory.entrySet();
+		int arrows = 0;
+		for (Entry<Entity, Integer> entry: set) {
+			if(entry.getKey() instanceof Arrow) {
+				arrows += entry.getValue(); 
 			}
 		}
-		return arrowCount;
+		return arrows;
 	}
 	
 	public boolean hasKey(KeyEnum keyNum) {
