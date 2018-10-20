@@ -1,5 +1,16 @@
 package ass2;
 
+import java.nio.channels.NonWritableChannelException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.naming.spi.DirStateFactory.Result;
+
 public class GetActionRunAway implements GetAction {
 	public GetActionRunAway() {
 		// TODO Auto-generated constructor stub
@@ -23,7 +34,7 @@ public class GetActionRunAway implements GetAction {
 		Tile tile1 = null;
 		Tile tile2 = null;
 		Tile tile3 = null;
-		double[] dist = new double[4];
+		HashMap<Tile,Double> hashMap = new HashMap<>();
 		//if all 4 tiles around the enemy are obstacles then dont move
 		int obstacleCount = 0;
 		if(curY-1 >= 0) {
@@ -31,53 +42,46 @@ public class GetActionRunAway implements GetAction {
 			if(enemy.obstacleCheck(tile0)) {
 				obstacleCount++;
 			}
-			dist[0] = enemy.distCalc(playerX, playerY,tile0.getX(),tile0.getY());
+			hashMap.put(tile0,enemy.distCalc(playerX, playerY,tile0.getX(),tile0.getY()));
 		}
 		if(curY+1 < length) {
 			tile1 = map.getTile(curX, curY+1);//South
 			if(enemy.obstacleCheck(tile1)) {
 				obstacleCount++;
 			}
-			dist[1] = enemy.distCalc(playerX, playerY,tile1.getX(),tile1.getY());
+			hashMap.put(tile1,enemy.distCalc(playerX, playerY,tile1.getX(),tile1.getY()));
 		}
 		if(curX+1 < length) {
 			tile2 = map.getTile(curX+1, curY);//East
 			if(enemy.obstacleCheck(tile2)) {
 				obstacleCount++;
 			}
-			dist[2] = enemy.distCalc(playerX, playerY,tile2.getX(),tile2.getY());
+			hashMap.put(tile2,enemy.distCalc(playerX, playerY,tile2.getX(),tile2.getY()));
 		}
 		if(curX-1 >= 0) {
 			tile3 = map.getTile(curX-1, curY);//West
 			if(enemy.obstacleCheck(tile3)) {
 				obstacleCount++;
 			}
-			dist[3] = enemy.distCalc(playerX, playerY,tile3.getX(),tile3.getY());
+			hashMap.put(tile3,enemy.distCalc(playerX, playerY,tile3.getX(),tile3.getY()));
 		}
 		
 		//if all 4 tiles contain obstacles
 		if(obstacleCount == 4) {
 			return;
 		}
-		//now find the largest out of the 4
-		double largest = dist[0];
-		for(double e: dist) {
-			if(largest < e){
-				largest = e;
-			}
+		//now sort the list
+		List<Entry<Tile, Double>> list = new ArrayList<>(hashMap.entrySet());
+		list.sort(Entry.comparingByValue());
+		Collections.reverse(list);
+		LinkedHashMap<Tile,Double> sortedHashMap = new LinkedHashMap<>();
+		for( Entry<Tile, Double> entry: list) {
+			sortedHashMap.put(entry.getKey(),entry.getValue());
 		}
-		for(int i = 0; i < 4; i++) {
-			if(largest == dist[0]) {
-				enemy.shift(map, tile0);
-			}
-			else if (largest == dist[1]) {
-				enemy.shift(map, tile1);
-			}
-			else if (largest == dist[2]) {
-				enemy.shift(map, tile2);
-			}
-			else if (largest == dist[3]) {
-				enemy.shift(map, tile3);
+		for(Tile tile: sortedHashMap.keySet()) {
+			if(!enemy.obstacleCheck(tile)) {
+				enemy.shift(map, tile);
+				return;
 			}
 		}
 	}
