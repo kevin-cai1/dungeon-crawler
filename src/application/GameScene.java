@@ -17,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -225,12 +226,11 @@ public class GameScene {
         return gameDisplay;
 	}
 	
-	private FlowPane setSidebar() {
+	private VBox setSidebar() {
 		Player player = game.getGameMap().getPlayer();
-		Font textFont = Font.font("Goudy Old Style", FontWeight.BOLD ,34);
-		Font headingFont = Font.font("Goudy Old Style", FontWeight.BOLD ,44);
-		FlowPane sidebar = new FlowPane();
-		sidebar.setPrefWrapLength(180);
+		Font textFont = Font.font("Goudy Old Style", 30);
+		Font headingFont = Font.font("Goudy Old Style", FontWeight.BOLD ,36);
+		VBox sidebar = new VBox();
 		sidebar.setStyle("-fx-background-color: #272727;");
 		
 		Label InventoryLabel = new Label("Inventory");
@@ -288,34 +288,39 @@ public class GameScene {
 		HBox Keys = new HBox();
 		Keys.setStyle("-fx-background-color: #272727;");
 		Keys.setSpacing(10);
+		
+		Label keyLabel = new Label();
+		keyLabel.setText("Key: ");
+		keyLabel.setFont(textFont);
+		keyLabel.setTextFill(Color.GREY);
 		ImageView key1;
 		if (player.hasKey(KeyEnum.SMALL) == true) {
 			key1 = new ImageView(new Image(imgPath + "key.png"));
+		} else if (player.hasKey(KeyEnum.MEDIUM) == true) {
+			key1 = new ImageView(new Image(imgPath + "key1.png"));
+		} else if (player.hasKey(KeyEnum.LARGE) == true) {
+			key1 = new ImageView(new Image(imgPath + "key2.png"));
 		} else {
 			key1 = new ImageView(new Image(imgPath + "blank_key.png"));
 		}
 		key1.setFitHeight(40);
 		key1.setFitWidth(40);
 		
-		ImageView key2;
-		if (player.hasKey(KeyEnum.MEDIUM) == true) {
-			key2 = new ImageView(new Image(imgPath + "key1.png"));
+		Label hoverLabel = new Label();
+		hoverLabel.setFont(textFont);
+		hoverLabel.setText("Hover: ");
+		hoverLabel.setTextFill(Color.GREY);
+		ImageView hover;
+		if (player.getHover() == true) {
+			hover = new ImageView(new Image(imgPath + "hover_potion.png"));
 		} else {
-			key2 = new ImageView(new Image(imgPath + "blank_key.png"));
+			hover = new ImageView(new Image(imgPath + "unselected_potion.png"));
 		}
-		key2.setFitHeight(40);
-		key2.setFitWidth(40);
+		hover.setFitHeight(40);
+		hover.setFitWidth(40);
 		
-		ImageView key3;
-		if (player.hasKey(KeyEnum.LARGE) == true) {
-			key3 = new ImageView(new Image(imgPath + "key2.png"));
-		} else {
-			key3 = new ImageView(new Image(imgPath + "blank_key.png"));
-		}
-		key3.setFitHeight(40);
-		key3.setFitWidth(40);
-		Keys.setAlignment(Pos.CENTER);
-		Keys.getChildren().addAll(key1, key2, key3);
+		
+		Keys.getChildren().addAll(keyLabel, key1, hoverLabel, hover);
 		
 		HBox Invincibility = new HBox();
 		Invincibility.setStyle("-fx-background-color: #272727;");
@@ -329,27 +334,12 @@ public class GameScene {
 		invincibilityCount.setTextFill(Color.GREY);
 		Invincibility.getChildren().addAll(invincibility, invincibilityCount);
 		
-		HBox Hover = new HBox();
-		Hover.setStyle("-fx-background-color: #272727;");
-		Hover.setSpacing(10);
-		ImageView hover = new ImageView(new Image(imgPath + "hover_potion.png"));
-		hover.setFitHeight(40);
-		hover.setFitWidth(40);
-		Label hoverSet = new Label();
-		if (player.getHover() == true) {
-			hoverSet.setText("active");
-		} else {
-			hoverSet.setText("inactive");
-		}
-		hoverSet.setFont(textFont);
-		hoverSet.setTextFill(Color.GREY);
-		Hover.getChildren().addAll(hover, hoverSet);
 		
 		Label WinConditionLabel = new Label("Win Conditions");
-		WinConditionLabel.setFont(textFont);
+		WinConditionLabel.setFont(headingFont);
 		WinConditionLabel.setTextFill(Color.GREY);
 		
-		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, Invincibility, Hover, WinConditionLabel);
+		sidebar.getChildren().addAll(InventoryLabel, Sword, Bomb, Arrow, Treasure, Keys, Invincibility, WinConditionLabel);
 
 		
 		if (game.getBoulderWinCondition()) {

@@ -561,8 +561,9 @@ public class GameEngine {
 				player.addHover();
 				removeEntities.add(e);
 			} else if (e instanceof Key) {
-				player.addKey((Key)e);
-				removeEntities.add(e);
+				if (player.addKey((Key)e)) {
+					removeEntities.add(e);
+				}
 			} else if (e instanceof Treasure) { // add treasure, win if all collected
 				System.out.println("PLAYER STANDING ON TREASURE");
 				player.addTreasure();

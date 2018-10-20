@@ -128,9 +128,14 @@ public class Player extends Entity{
 	/**
 	 * adds key to player inventory
 	 * @param key key to be added
+	 * @return true if key gets added successfully
 	 */
-	public void addKey(Key key) {
-		keys.add(key);
+	public boolean addKey(Key key) {
+		if (keys.isEmpty()) {
+			keys.add(key);
+			return true;
+		}
+		return false;
 	}
 	/**
 	 * checkKey checks if the player has the key to open the door. If they do, the door will open
@@ -142,6 +147,7 @@ public class Player extends Entity{
 		for(Key key: keys) {
 			if(door.getUnique() == key.getUnique()) {
 				door.openDoor();
+				keys.remove(key);
 				return true;
 			}
 		}
