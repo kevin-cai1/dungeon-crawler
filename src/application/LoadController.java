@@ -90,7 +90,7 @@ public class LoadController {
 			} else {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.setTitle("Warning");
-				alert.setHeaderText("File does not exit");
+				alert.setHeaderText("File does not exist");
 				alert.setContentText("Please enter a valid map file");
 				alert.showAndWait();
 			}
