@@ -4,6 +4,7 @@ import java.util.*;
 
 public abstract class Enemy extends Entity{
 	private static final long serialVersionUID = -6012493085994945056L;
+	protected GetAction getAction;
 	protected LinkedList<Tile> queue;
 	protected Set<Tile> visited;
 	protected HashMap<Tile, Tile> parent; //child on the left, parent on the right
@@ -198,5 +199,11 @@ public abstract class Enemy extends Entity{
 		return obstacle;
 	}
 	public abstract void shift(Map map, Tile tile);
+	public void getAction(Map map) {
+		getAction.getAction(map, this);
+	}
+	public void setAction(GetAction getAction) {
+		this.getAction = getAction;
+	}
 }
 

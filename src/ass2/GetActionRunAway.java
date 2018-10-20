@@ -1,9 +1,13 @@
 package ass2;
 
-public abstract class GetActionRunAway implements GetAction {
+public class GetActionRunAway implements GetAction {
 	public GetActionRunAway() {
 		// TODO Auto-generated constructor stub
 	}
+    /**
+     * calculates and performs action for coward based on its proximity to the player
+     * @param map
+     */
 
 	@Override
 	public void getAction(Map map, Enemy enemy) {
