@@ -293,6 +293,13 @@ public class DesignScene {
 		clear.setOnMouseExited(Event -> {
 			clear.setImage(new Image(imgPath + "clear_button.png"));
 		});
+		ImageView play = new ImageView(new Image(imgPath + "play_button.png"));
+		play.setOnMouseEntered(Event -> {
+			play.setImage(new Image(imgPath + "play_selected.png"));
+		});
+		play.setOnMouseExited(Event -> {
+			play.setImage(new Image(imgPath + "play_button.png"));
+		});
 		Label heading = new Label("Entities to choose from");
 		heading.setFont(new Font("Impact", 40));
 		heading.setTextFill(Color.GREY);
@@ -415,7 +422,31 @@ public class DesignScene {
 				mapObserver.update(gameGrid, tileSize);
 			}
 		});
-		vBox.getChildren().addAll(heading, listView, save, clear);
+		play.setOnMouseClicked(Event -> {
+			// load scene for game
+			if(!designEngine.validatePlayer(designEngine.getMap())) {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Warning");
+				alert.setHeaderText("Your map isn't valid to play because you haven't added in a player.");
+				alert.setContentText("Please fix this before trying to play your game.");
+				alert.showAndWait();
+			}
+			else {
+				MapSave ms = new MapSave();
+				Map map = designEngine.getMap();
+				ms.save("temp_design", map);
+				GameEngine gameEngine = new GameEngine(map);
+				DesignGameScene game = new DesignGameScene(s, gameEngine);
+				try {
+					game.display();
+					System.out.println("Is this being run constantly");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		vBox.getChildren().addAll(heading, listView, save, clear, play);
 		
 		return vBox;
 	}

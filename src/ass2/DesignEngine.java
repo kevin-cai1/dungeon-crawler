@@ -118,8 +118,6 @@ public class DesignEngine {
 	 */
 	public boolean validateMap(Map map) {
 		
-		boolean player = false; // used to check player exists;
-		
 		// Iterate through the map, check for exit first
 		ArrayList<WinCondition> winConditions = map.getWinConditions();
 		int size = map.getArrayLength();
@@ -206,9 +204,6 @@ public class DesignEngine {
 					if(e instanceof Key) {
 						keys.add((Key) e);
 					}
-					if (e instanceof Player) {
-						player = true;
-					}
 				}
 			}
 		}
@@ -225,10 +220,24 @@ public class DesignEngine {
 			door = false;
 		}
 		//Validate that doors match key
-		if (player) {
+		if (validatePlayer(map)) {
 			return true;
 		}
 		System.out.println("somehow it got past all the conditions, map might or might not be valid.");
 		return false;
+	}
+	public boolean validatePlayer(Map map) {
+		boolean player = false;
+		int size = map.getArrayLength();
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
+					if (e instanceof Player) { // if treasure exists
+						player = true;
+					}
+				}
+			}
+		}
+		return player;
 	}
 }
