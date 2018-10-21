@@ -1,10 +1,12 @@
 package ass2;
 
+import java.util.ArrayList;
+
 public class MapBuilderImplem implements MapBuilder {
 	private Map map;
 	
 	public MapBuilderImplem() {
-		this.map = new Map(20);			// just saying 20 to make compiler happy
+		this.map = new Map(10);			// just saying 20 to make compiler happy
 		
 	}
 
@@ -14,8 +16,10 @@ public class MapBuilderImplem implements MapBuilder {
 	}
 
 	@Override
-	public MapBuilder setWinConditions(WinCondition winCondition) {
-		map.addWinCondition(winCondition);
+	public MapBuilder setWinConditions(ArrayList<WinCondition> winConditions) {
+		for(WinCondition winCondition: winConditions) {
+			map.addWinCondition(winCondition);
+		}
 		return this;
 	}
 

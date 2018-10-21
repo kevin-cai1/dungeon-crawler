@@ -1,20 +1,13 @@
 package ass2;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class DesignEngine {
 	private Map map;
-	private GameState gameState;
-	private boolean enemyWinCondition;
-	private boolean boulderWinCondition;
-	private boolean treasureWinCondition;
-	
 	public DesignEngine(int arrayLength) {
-		this.map = new Map(arrayLength);
-		this.enemyWinCondition = false; //kill me now
-		this.boulderWinCondition = false;
-		this.treasureWinCondition = false;
+		ArrayList<WinCondition> arrayList = new ArrayList<>();
+        MapBuilder builder = new MapBuilderImplem();
+		this.map = builder.setArrayLengthMap(10).setMapEntities().setWinConditions(arrayList).setIdCounter().build();;
 	}
 	/**
 	 * tries to place an entity at the specified position
@@ -68,48 +61,11 @@ public class DesignEngine {
 		}
 		return true;
 	}
-	/**
-	 * checks if the win condition is exit
-	 * @return
-	 */
-	private boolean exitWinCondition() {
-		for (int i = 0; i < map.getArrayLength()-1; i++) {
-			for (int j = 0; j < map.getArrayLength()-1; j++) {
-				for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
-					if (e instanceof Exit) { // count all the exits
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
 	public Map getMap() {
 		return this.map;
 	}
 	public void setMap(Map map) {
 		this.map = map;
-	}
-	/**
-	 * 
-	 * @param fileName
-	 * @return map read from file
-	 */
-	public Map load(String fileName) {
-		Map loadedMap = new Map(20);
-		try {
-			FileInputStream fi = new FileInputStream(new File(fileName));
-			ObjectInputStream oi = new ObjectInputStream(fi);
-			loadedMap = (Map) oi.readObject();
-			oi.close();
-			fi.close();
-			return loadedMap;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Class not found");
-		} catch (IOException e) {
-			System.out.println("Error initializing stream");
-		}	
-		return loadedMap;
 	}
 	/**
 	 * 
@@ -120,6 +76,9 @@ public class DesignEngine {
 		
 		// Iterate through the map, check for exit first
 		ArrayList<WinCondition> winConditions = map.getWinConditions();
+		if(winConditions.isEmpty()) {
+			return false;
+		}
 		int size = map.getArrayLength();
 		for (WinCondition winCondition: winConditions) {
 			if (winCondition.equals(WinCondition.Exit)) {			// if exit win condition exists
@@ -192,7 +151,6 @@ public class DesignEngine {
 			}
 		}
 		boolean door = false;
-		boolean key = false;
 		ArrayList<Door> doors = new ArrayList<>();
 		ArrayList<Key> keys = new ArrayList<>();
 		for (int i = 0; i < size; i++) {

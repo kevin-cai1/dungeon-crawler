@@ -1,7 +1,4 @@
 package ass2;
-
-import java.util.ArrayList;
-import java.util.List;
 /**
  * type of enemy which moves toward player until it is 3 tiles away, then starts moving away from the player
  * @author gordon
@@ -24,6 +21,7 @@ public class Coward extends Enemy{
  * @param map
  * @param tile
  */
+    @Override
 	public void shift(Map map, Tile tile) {
 		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
 		currPos.removeEntity(this); //removes it from its current spot

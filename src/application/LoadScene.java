@@ -2,7 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import ass2.MapSave;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

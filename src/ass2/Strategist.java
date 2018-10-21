@@ -1,9 +1,5 @@
 package ass2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class Strategist extends Enemy{
 	private static final long serialVersionUID = -3475992452173522141L;
 	public Strategist(int id){
