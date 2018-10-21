@@ -13,6 +13,7 @@ public class MenuScene {
 	private Stage s;
 	private String title;
 	private FXMLLoader fxmlLoader;
+	private static boolean played = false;
 	
 	
 	public MenuScene(Stage s) {
@@ -37,8 +38,11 @@ public class MenuScene {
 			e.printStackTrace();
 		}
         AudioClip audio = new AudioClip(getClass().getResource("/application/sound/bgm.mp3").toExternalForm());
-        audio.setVolume(0.5f);
-        audio.setCycleCount(50);
-        audio.play();
+        if (played == false) {
+	        audio.setVolume(0.5f);
+	        audio.setCycleCount(50);
+	        audio.play();
+	        played = true;
+        }
 	}
 }
