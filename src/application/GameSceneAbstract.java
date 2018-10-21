@@ -27,7 +27,6 @@ public abstract class GameSceneAbstract {
 	private String title;
 	private Scene scene;
 	private final int tileSize;		// **SCALE TILESIZE DEPENDING ON MAP SIZE
-	private int mapSize = 10;
 	protected GameEngine game;
 	private boolean playerMoved = false;
 	private String imgPath = "application/Sprites/";

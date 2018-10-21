@@ -43,7 +43,7 @@ public class DesignPauseController {
 		Map map = mapSave.load("temp_design");
 		DesignEngine designEngine = new DesignEngine(10);
 		designEngine.setMap(map);
-		DesignScene designScene = new DesignScene(stage, designEngine);
+		DesignController designScene = new DesignController(stage, designEngine);
 		designScene.display();
 	}
 	@FXML
