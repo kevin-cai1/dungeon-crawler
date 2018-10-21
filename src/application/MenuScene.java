@@ -1,33 +1,13 @@
 package application;
 
- import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
- import org.omg.CORBA.PUBLIC_MEMBER;
- import com.sun.glass.events.KeyEvent;
- import javafx.event.Event;
-
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
+ import java.io.IOException;
+ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import sun.audio.AudioData;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
-import sun.audio.ContinuousAudioDataStream;
 
 public class MenuScene {
 	private Stage s;

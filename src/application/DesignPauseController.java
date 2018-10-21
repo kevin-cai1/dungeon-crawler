@@ -1,8 +1,6 @@
 package application;
 
-import ass2.Design;
 import ass2.DesignEngine;
-import ass2.GameEngine;
 import ass2.Map;
 import ass2.MapSave;
 import javafx.fxml.FXML;

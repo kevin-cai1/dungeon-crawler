@@ -5,16 +5,8 @@ import java.util.ArrayList;
 
 public class DesignEngine {
 	private Map map;
-	private GameState gameState;
-	private boolean enemyWinCondition;
-	private boolean boulderWinCondition;
-	private boolean treasureWinCondition;
-	
 	public DesignEngine(int arrayLength) {
 		this.map = new Map(arrayLength);
-		this.enemyWinCondition = false; //kill me now
-		this.boulderWinCondition = false;
-		this.treasureWinCondition = false;
 	}
 	/**
 	 * tries to place an entity at the specified position
@@ -67,22 +59,6 @@ public class DesignEngine {
 			}
 		}
 		return true;
-	}
-	/**
-	 * checks if the win condition is exit
-	 * @return
-	 */
-	private boolean exitWinCondition() {
-		for (int i = 0; i < map.getArrayLength()-1; i++) {
-			for (int j = 0; j < map.getArrayLength()-1; j++) {
-				for (Entity e : map.getMap()[i][j].getEntities()) { // look through every single entity
-					if (e instanceof Exit) { // count all the exits
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 	public Map getMap() {
 		return this.map;
@@ -195,7 +171,6 @@ public class DesignEngine {
 			}
 		}
 		boolean door = false;
-		boolean key = false;
 		ArrayList<Door> doors = new ArrayList<>();
 		ArrayList<Key> keys = new ArrayList<>();
 		for (int i = 0; i < size; i++) {

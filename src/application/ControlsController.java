@@ -2,18 +2,8 @@ package application;
 
 
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
-
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
