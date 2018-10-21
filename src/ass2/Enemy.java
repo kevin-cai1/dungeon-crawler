@@ -192,7 +192,7 @@ public abstract class Enemy extends Entity{
 		ArrayList<Entity> entityArrayList = tile.getEntities();
 		boolean obstacle = false;
 		for(Entity entity: entityArrayList){
-			if(entity instanceof  Obstacle){
+			if(entity instanceof  Obstacle || entity instanceof Pit){
 				obstacle = true;
 			}
 		}

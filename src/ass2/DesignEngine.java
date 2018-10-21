@@ -120,6 +120,9 @@ public class DesignEngine {
 		
 		// Iterate through the map, check for exit first
 		ArrayList<WinCondition> winConditions = map.getWinConditions();
+		if(winConditions.isEmpty()) {
+			return false;
+		}
 		int size = map.getArrayLength();
 		for (WinCondition winCondition: winConditions) {
 			if (winCondition.equals(WinCondition.Exit)) {			// if exit win condition exists

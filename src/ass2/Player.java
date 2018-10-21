@@ -224,17 +224,20 @@ public class Player extends Entity{
 		}
 		else {
 			Set<Entity> set = inventory.keySet();
+			Entity got = null;
+			int value = 0;
 			for(Entity e: set) {
 				if(e.getClass().equals(entity.getClass())) {
-					int value = inventory.get(e);
+					value = inventory.get(e);
 					value--;
-					if(value == 0) {
-						inventory.remove(e);
-					}
-					else {
-						inventory.put(e, value); 
-					}
+					got = e;
 				}
+			}
+			if(value == 0) {
+				inventory.remove(got);
+			}
+			else {
+				inventory.put(got, value); 
 			}
 		}
 	}

@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
 
-import com.sun.jmx.defaults.ServiceName;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

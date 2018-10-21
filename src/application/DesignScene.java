@@ -374,6 +374,23 @@ public class DesignScene {
 							}
 						}
 					}
+					if(entity instanceof Player) {
+						Map map = designEngine.getMap();
+						for(int i = 0; i < map.getArrayLength(); i++) {
+							for(int j = 0; j < map.getArrayLength(); j++) {
+								for(Entity entity1: map.getTile(i, j).getEntities()) {
+									if(entity1 instanceof Player) {
+										Alert alert = new Alert(AlertType.WARNING);
+										alert.setTitle("Warning");
+										alert.setHeaderText("Player is invalid");
+										alert.setContentText("You have already placed a player on the map.");
+										alert.showAndWait();
+										valid = false;
+									}
+								}
+							}
+						}
+					}
 					if(valid) {
 						clipboardContent.put(entityFormat,entity);
 						dragboard.setContent(clipboardContent);
