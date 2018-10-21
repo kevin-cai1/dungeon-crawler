@@ -21,6 +21,7 @@ public class Coward extends Enemy{
  * @param map
  * @param tile
  */
+    @Override
 	public void shift(Map map, Tile tile) {
 		Tile currPos = map.getEntityLocation(this.getId()); //finds the hunter on the map
 		currPos.removeEntity(this); //removes it from its current spot

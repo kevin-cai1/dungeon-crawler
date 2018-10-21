@@ -6,7 +6,9 @@ import java.util.ArrayList;
 public class DesignEngine {
 	private Map map;
 	public DesignEngine(int arrayLength) {
-		this.map = new Map(arrayLength);
+		ArrayList<WinCondition> arrayList = new ArrayList<>();
+        MapBuilder builder = new MapBuilderImplem();
+		this.map = builder.setArrayLengthMap(10).setMapEntities().setWinConditions(arrayList).setIdCounter().build();;
 	}
 	/**
 	 * tries to place an entity at the specified position
@@ -65,27 +67,6 @@ public class DesignEngine {
 	}
 	public void setMap(Map map) {
 		this.map = map;
-	}
-	/**
-	 * 
-	 * @param fileName
-	 * @return map read from file
-	 */
-	public Map load(String fileName) {
-		Map loadedMap = new Map(20);
-		try {
-			FileInputStream fi = new FileInputStream(new File(fileName));
-			ObjectInputStream oi = new ObjectInputStream(fi);
-			loadedMap = (Map) oi.readObject();
-			oi.close();
-			fi.close();
-			return loadedMap;
-		} catch (ClassNotFoundException e) {
-			System.out.println("Class not found");
-		} catch (IOException e) {
-			System.out.println("Error initializing stream");
-		}	
-		return loadedMap;
 	}
 	/**
 	 * 

@@ -25,7 +25,6 @@ public class GameEngine {
 		this.totalEnemies = getNumItems()[2];
 		this.numSwitches = getNumItems()[1];
 		setWinConditions();
-		System.out.println(this.boulderWinCondition + "enemy" + this.enemyWinCondition + "treasure" + this.treasureWinCondition);
 	}
 	
 	public GameStateInterface getGameStateInterface() {
@@ -107,107 +106,7 @@ public class GameEngine {
 	public Map getGameMap() {
 		return gameMap;
 	}
-	
-	/**
-	 * runs the game in 'play' mode (game mode 1)
-	 * @return the gameState (can be win, lose, play depending on how the player moved)
-	 */
-	/*public GameStateInterface runGame() {
-		gameStateInterface = new Play();
-		//gameState = GameState.Play;
-		setWinConditions();
-		// runs the game
-		// gets player moves
-		// calculates entity moves
-		// handles win conditions
-		
-		Tile[][] map = gameMap.getMap();
-		
-		PlayerControls control = new PlayerControls(); //**instantiate control class
-		Player player = gameMap.getPlayer();
-		Tile playerLocation = gameMap.getPlayerLocation();
-		
-		
-		while (true) { // game not won, user not ded or not quit
-			boolean playerMoved = false;
-			char action = control.getValidInput();
-			if (control.isMovement(action) == true) {				// if the input is movement
-				Direction playerAction = control.getMovement(action);
-				switch (playerAction) {
-					case NORTH:
-						playerMoved = movePlayerNorth();
-						break;
-					case SOUTH:
-						playerMoved = movePlayerSouth();
-						break;
-					case EAST:
-						playerMoved = movePlayerEast();
-						break;
-					case WEST:
-						playerMoved = movePlayerWest();
-						break;
-				}
-			}
-			else if (control.isMovement(action) == false ) {		// if the input is a weapon
-				Direction aim = control.returnMovement();			// take second input to aim the weapon
-				switch (action) {									// figure out which weapon is being used
-				case 'q':
-					// drop bomb at feet
-					if (player.checkBomb()) {
-						Bomb placedBomb = new Bomb(gameMap,gameMap.genID());
-						placedBomb.placeBomb();
-						tickingBombs.add(placedBomb);
-					}
-					break;
-				case 'e':
-					if (player.checkSword()) {
-						swing(aim);
-					}
-					break;
-				case 'r':
-					if (player.checkArrow()) {
-						Arrow arrow = new Arrow(gameMap.genID(), gameMap);
-						arrow.shootArrow(aim);
-					}
-					break;
-				}
-			}
-			
-						
-			if (gameStateInterface instanceof Play || gameStateInterface instanceof Lose) {
-				return gameStateInterface;
-			}
-			
-			// calculate enemy movements
-			if (playerMoved) {
-				if(player.getInvincibility()) {
-				}
-				else {
-					moveEnemies();
-				}
-				
-			}
-			
-			checkPlayerStatus();
-			
-			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
-				if (bomb.tick() == false) {
-					tickingBombs.remove(bomb);
-					if(gameMap.getPlayer() == null) {
-						gameStateInterface =  new Lose();
-						return gameStateInterface;
-					}
-				}
-			}
 
-			
-			if (gameStateInterface.checkState(this) == true) {
-				gameStateInterface = new Win();
-				return gameStateInterface;
-			}
-		}
-	}*/
-	
 	/**
 	 * handles the ticking effect of bombs and invincibility
 	 * iterates through the list of active bombs, calling its tick() function
@@ -215,10 +114,10 @@ public class GameEngine {
 	 * @return gameState interface representing the updated state of the current game
 	 */
 	public GameStateInterface tickEffects() {
-		ArrayList<Bomb> removedBombs = new ArrayList<Bomb>(); 
+		ArrayList<Bomb> removedBombs = new ArrayList<>();
 		if (tickingBombs != null) {
 			for (Bomb bomb : tickingBombs) { // tick every bomb ,remove when it explodes
-				if (bomb.tick() == false) {
+				if (!bomb.tick()) {
 					removedBombs.add(bomb);
 				}
 			}
@@ -248,7 +147,7 @@ public class GameEngine {
 		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.NORTH;
 		System.out.println("trying to move player");
-		if (this.validateMove(player, playerAction) == true) {
+		if (this.validateMove(player, playerAction)) {
 			System.out.println("valid move");
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
@@ -262,7 +161,7 @@ public class GameEngine {
 					followingTile);
 			System.out.println("move player:"+movePlayer);
 
-			if (movePlayer == true) {
+			if (movePlayer) {
 				gameMap.movePlayer(playerAction);	
 				return true;
 			}
@@ -281,7 +180,7 @@ public class GameEngine {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.SOUTH;
-		if (this.validateMove(player, playerAction) == true) {
+		if (this.validateMove(player, playerAction)) {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX][playerY+1];
@@ -292,7 +191,7 @@ public class GameEngine {
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
-			if (movePlayer == true) {
+			if (movePlayer) {
 				gameMap.movePlayer(playerAction);	
 				return true;
 			}
@@ -312,7 +211,7 @@ public class GameEngine {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.EAST;
-		if (this.validateMove(player, playerAction) == true) {
+		if (this.validateMove(player, playerAction)) {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX+1][playerY];
@@ -323,7 +222,7 @@ public class GameEngine {
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 		
-			if (movePlayer == true) {
+			if (movePlayer) {
 				gameMap.movePlayer(playerAction);	
 				return true;
 			}
@@ -343,7 +242,7 @@ public class GameEngine {
 		Tile playerLocation = gameMap.getPlayerLocation();
 		Player player = gameMap.getPlayer();
 		Direction playerAction = Direction.WEST;
-		if (this.validateMove(player, playerAction) == true) {
+		if (this.validateMove(player, playerAction)) {
 			int playerX = playerLocation.getX();
 			int playerY = playerLocation.getY();
 			Tile affectedTile = map[playerX-1][playerY];
@@ -355,7 +254,7 @@ public class GameEngine {
 			boolean movePlayer = moveConsequences(player, playerAction, affectedTile,
 					followingTile);
 			
-			if (movePlayer == true) {
+			if (movePlayer) {
 				gameMap.movePlayer(playerAction);	
 				return true;
 			}
@@ -377,7 +276,7 @@ public class GameEngine {
 				for (Entity e : tile.getEntities()) { // look through every single entity
 					if (e instanceof FloorSwitch) { // every floor switch
 						FloorSwitch switch1 = (FloorSwitch)e;
-						if (switch1.getStatus() == true) {
+						if (switch1.getStatus()) {
 							switchesTriggered++;
 						}
 					}
@@ -406,76 +305,13 @@ public class GameEngine {
 		}
 		return getNumEnemies() - enemies;
 	}
-	
-	/**
-	 * Calls boudlerWincondition, enemyWincondition, and treasureWincondition to check if win conditions have been met
-	 * iterates through the map to check if enemies still alive or if switches still untriggered
-	 * @param player
-	 * @param numTreasures number of treasures on the map
-	 * @param arrayLength size of the map
-	 * @param map
-	 * @return true if player has met win conditions 
-	 */
-	/*public boolean checkWin() {
-		Player player = gameMap.getPlayer();
-		Tile[][] map = gameMap.getMap();
-		boolean allSwitches = true;
-		boolean allEnemiesDestroyed = true;
-		for (int i = 0; i < arrayLength; i++) {
-			for (int j = 0; j < arrayLength; j++) {
-				Tile tile = map[i][j];
-				for (Entity e : tile.getEntities()) { // look through every single entity
-					if (e instanceof FloorSwitch) { // every floor switch
-						FloorSwitch switch1 = (FloorSwitch)e;
-						if (switch1.getStatus() == false) {
-							allSwitches = false;
-						}
-					} else if (e instanceof Enemy) {
-						allEnemiesDestroyed = false;
-					}
-				}
-			}
-		}
-		
-		boolean satisfyWin;
-		
-		if (boulderWinCondition || enemyWinCondition || treasureWinCondition) {
-			satisfyWin = true;
-		} else {
-			satisfyWin = false;
-		}
-		if (boulderWinCondition) {
-			if (allSwitches != true) {
-				satisfyWin = false;
-			}
-		}
-		if (enemyWinCondition) {
-			System.out.println("enemy win condition set");
-			if (allEnemiesDestroyed != true) {
-				satisfyWin = false;
-			}
-		}
-		if (treasureWinCondition) {
-			System.out.println("treasure win condition set");
-			if (player.getTreasure() != numTreasures) {
-				satisfyWin = false;
-			}
-		}
-		if (satisfyWin == true) {
-			gameState = GameState.Win;
-			gameStateInterface = new Win();
-		}
-		return satisfyWin;
-	}*/
 
 	/**
 	 * iterates through all entities on the map and calls getAction on enemies to make them move
-	 * @param arrayLength map size
-	 * @param map
 	 */
 	public void moveEnemies() {
 		Tile[][] map = gameMap.getMap();
-		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		ArrayList<Enemy> enemies = new ArrayList<>();
 		for (int i = 0; i < arrayLength; i++) {
 			for (int j = 0; j < arrayLength; j++) {
 				Tile tile = map[i][j];
@@ -505,13 +341,13 @@ public class GameEngine {
 	/**
 	 * checks the consequences of the player making a certain move and 
 	 * performs actions according to interactions between the players move and affected entities
-	 * @param player
+	 * @param player the player playing the game
 	 * @param playerAction direction the player is moving
 	 * @param affectedTile the tile the player is moving onto
 	 * @param followingTile the tile behind the affected tile in the same direction
 	 * @return true if all consequences accounted for and player has been validly moved
 	 */
-	public boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
+	private boolean moveConsequences(Player player, Direction playerAction, Tile affectedTile, Tile followingTile) {
 		boolean boulderMove = true;
 		Entity pitObject = null;
 		boolean movePlayer = true;
@@ -542,7 +378,7 @@ public class GameEngine {
 				}
 				System.out.println("moving boulder:" + boulderMove);
 				System.out.println(pitObject);
-				if (boulderMove == true) {
+				if (boulderMove) {
 					if (pitObject != null) { // boulder going into pit
 						// don't need to move boulder, just delete both boulder and pit - makes normal floor
 						removeEntities.add(e); // remove boulder
@@ -574,25 +410,25 @@ public class GameEngine {
 				player.putInventory(e);
 				removeEntities.add(e);
 			} else if (e instanceof Sword) {
-				if (player.putInventory(e) == true) {
+				if (player.putInventory(e)) {
 					removeEntities.add(e);
 				}
 			} else if (e instanceof Enemy) {	// lose if you walk into enemy
-				if (player.getInvincibility() == true) { // enemy dies if player walks into them with invincibility
+				if (player.getInvincibility()) { // enemy dies if player walks into them with invincibility
 					removeEntities.add(e);
 				} else {
 					gameStateInterface = new Lose();
 				}
 			} else if (e instanceof Pit) {	// lose if you walk into pit
-				if (player.getHover() == false) {
+				if (!player.getHover()) {
 					gameStateInterface = new Lose();
 				}
 			} else if (e instanceof Exit) {	// win on exit
 				gameStateInterface = new Win();
 			} else if (e instanceof Door) { // condition when player walks into door
 				Door door = (Door)e;
-				if (door.getStatus() == false) { // closed
-					if (player.checkKey(door) == false) {
+				if (!door.getStatus()) { // closed
+					if (!player.checkKey(door)) {
 						movePlayer = false;
 					}
 				} 
@@ -781,7 +617,7 @@ public class GameEngine {
 	 * @param move direction the entity is trying to move
 	 * @return true if move is valid
 	 */
-	public boolean validateMove(Entity entity, Direction move) {
+	private boolean validateMove(Entity entity, Direction move) {
 		System.out.println("array length: " + arrayLength);
 		Tile tile = gameMap.getEntityLocation(entity.getId());
 		int tileX = tile.getX();
@@ -908,7 +744,7 @@ public class GameEngine {
 	/**
 	 * sets win conditions for the game (can be combination of killing all enemies, collecting all treasure, triggering all switches)
 	 */
-	public void setWinConditions() {
+	private void setWinConditions() {
 		ArrayList<WinCondition> conditions = this.gameMap.getWinConditions();
 		System.out.println("win conditions" + conditions);
 		if (conditions != null) {
