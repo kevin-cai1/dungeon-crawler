@@ -12,7 +12,7 @@
             <Image url="@Sprites/pause.png" />
          </image>
       </ImageView>
-      <ImageView id="resume" fx:id="resumeButton" fitHeight="39.0" fitWidth="181.0" layoutX="347.0" layoutY="123.0" onMouseClicked="#returnToGame" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="resume" fx:id="resumeButton" fitHeight="39.0" fitWidth="181.0" layoutX="347.0" layoutY="148.0" onMouseClicked="#returnToGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/play_button.png" />
          </image>
@@ -20,15 +20,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView id="options" fx:id="optionsButton" fitHeight="39.0" fitWidth="179.0" layoutX="347.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Sprites/options_button.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView id="returnMenu" fx:id="returnToMenuButton" fitHeight="39.0" fitWidth="176.0" layoutX="347.0" layoutY="214.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="returnMenu" fx:id="returnToMenuButton" fitHeight="39.0" fitWidth="176.0" layoutX="347.0" layoutY="193.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_selected.png" />
          </image>
@@ -36,7 +28,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView id="quit" fx:id="quitGameButton" fitHeight="39.0" fitWidth="182.0" layoutX="347.0" layoutY="260.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="quit" fx:id="quitGameButton" fitHeight="39.0" fitWidth="182.0" layoutX="347.0" layoutY="239.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_button.png" />
          </image>

@@ -12,7 +12,7 @@
             <Image url="@Sprites/pause.png" />
          </image>
       </ImageView>
-      <ImageView id="resumeDesign" fx:id="resumeButton" fitHeight="37.0" fitWidth="170.0" layoutX="363.0" layoutY="117.0" onMouseClicked="#returnToDesign" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="resumeDesign" fx:id="resumeButton" fitHeight="37.0" fitWidth="170.0" layoutX="365.0" layoutY="145.0" onMouseClicked="#returnToDesign" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/resume_design_button.png" />
          </image>
@@ -20,15 +20,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView id="options" fx:id="optionsButton" fitHeight="45.0" fitWidth="156.0" layoutX="363.0" layoutY="160.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@Sprites/options_button.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
-      <ImageView id="returnMenu" fx:id="returnToMenuButton" fitHeight="45.0" fitWidth="156.0" layoutX="363.0" layoutY="203.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="returnMenu" fx:id="returnToMenuButton" fitHeight="45.0" fitWidth="156.0" layoutX="365.0" layoutY="190.0" onMouseClicked="#returnToMenu" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_selected.png" />
          </image>
@@ -36,7 +28,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <ImageView id="quit" fx:id="quitGameButton" fitHeight="37.0" fitWidth="156.0" layoutX="363.0" layoutY="246.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="quit" fx:id="quitGameButton" fitHeight="37.0" fitWidth="156.0" layoutX="365.0" layoutY="233.0" onMouseClicked="#quitGame" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Sprites/quit_button.png" />
          </image>
