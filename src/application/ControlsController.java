@@ -95,6 +95,11 @@ public class ControlsController {
 		bombLabel.setText("Drop Bomb: '" + controls.getBombButton().toString() + "'");
 		arrowLabel.setText("ToggleArrow: '" + controls.getArrowButton().toString() + "'");
 		swordLabel.setText("ToggleSword: '" + controls.getSwordButton().toString() + "'");
+		//upButton.setOnAction(value);;
+	}
+	
+	public void setPerformedAction(ToggleButton button) {
+		
 	}
 	
 	@FXML
@@ -104,29 +109,108 @@ public class ControlsController {
 	}
 	
 	@FXML
+	public void selectUp() {
+		if (upButton.isSelected()) {
+			upButton.setText("Press any key");
+		} else {
+			upButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectDown() {
+		if (downButton.isSelected()) {
+			downButton.setText("Press any key");
+		} else {
+			downButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectLeft() {
+		if (leftButton.isSelected()) {
+			leftButton.setText("Press any key");
+		} else {
+			leftButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectRight() {
+		if (rightButton.isSelected()) {
+			rightButton.setText("Press any key");
+		} else {
+			rightButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectBomb() {
+		if (bombButton.isSelected()) {
+			bombButton.setText("Press any key");
+		} else {
+			bombButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectArrow() {
+		if (arrowButton.isSelected()) {
+			arrowButton.setText("Press any key");
+		} else {
+			arrowButton.setText("Change Button");
+		}
+	}
+	
+	@FXML
+	public void selectSword() {
+		if (swordButton.isSelected()) {
+			swordButton.setText("Press any key");
+		} else {
+			swordButton.setText("Change Button");
+		}
+	}
+	
+	
+	
+	@FXML
 	private void handleKeyPress(KeyEvent event) {
 		KeyCode key = event.getCode();
 		ToggleButton selectedButton = (ToggleButton) toggleGroup.getSelectedToggle();
 		if (selectedButton == leftButton) {
 			controls.setLeftButton(key);
+			leftButton.setSelected(false);
+			leftButton.setText("Change Button");
 			leftLabel.setText("Move Left: '" + controls.getLeftButton().toString() + "'");
 		} else if (selectedButton == rightButton) {
 			controls.setRightButton(key);
+			rightButton.setSelected(false);
+			rightButton.setText("Change Button");
 			rightLabel.setText("Move Right: '" + controls.getRightButton().toString() + "'");
 		} else if (selectedButton == downButton) {
 			controls.setDownButton(key);
+			downButton.setSelected(false);
+			downButton.setText("Change Button");
 			downLabel.setText("Move Down: '" + controls.getDownButton().toString() + "'");
 		} else if (selectedButton == upButton) {
 			controls.setUpButton(key);
+			upButton.setSelected(false);
+			upButton.setText("Change Button");
 			upLabel.setText("Move Up: '" + controls.getUpButton().toString() + "'");
 		} else if (selectedButton == bombButton) {
 			controls.setBombButton(key);
+			bombButton.setSelected(false);
+			bombButton.setText("Change Button");
 			bombLabel.setText("Drop Bomb: '" + controls.getBombButton().toString() + "'");
 		} else if (selectedButton == swordButton) {
 			controls.setSwordButton(key);
+			swordButton.setSelected(false);
+			swordButton.setText("Change Button");
 			swordLabel.setText("Sword Toggle: '" + controls.getSwordButton().toString() + "'");
 		} else if (selectedButton == arrowButton) {
 			controls.setArrowButton(key);
+			arrowButton.setSelected(false);
+			arrowButton.setText("Change Button");
 			arrowLabel.setText("Arrow Toggle: '" + controls.getArrowButton().toString() + "'");
 		}
 	}

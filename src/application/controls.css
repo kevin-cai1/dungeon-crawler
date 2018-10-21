@@ -1,0 +1,8 @@
+.toggle_container>ToggleButton {
+    -fx-text-fill: grey;
+
+}
+
+.toggle_container>ToggleButton:selected {
+    -fx-text-fill: crimson;
+}   
